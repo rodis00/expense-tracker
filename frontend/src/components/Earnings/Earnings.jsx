@@ -7,11 +7,11 @@ function Earnings() {
     <form action="" className={classes.earningsForm}>
       <div className={classes.earningsForm__earningsData}>
         <div className={classes.earningsForm__earningData}>
-          <label>Expense Title</label>
+          <label>Earning Title</label>
           <input type="text" />
         </div>
         <div className={classes.earningsForm__earningData}>
-          <label>Price</label>
+          <label>Earning amount</label>
           <input type="number" name="" id="" />
         </div>
         <div className={classes.earningsForm__earningData}>
