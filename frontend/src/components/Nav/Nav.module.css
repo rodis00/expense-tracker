@@ -21,11 +21,19 @@
 .navbar__list__elem {
   background-color: #19222a;
   height: 15vh;
+  width: 100%;
   line-height: 15vh;
   padding-left: 2rem;
-  color: white;
   cursor: pointer;
   font-size: 20px;
+}
+
+.navbar__list__elem__link{
+  display: block;
+  height: 15vh;
+  width: 100%;
+  color: white;
+  text-decoration: none;
 }
 
 .active {
@@ -34,15 +42,6 @@
 
 .navbar__list__elem:hover {
   background-color: #283643;
-}
-
-.navbar__span {
-  display: block;
-  width: 100%;
-  background-color: gray;
-  position: absolute;
-  bottom: 0;
-  left: 0;
 }
 
 .navbar__btn {
