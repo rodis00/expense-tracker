@@ -2,7 +2,16 @@ import React from "react";
 import classes from "./Expenses.module.css";
 
 function Expenses() {
+
+    const expenses = {
+        id: 1,
+        title: 'new computer',
+        price: 3000,
+        date: new Date('10-01-2024').toLocaleString(),
+    }
+
   return (
+    <>
     <div className={classes.boxForm}>
     <form action="" className={classes.expensesForm}>
       <div className={classes.expensesForm__expensesData}>
@@ -22,6 +31,14 @@ function Expenses() {
       <button type="submit" className={classes.expensesForm__btn}>Add expense</button>
     </form>
     </div>
+
+   <div className={classes.section}>
+        <h2>Your Expenses</h2>
+        <ul>
+            <li id={expenses.id}><p>{expenses.title} {expenses.price}</p><span>{expenses.date}</span></li>
+        </ul>
+    </div> 
+    </>
   );
 }
 
