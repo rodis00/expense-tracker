@@ -111,3 +111,53 @@
     --a: 360deg;
   }
 }
+
+.section{
+  width: 50rem;
+  min-height: 40vh;
+  position: relative;
+  left: 50%;
+  margin-top: 10vh;
+  transform: translateX(-50%);
+  background-color: rgb(80, 80, 80);
+  border-radius: 30px;
+}
+
+.section h2{
+  text-align: center;
+  margin: 20px 0;
+  color: white;
+}
+
+.section ul{
+  width: 100%;
+  list-style-type: none;
+  display: flex;
+  justify-content: center;
+}
+
+.section ul li{
+  width: 80%;
+  padding-left: 30px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  height: 10rem;
+  line-height: 5rem;
+  border: 3px solid indigo;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 30px;
+}
+
+.section ul li span{
+  display: block;
+  width: 100px;
+  height: 100px;
+  border: 3px solid indigo;
+  background-color: purple;
+  text-align: center;
+  overflow: hidden;
+  border-radius: 30px;
+}
