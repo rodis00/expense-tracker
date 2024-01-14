@@ -1,0 +1,114 @@
+.boxForm {
+    width: 50rem;
+    height: 55vh;
+    position: relative;
+    left: 50%;
+    margin-top: 10vh;
+    transform: translateX(-50%);
+    border-radius: 30px;
+    background: repeating-conic-gradient(
+      from var(--a),
+      indigo 0%,
+      indigo 5%,
+      transparent 5%,
+      transparent 35%,
+      indigo 50%
+    );
+    animation: borderForm 4s linear infinite;
+  }
+  
+  .earningsForm {
+    width: 50rem;
+    height: 55vh;
+    position: relative;
+    left: 50%;
+    padding-top: 5vh;
+    transform: translateX(-50%);
+    border-radius: 30px;
+    z-index: 1000;
+  }
+  
+  .boxForm::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: repeating-conic-gradient(
+      from var(--a),
+      aqua 0%,
+      aqua 5%,
+      transparent 5%,
+      transparent 35%,
+      aqua 50%
+    );
+    animation: borderForm 4s linear infinite;
+    animation-delay: -1s;
+  }
+  
+  .boxForm::after {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    background-color: rgb(80, 80, 80);
+    border-radius: 30px;
+  }
+  
+  .earningsForm__earningsData {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    text-align: left;
+    justify-content: center;
+  }
+  
+  .earningsForm__earningData label {
+    font-weight: bold;
+    margin: 0.5rem 0;
+    display: block;
+    color: white;
+  }
+  
+  .earningsForm__earningData input {
+    font: inherit;
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    width: 30rem;
+    max-width: 100%;
+  }
+  
+  .earningsForm__btn {
+    position: absolute;
+    left: 50%;
+    margin-top: 1rem;
+    transform: translateX(-50%);
+    border: none;
+    border-radius: 10px;
+    width: 7rem;
+    height: 3rem;
+    cursor: pointer;
+    background-color: indigo;
+    color: white;
+    transition: 1s;
+  }
+  
+  .earningsForm__btn:hover {
+    background-color: rgb(108, 0, 185);
+    box-shadow: 0 0 5px 5px rgb(108, 0, 185);
+  }
+  
+  @property --a {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 0deg;
+  }
+  
+  @keyframes borderForm {
+    0% {
+      --a: 0deg;
+    }
+    100% {
+      --a: 360deg;
+    }
+  }
+  
