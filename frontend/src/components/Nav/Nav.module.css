@@ -1,6 +1,6 @@
 .navbar {
   background-color: #19222a;
-  width: 10rem;
+  width: 15rem;
   height: 100vh;
   position: fixed;
 }
@@ -22,47 +22,46 @@
   background-color: #19222a;
   height: 15vh;
   line-height: 15vh;
-  text-align: center;
+  padding-left: 2rem;
   color: white;
   cursor: pointer;
   font-size: 20px;
 }
 
-.active{
-    background-color: #283643;
+.active {
+  background-color: #283643;
 }
 
-.navbar__list__elem:hover{
-    background-color: #283643;
+.navbar__list__elem:hover {
+  background-color: #283643;
 }
 
-.navbar__span{
-    display: block;
-    width: 100%;
-    background-color: gray;
-    position: absolute;
-    bottom: 0;
-    left: 0;
+.navbar__span {
+  display: block;
+  width: 100%;
+  background-color: gray;
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }
 
-.navbar__btn{
-    font-size: 15px;
-    border-radius: 10px;
-    background-color: #003e43;
-    width: 5rem;
-    height: 3rem;
-    border: none;
-    color: white;
-    cursor: pointer;
-    position: relative;
-    top: 20vh;
-    left: 5rem;
-    transform: translateX(-50%);
-    transition: 1s;
+.navbar__btn {
+  font-size: 15px;
+  border-radius: 10px;
+  background-color: #003e43;
+  width: 5rem;
+  height: 3rem;
+  border: none;
+  color: white;
+  cursor: pointer;
+  position: relative;
+  top: 20vh;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: 1s;
 }
 
-.navbar__btn:hover{
-    background-color: #02767e;
-     box-shadow: 0 0 5px 5px #02767e;
-     transition: 1s;
+.navbar__btn:hover {
+  background-color: #02767e;
+  box-shadow: 0 0 5px 5px #02767e;
 }
