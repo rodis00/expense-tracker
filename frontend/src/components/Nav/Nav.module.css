@@ -1,3 +1,7 @@
+:root {
+  --bgc: linear-gradient(34deg, rgba(255,0,224,1) 0%, rgba(108,34,187,1) 50%, rgba(0,136,255,1) 100%);
+}
+
 .navbar {
   background-color: #19222a;
   width: 15rem;
@@ -6,7 +10,7 @@
 }
 
 .navbar__h2 {
-  background-color: #003e43;
+  background-image: var(--bgc);
   color: white;
   height: 10vh;
   line-height: 10vh;
@@ -26,9 +30,10 @@
   padding-left: 2rem;
   cursor: pointer;
   font-size: 20px;
+  transition: 1s;
 }
 
-.navbar__list__elem__link{
+.navbar__list__elem__link {
   display: block;
   height: 15vh;
   width: 100%;
@@ -41,26 +46,14 @@
 }
 
 .navbar__list__elem:hover {
-  background-color: #283643;
+  transition: .5s;
+  background-image: var(--bgc);
 }
 
 .navbar__btn {
-  font-size: 15px;
-  border-radius: 10px;
-  background-color: #003e43;
-  width: 5rem;
-  height: 3rem;
-  border: none;
-  color: white;
-  cursor: pointer;
+  background-image: var(--bgc);
   position: relative;
   top: 20vh;
   left: 50%;
   transform: translateX(-50%);
-  transition: 1s;
-}
-
-.navbar__btn:hover {
-  background-color: #02767e;
-  box-shadow: 0 0 5px 5px #02767e;
 }

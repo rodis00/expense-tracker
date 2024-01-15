@@ -5,6 +5,7 @@ import Expenses from "../Expenses/Expenses";
 import Earnings from "../Earnings/Earnings";
 import Home from "../Home/Home";
 import Summaries from "../Summaries/Summaries"
+import Button from "../Button/Button";
 
 function Nav() {
   const navElements = ["Expenses", "Earnings", "Summaries"];
@@ -22,7 +23,7 @@ function Nav() {
           ))}
         </ul>
         <span className={classes.navbar__span}></span>
-        <button className={classes.navbar__btn}>Login</button>
+        <Button className={classes.navbar__btn}>Login</Button>
       </nav>
       <Routes>
         <Route path="/" element={<Home />} />

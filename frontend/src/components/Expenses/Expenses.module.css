@@ -1,3 +1,9 @@
+:root{
+  --primaryColor: rgba(0,136,255,1);
+  --secondaryColor: rgba(108,34,187,1);
+  --tertiaryColor: rgba(255,0,224,1);
+}
+
 .boxForm {
   width: 50rem;
   height: 55vh;
@@ -8,11 +14,11 @@
   border-radius: 30px;
   background: repeating-conic-gradient(
     from var(--a),
-    indigo 0%,
-    indigo 5%,
+    var(--tertiaryColor) 0%,
+    var(--tertiaryColor) 5%,
     transparent 5%,
     transparent 35%,
-    indigo 50%
+    var(--tertiaryColor) 50%
   );
   animation: borderForm 4s linear infinite;
 }
@@ -35,11 +41,11 @@
   height: 100%;
   background: repeating-conic-gradient(
     from var(--a),
-    aqua 0%,
-    aqua 5%,
+    var(--primaryColor)  0%,
+    var(--primaryColor)  5%,
     transparent 5%,
     transparent 35%,
-    aqua 50%
+    var(--primaryColor) 50%
   );
   animation: borderForm 4s linear infinite;
   animation-delay: -1s;
@@ -82,20 +88,8 @@
   left: 50%;
   margin-top: 1rem;
   transform: translateX(-50%);
-  border: none;
-  border-radius: 10px;
-  width: 7rem;
-  height: 3rem;
-  cursor: pointer;
-  background-color: indigo;
-  color: white;
-  transition: 1s;
 }
 
-.expensesForm__btn:hover {
-  background-color: rgb(108, 0, 185);
-  box-shadow: 0 0 5px 5px rgb(108, 0, 185);
-}
 
 @property --a {
   syntax: "<angle>";

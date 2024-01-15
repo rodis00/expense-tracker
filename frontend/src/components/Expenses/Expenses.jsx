@@ -1,5 +1,6 @@
 import React from "react";
 import classes from "./Expenses.module.css";
+import Button from "../Button/Button";
 
 function Expenses() {
 
@@ -28,7 +29,7 @@ function Expenses() {
           <input type="date" />
         </div>
       </div>
-      <button type="submit" className={classes.expensesForm__btn}>Add expense</button>
+      <Button type="submit" className={classes.expensesForm__btn}>Add expense</Button>
     </form>
     </div>
 
