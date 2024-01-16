@@ -4,21 +4,36 @@ import { BrowserRouter as Router, Link, Routes, Route } from "react-router-dom";
 import Expenses from "../Expenses/Expenses";
 import Earnings from "../Earnings/Earnings";
 import Home from "../Home/Home";
-import Summaries from "../Summaries/Summaries"
+import Summaries from "../Summaries/Summaries";
 import Button from "../Button/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHouse } from "@fortawesome/free-solid-svg-icons";
+import { faDollarSign } from "@fortawesome/free-solid-svg-icons";
 
 function Nav() {
-  const navElements = ["Expenses", "Earnings", "Summaries"];
+  const navElements = [
+    { icon: <FontAwesomeIcon icon={faDollarSign} />, title: "Expenses" },
+    { icon: <FontAwesomeIcon icon={faDollarSign} />, title: "Earnings" },
+    { icon: <FontAwesomeIcon icon={faDollarSign} />, title: "Summaries" },
+  ];
 
   return (
     <Router>
-      <nav className={`${classes.navbar}`}>
+      <nav className={classes.navbar}>
         <h2 className={classes.navbar__h2}>A&A</h2>
         <ul className={classes.navbar__list}>
-          <li key="Home" className={classes.navbar__list__elem}><Link to='/' className={classes.navbar__list__elem__link}>Home</Link></li>
+          <li key="Home" className={`${classes.navbar__list__elem} `}>
+            <Link to="/" className={classes.navbar__list__elem__link}>
+              <FontAwesomeIcon icon={faHouse} className={classes.navbar__list__elem__link__icon}/>
+              Home
+            </Link>
+          </li>
           {navElements.map((elem) => (
-            <li key={elem} className={classes.navbar__list__elem}>
-              <Link to={elem} className={classes.navbar__list__elem__link}>{elem}</Link>
+            <li key={elem.title} className={classes.navbar__list__elem}>
+              <Link to={`/${elem.title}`} className={classes.navbar__list__elem__link}>
+                <span className={classes.navbar__list__elem__link__icon}>{elem.icon}</span>
+                <span>{elem.title}</span>
+              </Link>
             </li>
           ))}
         </ul>
