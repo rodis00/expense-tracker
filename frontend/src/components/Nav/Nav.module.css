@@ -1,16 +1,22 @@
 :root {
-  --bgc: linear-gradient(34deg, rgba(255,0,224,1) 0%, rgba(108,34,187,1) 50%, rgba(0,136,255,1) 100%);
+  --navBgc: #19222a;
+  --bgcGradient: linear-gradient(
+    34deg,
+    rgba(255, 0, 224, 1) 0%,
+    rgba(108, 34, 187, 1) 50%,
+    rgba(0, 136, 255, 1) 100%
+  );
 }
 
 .navbar {
-  background-color: #19222a;
+  background-color: var(--navBgc);
   width: 15rem;
   height: 100vh;
   position: fixed;
 }
 
 .navbar__h2 {
-  background-image: var(--bgc);
+  background-image: var(--bgcGradient);
   color: white;
   height: 10vh;
   line-height: 10vh;
@@ -18,42 +24,47 @@
 }
 
 .navbar__list {
-  background-color: #19222a;
+  margin-top: 20px;
   list-style-type: none;
 }
 
 .navbar__list__elem {
-  background-color: #19222a;
-  height: 15vh;
-  width: 100%;
-  line-height: 15vh;
+  margin: 5px auto;
+  height: 3rem;
+  width: 90%;
+  line-height: 3rem;
   padding-left: 2rem;
   cursor: pointer;
   font-size: 20px;
   transition: 1s;
+  border-radius: 5px;
 }
 
 .navbar__list__elem__link {
   display: block;
-  height: 15vh;
+  height: 100%;
   width: 100%;
   color: white;
   text-decoration: none;
 }
 
 .active {
-  background-color: #283643;
+  background-color: gray;
+}
+
+.navbar__list__elem__link__icon {
+  padding-right: 30px;
 }
 
 .navbar__list__elem:hover {
-  transition: .5s;
-  background-image: var(--bgc);
+  transition: 0.5s;
+  background-color: rgb(72, 72, 72);
 }
 
 .navbar__btn {
-  background-image: var(--bgc);
-  position: relative;
-  top: 20vh;
+  background-image: var(--bgcGradient);
+  position: absolute;
+  bottom: 2rem;
   left: 50%;
   transform: translateX(-50%);
 }
