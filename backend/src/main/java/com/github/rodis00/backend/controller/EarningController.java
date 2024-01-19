@@ -1,5 +1,6 @@
 package com.github.rodis00.backend.controller;
 
+import com.github.rodis00.backend.dto.EarningDto;
 import com.github.rodis00.backend.model.Earning;
 import com.github.rodis00.backend.service.EarningService;
 import org.springframework.http.HttpStatus;
@@ -18,31 +19,41 @@ public class EarningController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<Earning>> getEarnings() {
+    public ResponseEntity<List<EarningDto>> getEarnings() {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(earningService.getAllEarnings());
+                .body(earningService.getAllEarnings().stream()
+                        .map(EarningDto::from).toList());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Earning> getEarning(@PathVariable Integer id) {
+    public ResponseEntity<EarningDto> getEarning(@PathVariable Integer id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(earningService.getEarningById(id));
+                .body(EarningDto.from(earningService.getEarningById(id)));
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<EarningDto>> getUserEarnings(@PathVariable Integer userId) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(earningService.getAllUserEarnings(userId).stream()
+                        .map(EarningDto::from)
+                        .toList());
     }
 
     @PostMapping("/add/{userId}")
-    public ResponseEntity<Earning> addEarning(@RequestBody Earning earning, @PathVariable Integer userId) {
+    public ResponseEntity<EarningDto> addEarning(@RequestBody Earning earning, @PathVariable Integer userId) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(earningService.saveEarning(earning, userId));
+                .body(EarningDto.from(earningService.saveEarning(earning, userId)));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Earning> updateEarning(@PathVariable Integer id, @RequestBody Earning earning) {
+    public ResponseEntity<EarningDto> updateEarning(@PathVariable Integer id, @RequestBody Earning earning) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(earningService.updateEarning(id, earning));
+                .body(EarningDto.from(earningService.updateEarning(id, earning)));
     }
 
     @DeleteMapping("/delete/{id}")
