@@ -5,7 +5,7 @@
   --activeColor: gray;
 }
 
-.toogleNav{
+.toogleNav {
   background-color: var(--navBgc);
   position: fixed;
   width: 40px;
@@ -20,8 +20,8 @@
   justify-content: center;
 }
 
-.toogleNav::before{
-  content: '';
+.toogleNav::before {
+  content: "";
   position: absolute;
   width: 20px;
   height: 3px;
@@ -31,8 +31,8 @@
   transition: 0.5s;
 }
 
-.toogleNav::after{
-  content: '';
+.toogleNav::after {
+  content: "";
   position: absolute;
   width: 20px;
   height: 3px;
@@ -41,16 +41,16 @@
   transition: 0.5s;
 }
 
-.toogleActive::before{
+.toogleActive::before {
   transform: translateY(0) rotate(45deg);
   box-shadow: 0 0 0 #fff;
 }
 
-.toogleActive::after{
+.toogleActive::after {
   transform: translateY(0) rotate(-45deg);
 }
 
-.navbar{
+.navbar {
   background: var(--navBgc);
   width: var(--navWidth);
   height: 100vh;
@@ -61,17 +61,17 @@
   position: fixed;
 }
 
-.navbarActive{
+.navbarActive {
   width: 15rem;
-} 
+}
 
-.navbar__list{
+.navbar__list {
   list-style-type: none;
   margin-top: 20px;
   width: 100%;
 }
 
-.navbar__list__elem{
+.navbar__list__elem {
   height: var(--elemHeight);
   margin: 10px auto;
   width: 100%;
@@ -80,11 +80,11 @@
   border-radius: 10px;
 }
 
-.navbar__list__elem:hover{
+.navbar__list__elem:hover {
   background-color: rgb(65, 65, 65);
 }
 
-.navbar__list__elem__link{
+.navbar__list__elem__link {
   display: block;
   width: 100%;
   height: 100%;
@@ -98,8 +98,7 @@
   z-index: 10;
 }
 
-/* .navbar__list__elem__link__active{} */
-.navbar__list__elem__link__icon{
+.navbar__list__elem__link__icon {
   display: block;
   width: var(--navWidth);
   font-size: 20px;
@@ -107,13 +106,13 @@
   position: absolute;
 }
 
-.navbar__list__elem__link__title{
+.navbar__list__elem__link__title {
   display: block;
   position: absolute;
   margin-left: var(--navWidth);
 }
 
-.navbar__loginBtn{
+.navbar__loginBtn {
   width: 100%;
   height: var(--elemHeight);
   cursor: pointer;
@@ -128,23 +127,53 @@
   transition: 1s;
 }
 
-.navbar__loginBtn:hover{
+.navbar__loginBtn:hover {
   background-color: var(--activeColor);
 }
 
-.navbar__loginBtn__icon{
+.navbar__loginBtn__icon {
   display: block;
   position: absolute;
   width: var(--navWidth);
   font-size: 20px;
 }
 
-.navbar__loginBtn__text{
-  font-family: 'Times New Roman', Times, serif;
+.navbar__loginBtn__text {
+  font-family: "Times New Roman", Times, serif;
   font-size: 15px;
   text-transform: uppercase;
   letter-spacing: 0.05rem;
   display: block;
   position: absolute;
   margin-left: var(--navWidth);
+}
+
+.navbar__list__indicator {
+  width: 100%;
+  height: var(--elemHeight);
+  position: absolute;
+  top: 3rem;
+  background-color: aqua;
+  border-radius: 10px;
+  margin-top: 10px;
+  transition: 1s;
+}
+
+.navbar__list__elem__active:nth-child(1) ~ .navbar__list__indicator {
+  transform: translateY(calc(3rem * 0));
+}
+
+.navbar__list__elem__active:nth-child(2) ~ .navbar__list__indicator {
+  transform: translateY(calc(3rem * 1 + 10px));
+  background-color: red;
+}
+
+.navbar__list__elem__active:nth-child(3) ~ .navbar__list__indicator {
+  transform: translateY(calc(3rem * 2 + 20px));
+  background-color: green;
+}
+
+.navbar__list__elem__active:nth-child(4) ~ .navbar__list__indicator {
+  transform: translateY(calc(3rem * 3 + 30px));
+  background-color: yellow;
 }
