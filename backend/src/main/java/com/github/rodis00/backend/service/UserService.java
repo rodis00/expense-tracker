@@ -34,8 +34,6 @@ public class UserService implements UserServiceInterface{
         actualUser.setEmail(user.getEmail());
         actualUser.setUsername(user.getUsername());
         actualUser.setPassword(user.getPassword());
-        actualUser.setEarnings(user.getEarnings());
-        actualUser.setExpenses(user.getExpenses());
         userRepository.save(actualUser);
 
         return actualUser;
