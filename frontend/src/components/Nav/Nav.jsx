@@ -9,7 +9,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse } from "@fortawesome/free-solid-svg-icons";
 import { faDollarSign } from "@fortawesome/free-solid-svg-icons";
 import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
-import { icon } from "@fortawesome/fontawesome-svg-core";
 
 function Nav() {
   const [menuActive, setMenuActive] = useState(false);
@@ -23,7 +22,7 @@ function Nav() {
   ];
 
   function handleMenuActiveChange() {
-    setMenuActive((elem) => !elem);
+    setMenuActive((active) => !active);
   }
 
   return (
@@ -41,17 +40,19 @@ function Nav() {
       >
         <h2>A&A</h2>
         <ul className={classes.navbar__list}>
-          <div className={classes.navbar__list__indicator}></div>
           {navElements.map((elem) => (
-            <li key={elem.title} className={classes.navbar__list__elem}>
+            <li
+              key={elem.title}
+              className={`${classes.navbar__list__elem} ${
+                chosenLink === elem.title
+                  ? classes.navbar__list__elem__active
+                  : ""
+              }`}
+            >
               <Link
-                onClick={()=>setChosenLink(elem.title)}
+                onClick={() => setChosenLink(elem.title)}
                 to={`/${elem.title}`}
-                className={`${classes.navbar__list__elem__link} ${
-                  chosenLink === elem.title
-                    ? classes.navbar__list__elem__link__active
-                    : ""
-                }`}
+                className={`${classes.navbar__list__elem__link}`}
               >
                 <span className={classes.navbar__list__elem__link__icon}>
                   {elem.icon}
@@ -62,6 +63,7 @@ function Nav() {
               </Link>
             </li>
           ))}
+          <div className={classes.navbar__list__indicator}></div>
         </ul>
         <button className={classes.navbar__loginBtn}>
           <FontAwesomeIcon
@@ -72,7 +74,7 @@ function Nav() {
         </button>
       </nav>
       <Routes>
-        <Route path="Home" element={<Home />} />
+        <Route path="Home" exact={true} element={<Home />} />
         <Route path="expenses" element={<Expenses />} />
         <Route path="earnings" element={<Earnings />} />
         <Route path="summaries" element={<Summaries />} />
