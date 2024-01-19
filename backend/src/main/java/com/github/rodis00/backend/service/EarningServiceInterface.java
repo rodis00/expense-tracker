@@ -5,7 +5,7 @@ import com.github.rodis00.backend.model.Earning;
 import java.util.List;
 
 public interface EarningServiceInterface {
-    Earning saveEarning(Earning earning);
+    Earning saveEarning(Earning earning, Integer userId);
     Earning getEarningById(Integer id);
     Earning updateEarning(Integer id, Earning earning);
     List<Earning> getAllEarnings();

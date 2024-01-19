@@ -2,6 +2,7 @@ package com.github.rodis00.backend.service;
 
 import com.github.rodis00.backend.exception.EarningNotFoundException;
 import com.github.rodis00.backend.model.Earning;
+import com.github.rodis00.backend.model.User;
 import com.github.rodis00.backend.repository.EarningRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,14 +12,19 @@ import java.util.List;
 public class EarningService implements EarningServiceInterface{
 
     private final EarningRepository earningRepository;
+    private final UserService userService;
 
-    public EarningService(EarningRepository earningRepository) {
+    public EarningService(EarningRepository earningRepository, UserService userService) {
         this.earningRepository = earningRepository;
+        this.userService = userService;
     }
 
     @Override
-    public Earning saveEarning(Earning earning) {
-        return earningRepository.save(earning);
+    public Earning saveEarning(Earning earning, Integer userId) {
+        User user = userService.getUserById(userId);
+        user.addEarning(earning);
+        userService.saveUser(user);
+        return earning;
     }
 
     @Override
@@ -34,6 +40,7 @@ public class EarningService implements EarningServiceInterface{
         actualEarning.setTitle(earning.getTitle());
         actualEarning.setAmount(earning.getAmount());
         actualEarning.setDate(earning.getDate());
+        actualEarning.setUser(earning.getUser());
         earningRepository.save(actualEarning);
 
         return actualEarning;
