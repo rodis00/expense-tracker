@@ -15,4 +15,7 @@ public class Earning {
     private String title;
     private Double amount;
     private Date date;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

@@ -15,4 +15,7 @@ public class Expense {
     private String title;
     private Double price;
     private Date date;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

@@ -17,14 +17,24 @@ public class User {
     private String password;
     @OneToMany(
             orphanRemoval = true,
-            cascade = CascadeType.ALL
+            cascade = CascadeType.ALL,
+            mappedBy = "user"
     )
-    @JoinColumn(name = "user_id")
     private List<Earning> earnings;
     @OneToMany(
             orphanRemoval = true,
-            cascade = CascadeType.ALL
+            cascade = CascadeType.ALL,
+            mappedBy = "user"
     )
-    @JoinColumn(name = "user_id")
     private List<Expense> expenses;
+
+    public void addEarning(Earning earning) {
+        this.earnings.add(earning);
+        earning.setUser(this);
+    }
+
+    public void addExpense(Expense expense) {
+        this.expenses.add(expense);
+        expense.setUser(this);
+    }
 }
