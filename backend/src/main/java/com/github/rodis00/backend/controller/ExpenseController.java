@@ -1,5 +1,6 @@
 package com.github.rodis00.backend.controller;
 
+import com.github.rodis00.backend.dto.ExpenseDto;
 import com.github.rodis00.backend.model.Expense;
 import com.github.rodis00.backend.service.ExpenseService;
 import org.springframework.http.HttpStatus;
@@ -18,31 +19,42 @@ public class ExpenseController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<Expense>> getExpenses() {
+    public ResponseEntity<List<ExpenseDto>> getExpenses() {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(expenseService.getAllExpenses());
+                .body(expenseService.getAllExpenses().stream()
+                        .map(ExpenseDto::from)
+                        .toList());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Expense> getExpense(@PathVariable Integer id) {
+    public ResponseEntity<ExpenseDto> getExpense(@PathVariable Integer id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(expenseService.getExpenseById(id));
+                .body(ExpenseDto.from(expenseService.getExpenseById(id)));
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<ExpenseDto>> getUserExpenses(@PathVariable Integer userId) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(expenseService.getAllUserExpenses(userId).stream()
+                        .map(ExpenseDto::from)
+                        .toList());
     }
 
     @PostMapping("/add/{userId}")
-    public ResponseEntity<Expense> addExpense(@RequestBody Expense expense, @PathVariable Integer userId) {
+    public ResponseEntity<ExpenseDto> addExpense(@RequestBody Expense expense, @PathVariable Integer userId) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(expenseService.saveExpense(expense, userId));
+                .body(ExpenseDto.from(expenseService.saveExpense(expense, userId)));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Expense> updateExpense(@PathVariable Integer id, @RequestBody Expense expense) {
+    public ResponseEntity<ExpenseDto> updateExpense(@PathVariable Integer id, @RequestBody Expense expense) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(expenseService.updateExpense(id, expense));
+                .body(ExpenseDto.from(expenseService.updateExpense(id, expense)));
     }
 
     @DeleteMapping("/delete/{id}")
