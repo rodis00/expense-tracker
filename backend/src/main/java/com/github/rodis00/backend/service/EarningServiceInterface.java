@@ -9,5 +9,6 @@ public interface EarningServiceInterface {
     Earning getEarningById(Integer id);
     Earning updateEarning(Integer id, Earning earning);
     List<Earning> getAllEarnings();
+    List<Earning> getAllUserEarnings(Integer userId);
     void deleteEarningById(Integer id);
 }

@@ -40,7 +40,6 @@ public class EarningService implements EarningServiceInterface{
         actualEarning.setTitle(earning.getTitle());
         actualEarning.setAmount(earning.getAmount());
         actualEarning.setDate(earning.getDate());
-        actualEarning.setUser(earning.getUser());
         earningRepository.save(actualEarning);
 
         return actualEarning;
@@ -49,6 +48,12 @@ public class EarningService implements EarningServiceInterface{
     @Override
     public List<Earning> getAllEarnings() {
         return earningRepository.findAll();
+    }
+
+    @Override
+    public List<Earning> getAllUserEarnings(Integer userId) {
+        User user = userService.getUserById(userId);
+        return earningRepository.findAllByUserId(user.getId());
     }
 
     @Override
