@@ -8,6 +8,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -50,8 +52,13 @@ public class BackendApplication implements CommandLineRunner {
 			user.setEmail("user@example.com");
 			user.setUsername("user");
 			user.setPassword("user123");
-			user.setEarnings(List.of(earning1, earning2));
-			user.setExpenses(List.of(expense1, expense2));
+			user.setExpenses(new ArrayList<>());
+			user.setEarnings(new ArrayList<>());
+
+			user.addExpense(expense1);
+			user.addExpense(expense2);
+			user.addEarning(earning1);
+			user.addEarning(earning2);
 			userRepository.save(user);
 		}
 	}
