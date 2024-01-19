@@ -40,7 +40,6 @@ public class ExpenseService implements ExpenseServiceInterface{
         actualExpense.setTitle(expense.getTitle());
         actualExpense.setPrice(expense.getPrice());
         actualExpense.setDate(expense.getDate());
-        actualExpense.setUser(expense.getUser());
         expenseRepository.save(actualExpense);
 
         return actualExpense;
@@ -49,6 +48,12 @@ public class ExpenseService implements ExpenseServiceInterface{
     @Override
     public List<Expense> getAllExpenses() {
         return expenseRepository.findAll();
+    }
+
+    @Override
+    public List<Expense> getAllUserExpenses(Integer userId) {
+        User user = userService.getUserById(userId);
+        return expenseRepository.findAllByUserId(user.getId());
     }
 
     @Override

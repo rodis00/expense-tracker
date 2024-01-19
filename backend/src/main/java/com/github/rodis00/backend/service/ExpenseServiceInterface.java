@@ -9,5 +9,6 @@ public interface ExpenseServiceInterface {
     Expense getExpenseById(Integer id);
     Expense updateExpense(Integer id, Expense expense);
     List<Expense> getAllExpenses();
+    List<Expense> getAllUserExpenses(Integer userId);
     void deleteExpenseById(Integer id);
 }
