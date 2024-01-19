@@ -22,7 +22,9 @@ public class UserController {
     public ResponseEntity<List<UserDto>> getUsers() {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(userService.getAllUsers().stream().map(UserDto::from).toList());
+                .body(userService.getAllUsers().stream()
+                        .map(UserDto::from)
+                        .toList());
     }
 
     @GetMapping("/{id}")
