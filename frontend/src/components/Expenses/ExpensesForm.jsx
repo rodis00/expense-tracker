@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import classes from "./Expenses.module.css";
 
-function Expenses() {
+function ExpensesForm({ onSaveExpenseData }) {
   const [enteredTitle, setEnteredTitle] = useState("");
   const [enteredPrice, setEnteredPrice] = useState("");
   const [enteredDate, setEnteredDate] = useState("");
@@ -20,6 +20,17 @@ function Expenses() {
 
   function submitHandler(event) {
     event.preventDefault();
+
+    const expenseData = {
+      title: enteredTitle,
+      price: +enteredPrice,
+      date: new Date(enteredDate),
+    };
+
+    onSaveExpenseData(expenseData);
+    setEnteredTitle("");
+    setEnteredPrice("");
+    setEnteredDate("");
   }
 
   return (
@@ -60,4 +71,4 @@ function Expenses() {
   );
 }
 
-export default Expenses;
+export default ExpensesForm;
