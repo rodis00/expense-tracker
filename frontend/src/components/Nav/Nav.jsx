@@ -38,7 +38,15 @@ function Nav() {
           menuActive ? classes.navbarActive : ""
         }`}
       >
-        <h2>A&A</h2>
+        <div className={classes.navbar__logo}>
+          <div className={classes.navbar__logo__container}>
+            <span className={classes.logo__first}>A</span>
+            <span className={classes.logo__second}>A</span>
+            <span className={classes.logo__third}>A</span>
+            <span className={classes.logo__fourth}>A</span>
+          </div>
+          <p className={classes.navbar__logo__p}>A&A</p>
+        </div>
         <ul className={classes.navbar__list}>
           {navElements.map((elem) => (
             <li
