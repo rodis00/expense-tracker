@@ -3,6 +3,7 @@ package com.github.rodis00.backend.controller;
 import com.github.rodis00.backend.dto.UserDto;
 import com.github.rodis00.backend.model.User;
 import com.github.rodis00.backend.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,14 +36,14 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<UserDto> addUser(@RequestBody User user) {
+    public ResponseEntity<UserDto> addUser(@RequestBody @Valid User user) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(UserDto.from(userService.saveUser(user)));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable Integer id, @RequestBody User user) {
+    public ResponseEntity<UserDto> updateUser(@PathVariable Integer id, @RequestBody @Valid User user) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(UserDto.from(userService.updateUser(id, user)));
