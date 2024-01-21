@@ -51,7 +51,7 @@ public class BackendApplication implements CommandLineRunner {
 			User user = new User();
 			user.setEmail("user@example.com");
 			user.setUsername("user");
-			user.setPassword("user123");
+			user.setPassword("U$3r2024");
 			user.setExpenses(new ArrayList<>());
 			user.setEarnings(new ArrayList<>());
 
