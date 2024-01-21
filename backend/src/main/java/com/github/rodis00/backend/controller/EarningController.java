@@ -3,6 +3,7 @@ package com.github.rodis00.backend.controller;
 import com.github.rodis00.backend.dto.EarningDto;
 import com.github.rodis00.backend.model.Earning;
 import com.github.rodis00.backend.service.EarningService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,14 +44,14 @@ public class EarningController {
     }
 
     @PostMapping("/add/{userId}")
-    public ResponseEntity<EarningDto> addEarning(@RequestBody Earning earning, @PathVariable Integer userId) {
+    public ResponseEntity<EarningDto> addEarning(@RequestBody @Valid Earning earning, @PathVariable Integer userId) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(EarningDto.from(earningService.saveEarning(earning, userId)));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<EarningDto> updateEarning(@PathVariable Integer id, @RequestBody Earning earning) {
+    public ResponseEntity<EarningDto> updateEarning(@PathVariable Integer id, @RequestBody @Valid Earning earning) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(EarningDto.from(earningService.updateEarning(id, earning)));
