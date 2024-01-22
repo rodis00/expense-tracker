@@ -3,6 +3,7 @@ package com.github.rodis00.backend.controller;
 import com.github.rodis00.backend.dto.UserDto;
 import com.github.rodis00.backend.model.User;
 import com.github.rodis00.backend.service.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("expense-tracker/api/v1/users")
+@Tag(name = "User")
 public class UserController {
     private final UserService userService;
 
