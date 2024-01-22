@@ -3,6 +3,7 @@ package com.github.rodis00.backend.controller;
 import com.github.rodis00.backend.dto.ExpenseDto;
 import com.github.rodis00.backend.model.Expense;
 import com.github.rodis00.backend.service.ExpenseService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,9 @@ public class ExpenseController {
         this.expenseService = expenseService;
     }
 
+    @Operation(
+            summary = "Get all expenses"
+    )
     @GetMapping("")
     public ResponseEntity<List<ExpenseDto>> getExpenses() {
         return ResponseEntity
@@ -30,6 +34,9 @@ public class ExpenseController {
                         .toList());
     }
 
+    @Operation(
+            summary = "Get expense by id"
+    )
     @GetMapping("/{id}")
     public ResponseEntity<ExpenseDto> getExpense(@PathVariable Integer id) {
         return ResponseEntity
@@ -37,6 +44,9 @@ public class ExpenseController {
                 .body(ExpenseDto.from(expenseService.getExpenseById(id)));
     }
 
+    @Operation(
+            summary = "Get expense by userId"
+    )
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<ExpenseDto>> getUserExpenses(@PathVariable Integer userId) {
         return ResponseEntity
@@ -46,6 +56,9 @@ public class ExpenseController {
                         .toList());
     }
 
+    @Operation(
+            summary = "Add new expense to userId"
+    )
     @PostMapping("/add/{userId}")
     public ResponseEntity<ExpenseDto> addExpense(@RequestBody @Valid Expense expense, @PathVariable Integer userId) {
         return ResponseEntity
@@ -53,6 +66,9 @@ public class ExpenseController {
                 .body(ExpenseDto.from(expenseService.saveExpense(expense, userId)));
     }
 
+    @Operation(
+            summary = "Update expense by id"
+    )
     @PutMapping("/update/{id}")
     public ResponseEntity<ExpenseDto> updateExpense(@PathVariable Integer id, @RequestBody @Valid Expense expense) {
         return ResponseEntity
@@ -60,6 +76,9 @@ public class ExpenseController {
                 .body(ExpenseDto.from(expenseService.updateExpense(id, expense)));
     }
 
+    @Operation(
+            summary = "Delete expense by id"
+    )
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteExpense(@PathVariable Integer id) {
         expenseService.deleteExpenseById(id);
