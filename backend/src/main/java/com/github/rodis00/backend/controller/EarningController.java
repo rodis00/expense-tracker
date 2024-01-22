@@ -3,6 +3,7 @@ package com.github.rodis00.backend.controller;
 import com.github.rodis00.backend.dto.EarningDto;
 import com.github.rodis00.backend.model.Earning;
 import com.github.rodis00.backend.service.EarningService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,9 @@ public class EarningController {
         this.earningService = earningService;
     }
 
+    @Operation(
+            summary = "Get all earnings"
+    )
     @GetMapping("")
     public ResponseEntity<List<EarningDto>> getEarnings() {
         return ResponseEntity
@@ -29,6 +33,9 @@ public class EarningController {
                         .map(EarningDto::from).toList());
     }
 
+    @Operation(
+            summary = "Get earning by id"
+    )
     @GetMapping("/{id}")
     public ResponseEntity<EarningDto> getEarning(@PathVariable Integer id) {
         return ResponseEntity
@@ -36,6 +43,9 @@ public class EarningController {
                 .body(EarningDto.from(earningService.getEarningById(id)));
     }
 
+    @Operation(
+            summary = "Get expense by userId"
+    )
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<EarningDto>> getUserEarnings(@PathVariable Integer userId) {
         return ResponseEntity
@@ -45,6 +55,9 @@ public class EarningController {
                         .toList());
     }
 
+    @Operation(
+            summary = "Add new expense to userId"
+    )
     @PostMapping("/add/{userId}")
     public ResponseEntity<EarningDto> addEarning(@RequestBody @Valid Earning earning, @PathVariable Integer userId) {
         return ResponseEntity
@@ -52,6 +65,9 @@ public class EarningController {
                 .body(EarningDto.from(earningService.saveEarning(earning, userId)));
     }
 
+    @Operation(
+            summary = "Update expense by id"
+    )
     @PutMapping("/update/{id}")
     public ResponseEntity<EarningDto> updateEarning(@PathVariable Integer id, @RequestBody @Valid Earning earning) {
         return ResponseEntity
@@ -59,6 +75,9 @@ public class EarningController {
                 .body(EarningDto.from(earningService.updateEarning(id, earning)));
     }
 
+    @Operation(
+            summary = "Delete expense by id"
+    )
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteEarning(@PathVariable Integer id) {
         earningService.deleteEarningById(id);
