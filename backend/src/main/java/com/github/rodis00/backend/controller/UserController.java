@@ -3,6 +3,7 @@ package com.github.rodis00.backend.controller;
 import com.github.rodis00.backend.dto.UserDto;
 import com.github.rodis00.backend.model.User;
 import com.github.rodis00.backend.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,9 @@ public class UserController {
         this.userService = userService;
     }
 
+    @Operation(
+            summary = "Get all users"
+    )
     @GetMapping("")
     public ResponseEntity<List<UserDto>> getUsers() {
         return ResponseEntity
@@ -30,6 +34,9 @@ public class UserController {
                         .toList());
     }
 
+    @Operation(
+            summary = "Get user by id"
+    )
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUser(@PathVariable Integer id) {
         return ResponseEntity
@@ -37,6 +44,9 @@ public class UserController {
                 .body(UserDto.from(userService.getUserById(id)));
     }
 
+    @Operation(
+            summary = "Add new user"
+    )
     @PostMapping("/add")
     public ResponseEntity<UserDto> addUser(@RequestBody @Valid User user) {
         return ResponseEntity
@@ -44,6 +54,9 @@ public class UserController {
                 .body(UserDto.from(userService.saveUser(user)));
     }
 
+    @Operation(
+            summary = "Update user"
+    )
     @PutMapping("/update/{id}")
     public ResponseEntity<UserDto> updateUser(@PathVariable Integer id, @RequestBody @Valid User user) {
         return ResponseEntity
@@ -51,6 +64,9 @@ public class UserController {
                 .body(UserDto.from(userService.updateUser(id, user)));
     }
 
+    @Operation(
+            summary = "Delete user by id"
+    )
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
         userService.deleteUserById(id);
