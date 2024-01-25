@@ -2,7 +2,7 @@ package com.github.rodis00.backend.service;
 
 import com.github.rodis00.backend.model.Expense;
 import com.github.rodis00.backend.model.GlobalPage;
-import com.github.rodis00.backend.repository.ExpensePagingAndSortingRepository;
+import com.github.rodis00.backend.repository.ExpensePageRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -10,10 +10,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ExpensePagingAndSortingService implements ExpensePagingAndSortingServiceInterface{
-    private final ExpensePagingAndSortingRepository repository;
+public class ExpensePageService implements ExpensePageServiceInterface {
+    private final ExpensePageRepository repository;
 
-    public ExpensePagingAndSortingService(ExpensePagingAndSortingRepository repository) {
+    public ExpensePageService(ExpensePageRepository repository) {
         this.repository = repository;
     }
 
