@@ -5,6 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface EarningPagingAndSortingRepository extends PagingAndSortingRepository<Earning, Integer> {
+public interface EarningPageRepository extends PagingAndSortingRepository<Earning, Integer> {
     Page<Earning> findByUserId(Integer userId, Pageable pageable);
 }
