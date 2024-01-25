@@ -2,7 +2,7 @@ package com.github.rodis00.backend.service;
 
 import com.github.rodis00.backend.model.Earning;
 import com.github.rodis00.backend.model.GlobalPage;
-import com.github.rodis00.backend.repository.EarningPagingAndSortingRepository;
+import com.github.rodis00.backend.repository.EarningPageRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -10,10 +10,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
-public class EarningPagingAndSortingService implements EarningPagingAndSortingServiceInterface{
-    private final EarningPagingAndSortingRepository repository;
+public class EarningPageService implements EarningPageServiceInterface {
+    private final EarningPageRepository repository;
 
-    public EarningPagingAndSortingService(EarningPagingAndSortingRepository repository) {
+    public EarningPageService(EarningPageRepository repository) {
         this.repository = repository;
     }
 
