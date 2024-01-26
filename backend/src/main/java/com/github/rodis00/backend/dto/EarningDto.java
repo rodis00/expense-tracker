@@ -13,15 +13,13 @@ public class EarningDto {
     private String title;
     private Double amount;
     private Date date;
-    private Integer userId;
 
     public static EarningDto from (Earning earning) {
         return new EarningDto(
                 earning.getId(),
                 earning.getTitle(),
                 earning.getAmount(),
-                earning.getDate(),
-                earning.getUser().getId()
+                earning.getDate()
         );
     }
 }

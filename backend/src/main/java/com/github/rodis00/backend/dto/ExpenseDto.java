@@ -13,15 +13,13 @@ public class ExpenseDto {
     private String title;
     private Double price;
     private Date date;
-    private Integer userId;
 
     public static ExpenseDto from (Expense expense) {
         return new ExpenseDto(
                 expense.getId(),
                 expense.getTitle(),
                 expense.getPrice(),
-                expense.getDate(),
-                expense.getUser().getId()
+                expense.getDate()
         );
     }
 }
