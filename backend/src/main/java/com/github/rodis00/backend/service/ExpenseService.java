@@ -22,8 +22,8 @@ public class ExpenseService implements ExpenseServiceInterface{
     @Override
     public Expense saveExpense(Expense expense, Integer userId) {
         User user = userService.getUserById(userId);
-        user.addExpense(expense);
-        userService.saveUser(user);
+        expense.setUser(user);
+        expenseRepository.save(expense);
         return expense;
     }
 

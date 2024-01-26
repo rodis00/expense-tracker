@@ -22,8 +22,8 @@ public class EarningService implements EarningServiceInterface{
     @Override
     public Earning saveEarning(Earning earning, Integer userId) {
         User user = userService.getUserById(userId);
-        user.addEarning(earning);
-        userService.saveUser(user);
+        earning.setUser(user);
+        earningRepository.save(earning);
         return earning;
     }
 
