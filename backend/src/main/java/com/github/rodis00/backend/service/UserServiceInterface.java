@@ -10,4 +10,5 @@ public interface UserServiceInterface {
     User updateUser(Integer id, User user);
     List<User> getAllUsers();
     void deleteUserById(Integer id);
+    boolean existsByEmail(String email);
 }

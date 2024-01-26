@@ -1,5 +1,6 @@
 package com.github.rodis00.backend.service;
 
+import com.github.rodis00.backend.exception.UserAlreadyExistsException;
 import com.github.rodis00.backend.exception.UserNotFoundException;
 import com.github.rodis00.backend.model.User;
 import com.github.rodis00.backend.repository.UserRepository;
@@ -18,6 +19,8 @@ public class UserService implements UserServiceInterface{
 
     @Override
     public User saveUser(User user) {
+        if (existsByEmail(user.getEmail()))
+            throw new UserAlreadyExistsException("User with this email already exists.");
         return userRepository.save(user);
     }
 
@@ -29,8 +32,10 @@ public class UserService implements UserServiceInterface{
 
     @Override
     public User updateUser(Integer id, User user) {
-        User actualUser = getUserById(id);
+        if (existsByEmail(user.getEmail()))
+            throw new UserAlreadyExistsException("User with this email already exists.");
 
+        User actualUser = getUserById(id);
         actualUser.setEmail(user.getEmail());
         actualUser.setUsername(user.getUsername());
         actualUser.setPassword(user.getPassword());
@@ -48,5 +53,10 @@ public class UserService implements UserServiceInterface{
     public void deleteUserById(Integer id) {
         User user = getUserById(id);
         userRepository.delete(user);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 }
