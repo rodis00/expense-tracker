@@ -55,7 +55,7 @@ public class UserController {
     }
 
     @Operation(
-            summary = "Update user"
+            summary = "Update user by id"
     )
     @PutMapping("/update/{id}")
     public ResponseEntity<UserDto> updateUser(@PathVariable Integer id, @RequestBody @Valid User user) {

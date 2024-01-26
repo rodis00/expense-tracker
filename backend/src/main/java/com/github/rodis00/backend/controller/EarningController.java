@@ -44,9 +44,9 @@ public class EarningController {
     }
 
     @Operation(
-            summary = "Get expense by userId"
+            summary = "Get earning by userId"
     )
-    @GetMapping("/user/{userId}")
+    @GetMapping("/users/{userId}")
     public ResponseEntity<List<EarningDto>> getUserEarnings(@PathVariable Integer userId) {
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -56,7 +56,7 @@ public class EarningController {
     }
 
     @Operation(
-            summary = "Add new expense to userId"
+            summary = "Add new earning to the user"
     )
     @PostMapping("/add/{userId}")
     public ResponseEntity<EarningDto> addEarning(@RequestBody @Valid Earning earning, @PathVariable Integer userId) {
@@ -66,7 +66,7 @@ public class EarningController {
     }
 
     @Operation(
-            summary = "Update expense by id"
+            summary = "Update earning by id"
     )
     @PutMapping("/update/{id}")
     public ResponseEntity<EarningDto> updateEarning(@PathVariable Integer id, @RequestBody @Valid Earning earning) {
@@ -76,7 +76,7 @@ public class EarningController {
     }
 
     @Operation(
-            summary = "Delete expense by id"
+            summary = "Delete earning by id"
     )
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteEarning(@PathVariable Integer id) {

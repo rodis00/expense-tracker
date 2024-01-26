@@ -6,8 +6,8 @@ import io.swagger.v3.oas.annotations.servers.Server;
 
 @OpenAPIDefinition(
         info = @Info(
-                title = "Expense Tracker API",
-                version = "1.0"
+                title = "Expense Tracker API Documentation",
+                version = "1.1"
         ),
         servers = {
                 @Server(

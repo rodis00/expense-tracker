@@ -47,7 +47,7 @@ public class ExpenseController {
     @Operation(
             summary = "Get expense by userId"
     )
-    @GetMapping("/user/{userId}")
+    @GetMapping("/users/{userId}")
     public ResponseEntity<List<ExpenseDto>> getUserExpenses(@PathVariable Integer userId) {
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -57,7 +57,7 @@ public class ExpenseController {
     }
 
     @Operation(
-            summary = "Add new expense to userId"
+            summary = "Add new expense to the user"
     )
     @PostMapping("/add/{userId}")
     public ResponseEntity<ExpenseDto> addExpense(@RequestBody @Valid Expense expense, @PathVariable Integer userId) {
