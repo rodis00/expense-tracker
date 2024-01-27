@@ -2,10 +2,14 @@ package com.github.rodis00.backend.controller;
 
 import com.github.rodis00.backend.dto.EarningDto;
 import com.github.rodis00.backend.model.Earning;
+import com.github.rodis00.backend.model.GlobalPage;
 import com.github.rodis00.backend.service.EarningService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,6 +57,29 @@ public class EarningController {
                 .body(earningService.getAllUserEarnings(userId).stream()
                         .map(EarningDto::from)
                         .toList());
+    }
+
+    @Operation(
+            summary = "Get page of user earnings"
+    )
+    @GetMapping("/pages/users/{userId}")
+    public ResponseEntity<Page<EarningDto>> getPageOfUserEarnings(
+            @PathVariable Integer userId,
+            @RequestParam(defaultValue = "0") @Min(0) Integer pageNumber,
+            @RequestParam(defaultValue = "10") @Min(1) Integer pageSize,
+            @RequestParam(defaultValue = "DESC") Sort.Direction sortDirection,
+            @RequestParam(defaultValue = "date") String sortBy
+    ) {
+        GlobalPage earningsPage = new GlobalPage();
+        earningsPage.setPageNumber(pageNumber);
+        earningsPage.setPageSize(pageSize);
+        earningsPage.setSortDirection(sortDirection);
+        earningsPage.setSortBy(sortBy);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(earningService.findAllEarningsByUserId(userId, earningsPage)
+                        .map(EarningDto::from));
     }
 
     @Operation(

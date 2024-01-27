@@ -2,8 +2,13 @@ package com.github.rodis00.backend.service;
 
 import com.github.rodis00.backend.exception.EarningNotFoundException;
 import com.github.rodis00.backend.model.Earning;
+import com.github.rodis00.backend.model.GlobalPage;
 import com.github.rodis00.backend.model.User;
 import com.github.rodis00.backend.repository.EarningRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -60,5 +65,14 @@ public class EarningService implements EarningServiceInterface{
     public void deleteEarningById(Integer id) {
         Earning earning = getEarningById(id);
         earningRepository.delete(earning);
+    }
+
+    @Override
+    public Page<Earning> findAllEarningsByUserId(Integer userId, GlobalPage page) {
+        User user = userService.getUserById(userId);
+
+        Sort sort = Sort.by(page.getSortDirection(), page.getSortBy());
+        Pageable pageable = PageRequest.of(page.getPageNumber(), page.getPageSize(), sort);
+        return earningRepository.findAllEarningsByUserId(userId, pageable);
     }
 }
