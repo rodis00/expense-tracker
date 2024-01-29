@@ -14,18 +14,24 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ExpenseService implements ExpenseServiceInterface{
+public class ExpenseService implements ExpenseServiceInterface {
 
     private final ExpenseRepository expenseRepository;
     private final UserService userService;
 
-    public ExpenseService(ExpenseRepository expenseRepository, UserService userService) {
+    public ExpenseService(
+            ExpenseRepository expenseRepository,
+            UserService userService
+    ) {
         this.expenseRepository = expenseRepository;
         this.userService = userService;
     }
 
     @Override
-    public Expense saveExpense(Expense expense, Integer userId) {
+    public Expense saveExpense(
+            Expense expense,
+            Integer userId
+    ) {
         User user = userService.getUserById(userId);
         expense.setUser(user);
         expenseRepository.save(expense);
@@ -39,7 +45,10 @@ public class ExpenseService implements ExpenseServiceInterface{
     }
 
     @Override
-    public Expense updateExpense(Integer id, Expense expense) {
+    public Expense updateExpense(
+            Integer id,
+            Expense expense
+    ) {
         Expense actualExpense = getExpenseById(id);
 
         actualExpense.setTitle(expense.getTitle());
@@ -68,7 +77,10 @@ public class ExpenseService implements ExpenseServiceInterface{
     }
 
     @Override
-    public Page<Expense> findAllExpensesByUserId(Integer userId, GlobalPage page) {
+    public Page<Expense> findAllExpensesByUserId(
+            Integer userId,
+            GlobalPage page
+    ) {
         User user = userService.getUserById(userId);
 
         Sort sort = Sort.by(page.getSortDirection(), page.getSortBy());

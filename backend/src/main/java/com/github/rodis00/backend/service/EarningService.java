@@ -14,18 +14,24 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class EarningService implements EarningServiceInterface{
+public class EarningService implements EarningServiceInterface {
 
     private final EarningRepository earningRepository;
     private final UserService userService;
 
-    public EarningService(EarningRepository earningRepository, UserService userService) {
+    public EarningService(
+            EarningRepository earningRepository,
+            UserService userService
+    ) {
         this.earningRepository = earningRepository;
         this.userService = userService;
     }
 
     @Override
-    public Earning saveEarning(Earning earning, Integer userId) {
+    public Earning saveEarning(
+            Earning earning,
+            Integer userId
+    ) {
         User user = userService.getUserById(userId);
         earning.setUser(user);
         earningRepository.save(earning);
@@ -39,7 +45,10 @@ public class EarningService implements EarningServiceInterface{
     }
 
     @Override
-    public Earning updateEarning(Integer id, Earning earning) {
+    public Earning updateEarning(
+            Integer id,
+            Earning earning
+    ) {
         Earning actualEarning = getEarningById(id);
 
         actualEarning.setTitle(earning.getTitle());
@@ -68,7 +77,10 @@ public class EarningService implements EarningServiceInterface{
     }
 
     @Override
-    public Page<Earning> findAllEarningsByUserId(Integer userId, GlobalPage page) {
+    public Page<Earning> findAllEarningsByUserId(
+            Integer userId,
+            GlobalPage page
+    ) {
         User user = userService.getUserById(userId);
 
         Sort sort = Sort.by(page.getSortDirection(), page.getSortBy());

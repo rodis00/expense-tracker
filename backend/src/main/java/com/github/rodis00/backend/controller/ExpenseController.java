@@ -33,7 +33,8 @@ public class ExpenseController {
     public ResponseEntity<List<ExpenseDto>> getExpenses() {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(expenseService.getAllExpenses().stream()
+                .body(expenseService.getAllExpenses()
+                        .stream()
                         .map(ExpenseDto::from)
                         .toList());
     }
@@ -55,7 +56,8 @@ public class ExpenseController {
     public ResponseEntity<List<ExpenseDto>> getUserExpenses(@PathVariable Integer userId) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(expenseService.getAllUserExpenses(userId).stream()
+                .body(expenseService.getAllUserExpenses(userId)
+                        .stream()
                         .map(ExpenseDto::from)
                         .toList());
     }
@@ -70,7 +72,7 @@ public class ExpenseController {
             @RequestParam(defaultValue = "10") @Min(1) Integer pageSize,
             @RequestParam(defaultValue = "DESC") Sort.Direction sortDirection,
             @RequestParam(defaultValue = "date") String sortBy
-            ) {
+    ) {
         GlobalPage expensePage = new GlobalPage();
         expensePage.setPageNumber(pageNumber);
         expensePage.setPageSize(pageSize);
@@ -80,14 +82,17 @@ public class ExpenseController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(expenseService.findAllExpensesByUserId(userId, expensePage)
-                    .map(ExpenseDto::from));
+                        .map(ExpenseDto::from));
     }
 
     @Operation(
             summary = "Add new expense to the user"
     )
     @PostMapping("/add/{userId}")
-    public ResponseEntity<ExpenseDto> addExpense(@RequestBody @Valid Expense expense, @PathVariable Integer userId) {
+    public ResponseEntity<ExpenseDto> addExpense(
+            @RequestBody @Valid Expense expense,
+            @PathVariable Integer userId
+    ) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(ExpenseDto.from(expenseService.saveExpense(expense, userId)));
@@ -97,7 +102,10 @@ public class ExpenseController {
             summary = "Update expense by id"
     )
     @PutMapping("/update/{id}")
-    public ResponseEntity<ExpenseDto> updateExpense(@PathVariable Integer id, @RequestBody @Valid Expense expense) {
+    public ResponseEntity<ExpenseDto> updateExpense(
+            @PathVariable Integer id,
+            @RequestBody @Valid Expense expense
+    ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ExpenseDto.from(expenseService.updateExpense(id, expense)));

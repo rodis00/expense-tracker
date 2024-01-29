@@ -14,7 +14,7 @@ public class EarningDto {
     private Double amount;
     private Date date;
 
-    public static EarningDto from (Earning earning) {
+    public static EarningDto from(Earning earning) {
         return new EarningDto(
                 earning.getId(),
                 earning.getTitle(),

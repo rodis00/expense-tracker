@@ -33,8 +33,10 @@ public class EarningController {
     public ResponseEntity<List<EarningDto>> getEarnings() {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(earningService.getAllEarnings().stream()
-                        .map(EarningDto::from).toList());
+                .body(earningService.getAllEarnings()
+                        .stream()
+                        .map(EarningDto::from)
+                        .toList());
     }
 
     @Operation(
@@ -54,7 +56,8 @@ public class EarningController {
     public ResponseEntity<List<EarningDto>> getUserEarnings(@PathVariable Integer userId) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(earningService.getAllUserEarnings(userId).stream()
+                .body(earningService.getAllUserEarnings(userId)
+                        .stream()
                         .map(EarningDto::from)
                         .toList());
     }
@@ -86,7 +89,10 @@ public class EarningController {
             summary = "Add new earning to the user"
     )
     @PostMapping("/add/{userId}")
-    public ResponseEntity<EarningDto> addEarning(@RequestBody @Valid Earning earning, @PathVariable Integer userId) {
+    public ResponseEntity<EarningDto> addEarning(
+            @RequestBody @Valid Earning earning,
+            @PathVariable Integer userId
+    ) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(EarningDto.from(earningService.saveEarning(earning, userId)));
@@ -96,7 +102,10 @@ public class EarningController {
             summary = "Update earning by id"
     )
     @PutMapping("/update/{id}")
-    public ResponseEntity<EarningDto> updateEarning(@PathVariable Integer id, @RequestBody @Valid Earning earning) {
+    public ResponseEntity<EarningDto> updateEarning(
+            @PathVariable Integer id,
+            @RequestBody @Valid Earning earning
+    ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(EarningDto.from(earningService.updateEarning(id, earning)));

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserService implements UserServiceInterface{
+public class UserService implements UserServiceInterface {
 
     private final UserRepository userRepository;
 
@@ -36,7 +36,10 @@ public class UserService implements UserServiceInterface{
     }
 
     @Override
-    public User updateUser(Integer id, User user) {
+    public User updateUser(
+            Integer id,
+            User user
+    ) {
         if (existsByEmail(user.getEmail()))
             throw new UserAlreadyExistsException("User with this email already exists.");
 

@@ -14,7 +14,7 @@ public class ExpenseDto {
     private Double price;
     private Date date;
 
-    public static ExpenseDto from (Expense expense) {
+    public static ExpenseDto from(Expense expense) {
         return new ExpenseDto(
                 expense.getId(),
                 expense.getTitle(),

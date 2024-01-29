@@ -29,7 +29,8 @@ public class UserController {
     public ResponseEntity<List<UserDto>> getUsers() {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(userService.getAllUsers().stream()
+                .body(userService.getAllUsers()
+                        .stream()
                         .map(UserDto::from)
                         .toList());
     }
@@ -58,7 +59,10 @@ public class UserController {
             summary = "Update user by id"
     )
     @PutMapping("/update/{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable Integer id, @RequestBody @Valid User user) {
+    public ResponseEntity<UserDto> updateUser(
+            @PathVariable Integer id,
+            @RequestBody @Valid User user
+    ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(UserDto.from(userService.updateUser(id, user)));

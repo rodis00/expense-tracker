@@ -22,7 +22,10 @@ public class PasswordValidator implements ConstraintValidator<Password, String> 
     }
 
     @Override
-    public boolean isValid(String value, ConstraintValidatorContext context) {
+    public boolean isValid(
+            String value,
+            ConstraintValidatorContext context
+    ) {
         if (value == null) {
             return false;
         }
@@ -33,7 +36,7 @@ public class PasswordValidator implements ConstraintValidator<Password, String> 
             isValid = false;
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(
-                    "Password is too short. Minimum length is " + minLength + " characters.")
+                            "Password is too short. Minimum length is " + minLength + " characters.")
                     .addConstraintViolation();
         }
 
@@ -41,7 +44,7 @@ public class PasswordValidator implements ConstraintValidator<Password, String> 
             isValid = false;
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(
-                    "Password must contain at least " + minUpperCase + " uppercase letter(s).")
+                            "Password must contain at least " + minUpperCase + " uppercase letter(s).")
                     .addConstraintViolation();
         }
 
@@ -49,7 +52,7 @@ public class PasswordValidator implements ConstraintValidator<Password, String> 
             isValid = false;
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(
-                    "Password must contain at least " + minLowerCase + " lowercase letter(s).")
+                            "Password must contain at least " + minLowerCase + " lowercase letter(s).")
                     .addConstraintViolation();
         }
 
@@ -57,7 +60,7 @@ public class PasswordValidator implements ConstraintValidator<Password, String> 
             isValid = false;
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(
-                    "Password must contain at least " + minDigit + " digit(s).")
+                            "Password must contain at least " + minDigit + " digit(s).")
                     .addConstraintViolation();
         }
 
@@ -65,14 +68,19 @@ public class PasswordValidator implements ConstraintValidator<Password, String> 
             isValid = false;
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(
-                    "Password must contain at least " + minSpecialChar + " special character(s).")
+                            "Password must contain at least " + minSpecialChar + " special character(s).")
                     .addConstraintViolation();
         }
 
         return isValid;
     }
 
-    private long countOccurrences(String value, IntPredicate predicate) {
-        return value.chars().filter(predicate).count();
+    private long countOccurrences(
+            String value,
+            IntPredicate predicate
+    ) {
+        return value.chars()
+                .filter(predicate)
+                .count();
     }
 }
