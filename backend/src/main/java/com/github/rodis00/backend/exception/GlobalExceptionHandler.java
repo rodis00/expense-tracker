@@ -53,4 +53,12 @@ public class GlobalExceptionHandler {
                 e.getMessage()
         );
     }
+
+    @ExceptionHandler(UsernameIsTakenException.class)
+    public ProblemDetail handleUsernameIsTakenException(UsernameIsTakenException e) {
+        return ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST,
+                e.getMessage()
+        );
+    }
 }
