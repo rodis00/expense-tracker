@@ -22,6 +22,9 @@ public class User {
 
     @NotBlank(message = "Username shouldn't be empty.")
     @Size(min = 3, max = 20, message = "Username should be between 3 or 20 characters.")
+    @Column(
+            unique = true
+    )
     private String username;
 
     @NotBlank(message = "Email shouldn't be null.")
