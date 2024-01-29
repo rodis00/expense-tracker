@@ -11,4 +11,5 @@ public interface UserServiceInterface {
     List<User> getAllUsers();
     void deleteUserById(Integer id);
     boolean existsByEmail(String email);
+    boolean existsByUsername(String username);
 }

@@ -2,6 +2,7 @@ package com.github.rodis00.backend.service;
 
 import com.github.rodis00.backend.exception.UserAlreadyExistsException;
 import com.github.rodis00.backend.exception.UserNotFoundException;
+import com.github.rodis00.backend.exception.UsernameIsTakenException;
 import com.github.rodis00.backend.model.User;
 import com.github.rodis00.backend.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,10 @@ public class UserService implements UserServiceInterface{
     public User saveUser(User user) {
         if (existsByEmail(user.getEmail()))
             throw new UserAlreadyExistsException("User with this email already exists.");
+
+        if (existsByUsername(user.getUsername()))
+            throw new UsernameIsTakenException("This username is taken.");
+
         return userRepository.save(user);
     }
 
@@ -34,6 +39,9 @@ public class UserService implements UserServiceInterface{
     public User updateUser(Integer id, User user) {
         if (existsByEmail(user.getEmail()))
             throw new UserAlreadyExistsException("User with this email already exists.");
+
+        if (existsByUsername(user.getUsername()))
+            throw new UsernameIsTakenException("This username is taken.");
 
         User actualUser = getUserById(id);
         actualUser.setEmail(user.getEmail());
@@ -58,5 +66,10 @@ public class UserService implements UserServiceInterface{
     @Override
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
     }
 }
