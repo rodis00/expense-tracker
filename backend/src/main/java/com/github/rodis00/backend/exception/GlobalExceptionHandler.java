@@ -63,4 +63,12 @@ public class GlobalExceptionHandler {
                 e.getMessage()
         );
     }
+
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ProblemDetail handleInvalidPasswordException(InvalidPasswordException e) {
+        return ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST,
+                e.getMessage()
+        );
+    }
 }
