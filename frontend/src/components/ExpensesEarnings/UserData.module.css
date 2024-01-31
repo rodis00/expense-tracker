@@ -1,10 +1,9 @@
 .section{
     width: 60%;
-    min-height: 80%;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    overflow: hidden;
+    min-height: 80vh;
+    position: relative;
+    left: 60%;
+    transform: translateX(-35%);
 }
 
 .total{

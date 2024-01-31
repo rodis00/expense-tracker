@@ -1,7 +1,7 @@
 .section {
   width: calc(90vw - 4rem);
   min-height: 90vh;
-  margin: 5vh auto 0 auto;
+  margin: 4vh auto 4vh auto;
   border-radius: 30px;
   background-color: #001B2B;
   position: relative;
