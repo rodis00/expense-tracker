@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import classes from "./Expenses.module.css";
+import classes from "./ExpensesForm.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 function ExpensesForm({ onSaveExpenseData }) {
   const [enteredTitle, setEnteredTitle] = useState("");
@@ -42,6 +44,8 @@ function ExpensesForm({ onSaveExpenseData }) {
             type="text"
             value={enteredTitle}
             onChange={handleTitleChange}
+            placeholder="Enter title"
+            required
           />
         </div>
         <div className={classes.expensesForm__expenseData}>
@@ -50,8 +54,10 @@ function ExpensesForm({ onSaveExpenseData }) {
             type="number"
             min="0.01"
             step="0.01"
+            placeholder="Enter price"
             value={enteredPrice}
             onChange={handlePriceChange}
+            required
           />
         </div>
         <div className={classes.expensesForm__expenseData}>
@@ -61,11 +67,13 @@ function ExpensesForm({ onSaveExpenseData }) {
             min="2019-01-01"
             value={enteredDate}
             onChange={handleDateChange}
+            required
           />
         </div>
       </div>
       <button type="submit" className={classes.expensesForm__btn}>
-        Add expense
+        <FontAwesomeIcon icon={faPlus} />
+        <span>Add expense</span>
       </button>
     </form>
   );
