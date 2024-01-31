@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import classes from "./ExpensesForm.module.css";
+import classes from "./UserForm.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
-function ExpensesForm({ onSaveExpenseData }) {
+function UserForm({ onSaveExpenseData }) {
   const [enteredTitle, setEnteredTitle] = useState("");
   const [enteredPrice, setEnteredPrice] = useState("");
   const [enteredDate, setEnteredDate] = useState("");
@@ -79,4 +79,4 @@ function ExpensesForm({ onSaveExpenseData }) {
   );
 }
 
-export default ExpensesForm;
+export default UserForm;

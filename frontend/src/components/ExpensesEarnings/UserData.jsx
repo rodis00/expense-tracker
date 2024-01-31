@@ -1,13 +1,13 @@
 import React from "react";
-import ExpenseList from "./ExpenseList";
-import classes from "./AllExpenses.module.css";
+import classes from "./UserData.module.css";
+import ListData from "./ListData";
 
 function AllExpenses({ items }) {
   return (
     <>
       <h2 className={classes.total}>Total expenses: </h2>
       <div className={classes.section}>
-        <ExpenseList items={items} />
+        <ListData items={items} />
       </div>
     </>
   );

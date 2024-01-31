@@ -1,11 +1,11 @@
 import React from 'react'
 import Date from '../Date/Date'
-import classes from './ExpenseItem.module.css'
+import classes from './ItemData.module.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDollarSign } from "@fortawesome/free-solid-svg-icons";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
-function ExpenseItem({title, price, date}) {
+function ItemData({title, price, date}) {
   return (
     <li className={classes.listItem}>
       <Date date={date}/>
@@ -16,4 +16,4 @@ function ExpenseItem({title, price, date}) {
   )
 }
 
-export default ExpenseItem
+export default ItemData
