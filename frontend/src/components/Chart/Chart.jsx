@@ -1,0 +1,45 @@
+import React from "react";
+import { Chart as ChartJS } from "chart.js/auto";
+import { Bar } from "react-chartjs-2";
+import classes from "./Chart.module.css";
+
+function Chart({ items }) {
+  const chartDataPoints = [
+    { label: "Jan", value: 0 },
+    { label: "Feb", value: 0 },
+    { label: "Mar", value: 0 },
+    { label: "Apr", value: 0 },
+    { label: "May", value: 0 },
+    { label: "Jun", value: 0 },
+    { label: "Jul", value: 0 },
+    { label: "Aug", value: 0 },
+    { label: "Sep", value: 0 },
+    { label: "Oct", value: 0 },
+    { label: "Nov", value: 0 },
+    { label: "Dec", value: 0 },
+  ];
+
+  for (const elem of items) {
+    const elemMonth = elem.date.getMonth();
+    chartDataPoints[elemMonth].value += elem.price;
+  }
+
+  return (
+    <div className={classes.chart}>
+      <Bar
+        data={{
+          labels: chartDataPoints.map((data) => data.label),
+          datasets: [
+            {
+              label: "count",
+              data: chartDataPoints.map((data) => data.value),
+            },
+          ],
+        }}
+        options={{ maintainAspectRatio: false }}
+      />
+    </div>
+  );
+}
+
+export default Chart;
