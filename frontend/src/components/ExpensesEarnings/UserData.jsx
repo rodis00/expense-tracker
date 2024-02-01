@@ -7,7 +7,7 @@ function UserData({ items }) {
   return (
     <>
       <h2 className={classes.total}>Total expenses: </h2>
-      <Chart items={items}/>
+      <Chart items={items} />
       <div className={classes.section}>
         <ListData items={items} />
       </div>

@@ -1,11 +1,11 @@
-.list{
-    width: calc(100% - 2rem);
-    inset: 1rem;
-    position: relative;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
+.list {
+  width: calc(100% - 2rem);
+  inset: 1rem;
+  position: relative;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
 }

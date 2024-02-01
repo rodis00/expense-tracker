@@ -1,7 +1,7 @@
 import React from "react";
-import classes from './Date.module.css'
+import classes from "./Date.module.css";
 
-function Date({date}) {
+function Date({ date }) {
   const month = date.toLocaleString("pl-PL", { month: "long" });
   const day = date.toLocaleString("pl-PL", { day: "2-digit" });
   const year = date.getFullYear();
