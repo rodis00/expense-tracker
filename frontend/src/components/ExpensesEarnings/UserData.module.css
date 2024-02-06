@@ -18,7 +18,12 @@
   font-size: 25px;
 }
 
-.total span {
+.total__span {
   padding-left: 5px;
   color: crimson;
+}
+
+.total__span2 {
+  padding-left: 5px;
+  color: forestgreen;
 }

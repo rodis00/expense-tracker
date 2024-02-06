@@ -30,15 +30,20 @@ function UserData({ items, name }) {
         {amount <= 0 ? (
           ""
         ) : (
-          <span>
-            -{amount} <FontAwesomeIcon icon={faDollarSign} />
+          <span
+            className={`${
+              name === "expenses" ? classes.total__span : classes.total__span2
+            }`}
+          >
+            {name === "expenses" ? "-" : ""}
+            {amount} <FontAwesomeIcon icon={faDollarSign} />
           </span>
         )}
       </h2>
       <Chart items={filteredItems} />
       <YearFilter selected={selectedYear} onYearChange={handleFilteredYear} />
       <div className={classes.section}>
-        <ListData items={filteredItems} name="expenses" />
+        <ListData items={filteredItems} name={name} />
       </div>
     </>
   );
