@@ -1,28 +1,36 @@
-import React from 'react'
-import classes from './Earnings.module.css'
+import React, { useState } from "react";
+import UserData from "../ExpensesEarnings/UserData";
+import classes from "./Earnings.module.css";
+import UserForm from "../ExpensesEarnings/UserForm";
+
+const INITIAL_EARNINGS = [
+  {
+    id: "e1",
+    title: "Work",
+    amount: 200,
+    date: new Date(2021, 2, 28),
+  },
+];
 
 function Earnings() {
+  const [earnings, setEarnings] = useState(INITIAL_EARNINGS);
+
+  function handleNewEarning(earning) {
+    setEarnings((prevEarning) => {
+      return [earning, ...prevEarning];
+    });
+  }
   return (
-    <div className={classes.boxForm}>
-    <form action="" className={classes.earningsForm}>
-      <div className={classes.earningsForm__earningsData}>
-        <div className={classes.earningsForm__earningData}>
-          <label>Earning Title</label>
-          <input type="text" />
-        </div>
-        <div className={classes.earningsForm__earningData}>
-          <label>Earning amount</label>
-          <input type="number" name="" id="" />
-        </div>
-        <div className={classes.earningsForm__earningData}>
-          <label>Date</label>
-          <input type="date" />
-        </div>
-      </div>
-      <button type="submit" className={classes.earningsForm__btn}>Add expense</button>
-    </form>
+    <div className={classes.section}>
+      <UserForm
+        onSaveUserData={handleNewEarning}
+        name="earning"
+        secondName="Earning"
+        amount="Amount"
+      />
+      <UserData items={earnings} name="earnings" />
     </div>
-  )
+  );
 }
 
-export default Earnings
+export default Earnings;
