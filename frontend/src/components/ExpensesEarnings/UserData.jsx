@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDollarSign } from "@fortawesome/free-solid-svg-icons";
 import YearFilter from "./YearFilter";
 
-function UserData({ items }) {
+function UserData({ items, name }) {
   const [selectedYear, setSelectedYear] = useState("2024");
 
   const handleFilteredYear = (year) => {
@@ -20,13 +20,13 @@ function UserData({ items }) {
   let amount = 0;
 
   for (const element of filteredItems) {
-    amount += element.price;
+    amount += element.amount;
   }
 
   return (
     <>
       <h2 className={classes.total}>
-        Total expenses:
+        Total {name}:
         {amount <= 0 ? (
           ""
         ) : (
@@ -38,7 +38,7 @@ function UserData({ items }) {
       <Chart items={filteredItems} />
       <YearFilter selected={selectedYear} onYearChange={handleFilteredYear} />
       <div className={classes.section}>
-        <ListData items={filteredItems} />
+        <ListData items={filteredItems} name="expenses" />
       </div>
     </>
   );

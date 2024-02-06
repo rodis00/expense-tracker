@@ -2,9 +2,9 @@ import React from "react";
 import ItemData from "./ItemData";
 import classes from "./ListData.module.css";
 
-function ListData({ items }) {
+function ListData({ items, name }) {
   if (items.length === 0) {
-    return <h2 className={classes.list}>Found no expenses.</h2>;
+    return <h2 className={classes.list}>Found no {name}.</h2>;
   }
 
   return (
@@ -13,7 +13,7 @@ function ListData({ items }) {
         <ItemData
           key={Math.random.toString()}
           title={prev.title}
-          price={prev.price}
+          amount={prev.amount}
           date={prev.date}
         />
       ))}

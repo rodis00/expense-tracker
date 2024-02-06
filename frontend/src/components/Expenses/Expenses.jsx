@@ -7,7 +7,7 @@ const INITIAL_EXPENSES = [
   {
     id: "e1",
     title: "Doctor",
-    price: 200,
+    amount: 200,
     date: new Date(2021, 2, 28),
   },
 ];
@@ -23,8 +23,13 @@ function Expenses() {
 
   return (
     <div className={classes.section}>
-      <UserForm onSaveExpenseData={handleNewExpense} />
-      <UserData items={expenses} />
+      <UserForm
+        onSaveUserData={handleNewExpense}
+        name="expense"
+        secondName="Expense"
+        amount="Price"
+      />
+      <UserData items={expenses} name="expenses" />
     </div>
   );
 }

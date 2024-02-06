@@ -21,7 +21,7 @@ function Chart({ items }) {
 
   for (const elem of items) {
     const elemMonth = elem.date.getMonth();
-    chartDataPoints[elemMonth].value += elem.price;
+    chartDataPoints[elemMonth].value += elem.amount;
   }
 
   return (
