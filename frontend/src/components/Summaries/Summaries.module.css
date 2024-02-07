@@ -1,0 +1,41 @@
+.section {
+  width: calc(90vw - 4rem);
+  min-height: 90vh;
+  margin: 4vh auto 4vh auto;
+  border-radius: 30px;
+  background-color: #001b2b;
+  position: relative;
+}
+
+.section__title {
+  text-align: center;
+  padding: 20px 0;
+  background-color: #0e3d8b;
+  color: white;
+  width: 90%;
+  margin: 10px auto 0 auto;
+  border-radius: 20px;
+  font-size: 25px;
+}
+
+.balance{
+  color: white;
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.flexContainer {
+  display: flex;
+}
+
+.chartLine {
+  width: 100%;
+  height: 20rem;
+  margin-top: 2rem;
+}
+
+.chartBar {
+  width: 50%;
+  height: 20rem;
+  margin-top: 2rem;
+}
