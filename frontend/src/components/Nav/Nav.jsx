@@ -5,6 +5,7 @@ import Expenses from "../Expenses/Expenses";
 import Earnings from "../Earnings/Earnings";
 import Home from "../Home/Home";
 import Summaries from "../Summaries/Summaries";
+import Login from "../Login/Login";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse } from "@fortawesome/free-solid-svg-icons";
 import { faDollarSign } from "@fortawesome/free-solid-svg-icons";
@@ -74,11 +75,13 @@ function Nav() {
           <div className={classes.navbar__list__indicator}></div>
         </ul>
         <button className={classes.navbar__loginBtn}>
-          <FontAwesomeIcon
-            icon={faRightToBracket}
-            className={classes.navbar__loginBtn__icon}
-          />
-          <span className={classes.navbar__loginBtn__text}>Login</span>
+          <Link to={"/Login"} className={classes.loginLink}>
+            <FontAwesomeIcon
+              icon={faRightToBracket}
+              className={classes.navbar__loginBtn__icon}
+            />
+            <span className={classes.navbar__loginBtn__text}>Login</span>
+          </Link>
         </button>
       </nav>
       <Routes>
@@ -86,6 +89,7 @@ function Nav() {
         <Route path="expenses" element={<Expenses />} />
         <Route path="earnings" element={<Earnings />} />
         <Route path="summaries" element={<Summaries />} />
+        <Route path="Login" element={<Login />} />
       </Routes>
     </Router>
   );
