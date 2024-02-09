@@ -1,0 +1,26 @@
+.filter {
+  width: 13rem;
+  height: 2rem;
+  position: relative;
+  left: calc(75% - 10rem);
+  top: 5rem;
+}
+
+.filter label {
+  color: white;
+}
+
+.filter select {
+  text-align: center;
+  margin-left: 15px;
+  border: none;
+  border-radius: 20px;
+  color: white;
+  background-color: #a61651;
+  height: 100%;
+  width: 5rem;
+}
+
+.filter select:focus {
+  outline: none;
+}

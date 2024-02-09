@@ -1,0 +1,12 @@
+.dateSection {
+  background-color: #a61651;
+  position: absolute;
+  left: 1rem;
+  height: 85%;
+  width: 11vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+}

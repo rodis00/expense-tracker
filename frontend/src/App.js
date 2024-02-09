@@ -1,10 +1,10 @@
 import "./App.css";
-
+import Nav from "./components/Nav/Nav";
 function App() {
   return (
-    <div className="App">
-      <h1>Frontend init</h1>
-    </div>
+    <>
+      <Nav />
+    </>
   );
 }
 
