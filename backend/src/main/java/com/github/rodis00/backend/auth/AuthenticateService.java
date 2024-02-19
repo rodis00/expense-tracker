@@ -5,9 +5,9 @@ import com.github.rodis00.backend.exception.InvalidPasswordException;
 import com.github.rodis00.backend.exception.UserAlreadyExistsException;
 import com.github.rodis00.backend.exception.UserNotFoundException;
 import com.github.rodis00.backend.exception.UsernameIsTakenException;
-import com.github.rodis00.backend.model.User;
-import com.github.rodis00.backend.repository.UserRepository;
-import com.github.rodis00.backend.service.UserService;
+import com.github.rodis00.backend.user.User;
+import com.github.rodis00.backend.user.UserRepository;
+import com.github.rodis00.backend.user.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,7 +26,8 @@ public class AuthenticateService {
             UserRepository userRepository,
             PasswordEncoder passwordEncoder,
             JwtService jwtService,
-            AuthenticationManager authenticationManager, UserService userService
+            AuthenticationManager authenticationManager,
+            UserService userService
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -55,7 +56,8 @@ public class AuthenticateService {
     }
 
     public AuthResponse authenticate(AuthRequest request) {
-        User user = userRepository.findByUsername(request.getUsername())
+        User user = userRepository
+                .findByUsername(request.getUsername())
                 .orElseThrow(() -> new UserNotFoundException("User not found."));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword()))

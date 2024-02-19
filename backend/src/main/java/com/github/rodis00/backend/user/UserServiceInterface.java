@@ -1,6 +1,4 @@
-package com.github.rodis00.backend.service;
-
-import com.github.rodis00.backend.model.User;
+package com.github.rodis00.backend.user;
 
 import java.util.List;
 

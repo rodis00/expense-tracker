@@ -1,7 +1,8 @@
-package com.github.rodis00.backend.model;
+package com.github.rodis00.backend.expense;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.github.rodis00.backend.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

@@ -1,10 +1,8 @@
-package com.github.rodis00.backend.service;
+package com.github.rodis00.backend.user;
 
 import com.github.rodis00.backend.exception.UserAlreadyExistsException;
 import com.github.rodis00.backend.exception.UserNotFoundException;
 import com.github.rodis00.backend.exception.UsernameIsTakenException;
-import com.github.rodis00.backend.model.User;
-import com.github.rodis00.backend.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,7 +29,8 @@ public class UserService implements UserServiceInterface {
 
     @Override
     public User getUserById(Integer id) {
-        return userRepository.findById(id)
+        return userRepository
+                .findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found."));
     }
 

@@ -1,9 +1,7 @@
-package com.github.rodis00.backend.service;
+package com.github.rodis00.backend.earning;
 
-import com.github.rodis00.backend.model.Earning;
-import com.github.rodis00.backend.model.GlobalPage;
+import com.github.rodis00.backend.page.GlobalPage;
 import org.springframework.data.domain.Page;
-
 
 import java.util.List;
 

@@ -1,6 +1,5 @@
-package com.github.rodis00.backend.repository;
+package com.github.rodis00.backend.expense;
 
-import com.github.rodis00.backend.model.Expense;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

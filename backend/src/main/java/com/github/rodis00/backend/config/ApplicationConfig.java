@@ -1,7 +1,7 @@
 package com.github.rodis00.backend.config;
 
 import com.github.rodis00.backend.exception.UserNotFoundException;
-import com.github.rodis00.backend.repository.UserRepository;
+import com.github.rodis00.backend.user.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,7 +23,8 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> userRepository.findByUsername(username)
+        return username -> userRepository
+                .findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("User not found."));
     }
 

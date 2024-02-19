@@ -1,7 +1,9 @@
-package com.github.rodis00.backend.model;
+package com.github.rodis00.backend.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.github.rodis00.backend.earning.Earning;
+import com.github.rodis00.backend.expense.Expense;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

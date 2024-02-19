@@ -1,6 +1,5 @@
-package com.github.rodis00.backend.dto;
+package com.github.rodis00.backend.expense;
 
-import com.github.rodis00.backend.model.Expense;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

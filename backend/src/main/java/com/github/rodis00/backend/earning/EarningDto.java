@@ -1,6 +1,5 @@
-package com.github.rodis00.backend.dto;
+package com.github.rodis00.backend.earning;
 
-import com.github.rodis00.backend.model.Earning;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

@@ -1,6 +1,5 @@
-package com.github.rodis00.backend.dto;
+package com.github.rodis00.backend.user;
 
-import com.github.rodis00.backend.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package com.github.rodis00.backend.model;
+package com.github.rodis00.backend.page;
 
 import lombok.Data;
 import org.springframework.data.domain.Sort;

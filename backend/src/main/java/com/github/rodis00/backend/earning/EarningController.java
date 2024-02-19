@@ -1,9 +1,6 @@
-package com.github.rodis00.backend.controller;
+package com.github.rodis00.backend.earning;
 
-import com.github.rodis00.backend.dto.EarningDto;
-import com.github.rodis00.backend.model.Earning;
-import com.github.rodis00.backend.model.GlobalPage;
-import com.github.rodis00.backend.service.EarningService;
+import com.github.rodis00.backend.page.GlobalPage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -33,7 +30,8 @@ public class EarningController {
     public ResponseEntity<List<EarningDto>> getEarnings() {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(earningService.getAllEarnings()
+                .body(earningService
+                        .getAllEarnings()
                         .stream()
                         .map(EarningDto::from)
                         .toList());
@@ -56,7 +54,8 @@ public class EarningController {
     public ResponseEntity<List<EarningDto>> getUserEarnings(@PathVariable Integer userId) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(earningService.getAllUserEarnings(userId)
+                .body(earningService
+                        .getAllUserEarnings(userId)
                         .stream()
                         .map(EarningDto::from)
                         .toList());
@@ -81,7 +80,8 @@ public class EarningController {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(earningService.findAllEarningsByUserId(userId, earningsPage)
+                .body(earningService
+                        .findAllEarningsByUserId(userId, earningsPage)
                         .map(EarningDto::from));
     }
 

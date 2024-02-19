@@ -1,9 +1,6 @@
-package com.github.rodis00.backend.controller;
+package com.github.rodis00.backend.expense;
 
-import com.github.rodis00.backend.dto.ExpenseDto;
-import com.github.rodis00.backend.model.Expense;
-import com.github.rodis00.backend.model.GlobalPage;
-import com.github.rodis00.backend.service.ExpenseService;
+import com.github.rodis00.backend.page.GlobalPage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -33,7 +30,8 @@ public class ExpenseController {
     public ResponseEntity<List<ExpenseDto>> getExpenses() {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(expenseService.getAllExpenses()
+                .body(expenseService
+                        .getAllExpenses()
                         .stream()
                         .map(ExpenseDto::from)
                         .toList());
@@ -56,7 +54,8 @@ public class ExpenseController {
     public ResponseEntity<List<ExpenseDto>> getUserExpenses(@PathVariable Integer userId) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(expenseService.getAllUserExpenses(userId)
+                .body(expenseService
+                        .getAllUserExpenses(userId)
                         .stream()
                         .map(ExpenseDto::from)
                         .toList());
@@ -81,7 +80,8 @@ public class ExpenseController {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(expenseService.findAllExpensesByUserId(userId, expensePage)
+                .body(expenseService
+                        .findAllExpensesByUserId(userId, expensePage)
                         .map(ExpenseDto::from));
     }
 

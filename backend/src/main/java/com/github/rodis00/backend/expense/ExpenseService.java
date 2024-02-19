@@ -1,10 +1,9 @@
-package com.github.rodis00.backend.service;
+package com.github.rodis00.backend.expense;
 
 import com.github.rodis00.backend.exception.ExpenseNotFoundException;
-import com.github.rodis00.backend.model.Expense;
-import com.github.rodis00.backend.model.GlobalPage;
-import com.github.rodis00.backend.model.User;
-import com.github.rodis00.backend.repository.ExpenseRepository;
+import com.github.rodis00.backend.page.GlobalPage;
+import com.github.rodis00.backend.user.User;
+import com.github.rodis00.backend.user.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +39,8 @@ public class ExpenseService implements ExpenseServiceInterface {
 
     @Override
     public Expense getExpenseById(Integer id) {
-        return expenseRepository.findById(id)
+        return expenseRepository
+                .findById(id)
                 .orElseThrow(() -> new ExpenseNotFoundException("Expense not found."));
     }
 

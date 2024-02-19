@@ -1,8 +1,5 @@
-package com.github.rodis00.backend.controller;
+package com.github.rodis00.backend.user;
 
-import com.github.rodis00.backend.dto.UserDto;
-import com.github.rodis00.backend.model.User;
-import com.github.rodis00.backend.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -29,7 +26,8 @@ public class UserController {
     public ResponseEntity<List<UserDto>> getUsers() {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(userService.getAllUsers()
+                .body(userService
+                        .getAllUsers()
                         .stream()
                         .map(UserDto::from)
                         .toList());
