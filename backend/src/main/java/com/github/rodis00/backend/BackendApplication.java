@@ -9,6 +9,7 @@ import com.github.rodis00.backend.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,16 +19,18 @@ public class BackendApplication implements CommandLineRunner {
 	private final UserRepository userRepository;
 	private final ExpenseRepository expenseRepository;
 	private final EarningRepository earningRepository;
+	private final PasswordEncoder passwordEncoder;
 
 	public BackendApplication(
-			UserRepository userRepository,
-			ExpenseRepository expenseRepository,
-			EarningRepository earningRepository
-	) {
+            UserRepository userRepository,
+            ExpenseRepository expenseRepository,
+            EarningRepository earningRepository, PasswordEncoder passwordEncoder
+    ) {
 		this.userRepository = userRepository;
 		this.expenseRepository = expenseRepository;
 		this.earningRepository = earningRepository;
-	}
+        this.passwordEncoder = passwordEncoder;
+    }
 
 	public static void main(String[] args) {
 		SpringApplication.run(BackendApplication.class, args);
@@ -39,7 +42,7 @@ public class BackendApplication implements CommandLineRunner {
 			User user = new User();
 			user.setEmail("user@example.com");
 			user.setUsername("user");
-			user.setPassword("U$3r2024");
+			user.setPassword(passwordEncoder.encode("U$3r2024"));
 			user.setExpenses(new ArrayList<>());
 			user.setEarnings(new ArrayList<>());
 			userRepository.save(user);
