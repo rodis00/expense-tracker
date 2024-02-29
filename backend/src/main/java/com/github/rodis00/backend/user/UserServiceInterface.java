@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface UserServiceInterface {
     User getUserById(Integer id);
-    User updateUser(Integer id, User user);
+    UserDto updateUser(Integer id, UserRequest user);
     List<User> getAllUsers();
     void deleteUserById(Integer id);
     boolean existsByEmail(String email);
