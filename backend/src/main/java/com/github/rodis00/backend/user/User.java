@@ -17,7 +17,15 @@ import java.util.List;
 @Table(name = "user")
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(
+            name = "user_seq",
+            sequenceName = "user_seq",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            generator = "user_seq",
+            strategy = GenerationType.SEQUENCE
+    )
     @JsonIgnore
     private Integer id;
 
