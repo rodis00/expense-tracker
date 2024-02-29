@@ -3,17 +3,24 @@ package com.github.rodis00.backend.user;
 import com.github.rodis00.backend.exception.UserAlreadyExistsException;
 import com.github.rodis00.backend.exception.UserNotFoundException;
 import com.github.rodis00.backend.exception.UsernameIsTakenException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UserService implements UserServiceInterface {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder
+    ) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -24,9 +31,9 @@ public class UserService implements UserServiceInterface {
     }
 
     @Override
-    public User updateUser(
+    public UserDto updateUser(
             Integer id,
-            User user
+            UserRequest user
     ) {
         if (existsByEmail(user.getEmail()))
             throw new UserAlreadyExistsException("User with this email already exists.");
@@ -34,13 +41,19 @@ public class UserService implements UserServiceInterface {
         if (existsByUsername(user.getUsername()))
             throw new UsernameIsTakenException("This username is taken.");
 
-        User actualUser = getUserById(id);
-        actualUser.setEmail(user.getEmail());
-        actualUser.setUsername(user.getUsername());
-        actualUser.setPassword(user.getPassword());
-        userRepository.save(actualUser);
+        User existingUser = getUserById(id);
+        if (Objects.nonNull(user.getEmail()))
+            existingUser.setEmail(user.getEmail());
 
-        return actualUser;
+        if (Objects.nonNull(user.getUsername()))
+            existingUser.setUsername(user.getUsername());
+
+        if (Objects.nonNull(user.getPassword()))
+            existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        userRepository.save(existingUser);
+
+        return UserDto.from(existingUser);
     }
 
     @Override
