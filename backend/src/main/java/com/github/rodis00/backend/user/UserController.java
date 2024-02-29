@@ -44,16 +44,6 @@ public class UserController {
     }
 
     @Operation(
-            summary = "Add new user"
-    )
-    @PostMapping("/")
-    public ResponseEntity<UserDto> addUser(@RequestBody @Valid User user) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(UserDto.from(userService.saveUser(user)));
-    }
-
-    @Operation(
             summary = "Update user by id"
     )
     @PutMapping("/{id}")

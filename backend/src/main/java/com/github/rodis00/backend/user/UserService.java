@@ -17,17 +17,6 @@ public class UserService implements UserServiceInterface {
     }
 
     @Override
-    public User saveUser(User user) {
-        if (existsByEmail(user.getEmail()))
-            throw new UserAlreadyExistsException("User with this email already exists.");
-
-        if (existsByUsername(user.getUsername()))
-            throw new UsernameIsTakenException("This username is taken.");
-
-        return userRepository.save(user);
-    }
-
-    @Override
     public User getUserById(Integer id) {
         return userRepository
                 .findById(id)
@@ -73,10 +62,5 @@ public class UserService implements UserServiceInterface {
     @Override
     public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
-    }
-
-    @Override
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
     }
 }
