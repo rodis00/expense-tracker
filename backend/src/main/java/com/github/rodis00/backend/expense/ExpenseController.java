@@ -26,7 +26,7 @@ public class ExpenseController {
     @Operation(
             summary = "Get all expenses"
     )
-    @GetMapping("")
+    @GetMapping("/")
     public ResponseEntity<List<ExpenseDto>> getExpenses() {
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -88,7 +88,7 @@ public class ExpenseController {
     @Operation(
             summary = "Add new expense to the user"
     )
-    @PostMapping("/add/{userId}")
+    @PostMapping("/users/{userId}")
     public ResponseEntity<ExpenseDto> addExpense(
             @RequestBody @Valid Expense expense,
             @PathVariable Integer userId
@@ -101,7 +101,7 @@ public class ExpenseController {
     @Operation(
             summary = "Update expense by id"
     )
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ExpenseDto> updateExpense(
             @PathVariable Integer id,
             @RequestBody @Valid Expense expense
@@ -114,7 +114,7 @@ public class ExpenseController {
     @Operation(
             summary = "Delete expense by id"
     )
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteExpense(@PathVariable Integer id) {
         expenseService.deleteExpenseById(id);
         return ResponseEntity
