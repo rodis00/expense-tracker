@@ -16,7 +16,15 @@ import java.util.Date;
 @Table(name = "expense")
 public class Expense {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(
+            name = "expense_seq",
+            sequenceName = "expense_seq",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            generator = "expense_seq",
+            strategy = GenerationType.SEQUENCE
+    )
     @JsonIgnore
     private Integer id;
 
