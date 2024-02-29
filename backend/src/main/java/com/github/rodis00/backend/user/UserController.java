@@ -22,7 +22,7 @@ public class UserController {
     @Operation(
             summary = "Get all users"
     )
-    @GetMapping("")
+    @GetMapping("/")
     public ResponseEntity<List<UserDto>> getUsers() {
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -46,7 +46,7 @@ public class UserController {
     @Operation(
             summary = "Add new user"
     )
-    @PostMapping("/add")
+    @PostMapping("/")
     public ResponseEntity<UserDto> addUser(@RequestBody @Valid User user) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -56,7 +56,7 @@ public class UserController {
     @Operation(
             summary = "Update user by id"
     )
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<UserDto> updateUser(
             @PathVariable Integer id,
             @RequestBody @Valid User user
@@ -69,7 +69,7 @@ public class UserController {
     @Operation(
             summary = "Delete user by id"
     )
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
         userService.deleteUserById(id);
         return ResponseEntity
