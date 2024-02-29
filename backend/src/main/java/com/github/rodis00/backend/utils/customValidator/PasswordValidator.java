@@ -27,7 +27,7 @@ public class PasswordValidator implements ConstraintValidator<Password, String> 
             ConstraintValidatorContext context
     ) {
         if (value == null) {
-            return false;
+            return true;
         }
 
         boolean isValid = true;
