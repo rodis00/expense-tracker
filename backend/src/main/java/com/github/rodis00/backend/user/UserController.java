@@ -46,14 +46,14 @@ public class UserController {
     @Operation(
             summary = "Update user by id"
     )
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<UserDto> updateUser(
             @PathVariable Integer id,
-            @RequestBody @Valid User user
+            @RequestBody @Valid UserRequest user
     ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(UserDto.from(userService.updateUser(id, user)));
+                .body(userService.updateUser(id, user));
     }
 
     @Operation(
