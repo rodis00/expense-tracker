@@ -3,7 +3,7 @@ import { Chart as ChartJS } from "chart.js/auto";
 import { Bar } from "react-chartjs-2";
 import classes from "./Chart.module.css";
 
-function Chart({ items }) {
+function Chart({ items, name }) {
   const chartDataPoints = [
     { label: "Jan", value: 0 },
     { label: "Feb", value: 0 },
@@ -32,6 +32,9 @@ function Chart({ items }) {
           datasets: [
             {
               label: "count",
+              barThickness: 15,
+              backgroundColor: name === "expenses" ? "red" : "limegreen",
+              borderRadius: "20",
               data: chartDataPoints.map((data) => data.value),
             },
           ],
