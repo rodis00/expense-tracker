@@ -4,15 +4,31 @@ import classes from "./Login.module.css";
 function Login() {
   return (
     <div className={classes.box}>
-      <div className={classes.box__content}>
-        <h2 className={classes.box__content__title}>Login</h2>
-        <div className={classes.box__content__items}>
-          <input type="text" placeholder="Username"/>
-          <input type="text" placeholder="Password"/>
-        </div>
-        <div className={classes.box__content__btns}>
-          <button>Login</button>
-          <button>Register</button>
+      <div className={classes.login}>
+        <h2>Login</h2>
+        <form className={classes.loginForm}>
+          <div className={classes.field}>
+            <label htmlFor="">Username</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Type your username"
+            />
+          </div>
+          <div className={classes.field}>
+            <label htmlFor="">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Type your password"
+            />
+          </div>
+        </form>
+        <div className={classes.actions}>
+          <button className={classes.loginBtn}>Login</button>
+          <button className={classes.signupBtn}>Sign up</button>
         </div>
       </div>
     </div>
