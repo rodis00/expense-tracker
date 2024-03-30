@@ -7,11 +7,12 @@
   height: 6rem;
   display: flex;
   border-radius: 20px;
-  border: 3px solid #0e3d8b;
+  /* border: 3px solid #0e3d8b; */
   align-items: center;
   color: white;
   overflow: hidden;
   position: relative;
+  background-color: rgb(37, 37, 37);
 }
 
 .listItem__title {
@@ -38,7 +39,7 @@
   border: none;
   width: 50px;
   height: 50px;
-  background-color: #a61651;
+  background-color: #109977;
   border-radius: 50%;
   position: absolute;
   right: 1rem;
