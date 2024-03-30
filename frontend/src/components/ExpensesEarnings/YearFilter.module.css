@@ -15,12 +15,16 @@
   margin-left: 15px;
   border: none;
   border-radius: 20px;
-  color: white;
-  background-color: #a61651;
+  background-color: #18ffbb;
   height: 100%;
   width: 5rem;
 }
 
 .filter select:focus {
   outline: none;
+}
+
+.filter select option {
+  background-color: rgb(70, 70, 70);
+  color: white;
 }
