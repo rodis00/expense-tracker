@@ -1,6 +1,11 @@
+.main {
+  width: 100%;
+  min-height: 100vh;
+}
+
 .section {
   width: 100%;
-  min-height: 80vh;
+  min-height: 60vh;
   position: relative;
   margin-top: 10rem;
 }
@@ -23,4 +28,33 @@
 .total__span2 {
   padding-left: 5px;
   color: limegreen;
+}
+
+.options {
+  position: relative;
+  top: 5rem;
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+.modalOpenBtn {
+  position: relative;
+  border: none;
+  height: 3rem;
+  width: 8rem;
+  border-radius: 15px;
+  left: 20%;
+  cursor: pointer;
+  background-color: #18ffbb;
+}
+
+.modalOpenBtn span {
+  padding-left: 5px;
+  font-weight: bolder;
+}
+
+.modalOpenBtn:hover {
+  background-color: limegreen;
 }
