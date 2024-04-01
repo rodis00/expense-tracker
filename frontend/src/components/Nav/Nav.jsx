@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import classes from "./Nav.module.css";
-import { BrowserRouter as Router, Link, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Link,
+  Routes,
+  Route,
+  useNavigate,
+} from "react-router-dom";
 import Expenses from "../Expenses/Expenses";
 import Earnings from "../Earnings/Earnings";
 import Home from "../Home/Home";
@@ -10,10 +16,21 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse } from "@fortawesome/free-solid-svg-icons";
 import { faDollarSign } from "@fortawesome/free-solid-svg-icons";
 import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
+import { useSelector, useDispatch } from "react-redux";
+import { authActions } from "../../store/auth-slice";
+import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 
 function Nav() {
   const [menuActive, setMenuActive] = useState(false);
   const [chosenLink, setChosenLink] = useState("Home");
+
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const dispatch = useDispatch();
+
+  function handleLogout() {
+    localStorage.removeItem("token");
+    dispatch(authActions.logout());  
+  }
 
   const navElements = [
     { icon: <FontAwesomeIcon icon={faHouse} />, title: "Home" },
@@ -74,15 +91,22 @@ function Nav() {
           ))}
           <div className={classes.navbar__list__indicator}></div>
         </ul>
-        <button className={classes.navbar__loginBtn}>
-          <Link to={"/Login"} className={classes.loginLink}>
-            <FontAwesomeIcon
-              icon={faRightToBracket}
-              className={classes.navbar__loginBtn__icon}
-            />
-            <span className={classes.navbar__loginBtn__text}>Login</span>
-          </Link>
-        </button>
+        {isAuthenticated ? (
+          <button className={classes.navbar__logoutBtn} onClick={handleLogout}>
+            <FontAwesomeIcon icon={faRightFromBracket} className={classes.navbar__logoutBtn__icon}/>
+            <span className={classes.navbar__logoutBtn__text}>Logout</span>
+            </button>
+        ) : (
+          // <button className={classes.navbar__loginBtn}>
+            <Link to={"/Login"} className={classes.navbar__loginBtn}>
+              <FontAwesomeIcon
+                icon={faRightToBracket}
+                className={classes.navbar__loginBtn__icon}
+              />
+              <span className={classes.navbar__loginBtn__text}>Login</span>
+            </Link>
+
+        )}
       </nav>
       <Routes>
         <Route path="Home" exact={true} element={<Home />} />
