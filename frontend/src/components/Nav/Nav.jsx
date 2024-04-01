@@ -97,7 +97,6 @@ function Nav() {
             <span className={classes.navbar__logoutBtn__text}>Logout</span>
             </button>
         ) : (
-          // <button className={classes.navbar__loginBtn}>
             <Link to={"/Login"} className={classes.navbar__loginBtn}>
               <FontAwesomeIcon
                 icon={faRightToBracket}
