@@ -39,7 +39,7 @@ function Login() {
 
     localStorage.setItem("token", token);
 
-    navigate("/Home");
+    navigate("/");
   }
 
   return (
