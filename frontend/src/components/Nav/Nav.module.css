@@ -223,22 +223,6 @@
   transition: 1s;
 }
 
-.navbar__list__elem__active:nth-child(1) ~ .navbar__list__indicator {
-  transform: translateY(calc(3rem * 0));
-}
-
-.navbar__list__elem__active:nth-child(2) ~ .navbar__list__indicator {
-  transform: translateY(calc(3rem * 1 + 10px));
-}
-
-.navbar__list__elem__active:nth-child(3) ~ .navbar__list__indicator {
-  transform: translateY(calc(3rem * 2 + 20px));
-}
-
-.navbar__list__elem__active:nth-child(4) ~ .navbar__list__indicator {
-  transform: translateY(calc(3rem * 3 + 30px));
-}
-
 @media (max-width: 600px) {
   .navbar {
     width: 100%;
@@ -302,21 +286,5 @@
 
   .navbar__list__indicator {
     height: 2.5rem;
-  }
-
-  .navbar__list__elem__active:nth-child(1) ~ .navbar__list__indicator {
-    transform: translateY(calc(2.5rem * 0));
-  }
-
-  .navbar__list__elem__active:nth-child(2) ~ .navbar__list__indicator {
-    transform: translateY(calc(2.5rem * 1 + 10px));
-  }
-
-  .navbar__list__elem__active:nth-child(3) ~ .navbar__list__indicator {
-    transform: translateY(calc(2.5rem * 2 + 20px));
-  }
-
-  .navbar__list__elem__active:nth-child(4) ~ .navbar__list__indicator {
-    transform: translateY(calc(2.5rem * 3 + 30px));
   }
 }
