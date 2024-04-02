@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import classes from "./Nav.module.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse } from "@fortawesome/free-solid-svg-icons";
 import { faDollarSign } from "@fortawesome/free-solid-svg-icons";
@@ -8,9 +8,50 @@ import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 import { useSelector, useDispatch } from "react-redux";
 import { authActions } from "../../store/auth-slice";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { useMediaQuery } from "@react-hook/media-query";
 
 function Nav() {
   const [menuActive, setMenuActive] = useState(false);
+
+  const divRef = useRef();
+
+  const location = useLocation();
+
+  const isSmallScreen = useMediaQuery(
+    "(min-width: 601px) and (max-width: 1000px)"
+  );
+
+  useEffect(() => {
+    const indicator = divRef.current;
+
+    if (indicator) {
+      switch (location.pathname) {
+        case "/":
+          indicator.style.transform = isSmallScreen
+            ? "translateY(calc(2.5rem * 0))"
+            : "translateY(calc(3rem * 0))";
+          break;
+        case "/expenses":
+          indicator.style.transform = isSmallScreen
+            ? "translateY(calc(2.5rem * 1 + 10px))"
+            : "translateY(calc(3rem * 1 + 10px))";
+          break;
+        case "/earnings":
+          indicator.style.transform = isSmallScreen
+            ? "translateY(calc(2.5rem * 2 + 20px))"
+            : "translateY(calc(3rem * 2 + 20px))";
+          break;
+        case "/summaries":
+          indicator.style.transform = isSmallScreen
+            ? "translateY(calc(2.5rem * 3 + 30px))"
+            : "translateY(calc(3rem * 3 + 30px))";
+          break;
+        default:
+          console.log("wrong pathname");
+          break;
+      }
+    }
+  }, [location.pathname, isSmallScreen]);
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dispatch = useDispatch();
@@ -48,14 +89,7 @@ function Nav() {
         </div>
         <ul className={classes.navbar__list}>
           <li className={classes.navbar__list__elem}>
-            <NavLink
-              to={"/"}
-              className={`${({ isActive }) =>
-                isActive ? classes.navbar__active : undefined} ${
-                classes.navbar__list__elem__link
-              }`}
-              end
-            >
+            <NavLink to={"/"} className={classes.navbar__list__elem__link} end>
               <FontAwesomeIcon
                 icon={faHouse}
                 className={classes.navbar__list__elem__link__icon}
@@ -69,10 +103,7 @@ function Nav() {
           <li className={classes.navbar__list__elem}>
             <NavLink
               to={"expenses"}
-              className={`${({ isActive }) =>
-                isActive ? classes.navbar__active : undefined} ${
-                classes.navbar__list__elem__link
-              }`}
+              className={classes.navbar__list__elem__link}
             >
               <FontAwesomeIcon
                 icon={faDollarSign}
@@ -87,10 +118,7 @@ function Nav() {
           <li className={classes.navbar__list__elem}>
             <NavLink
               to={"earnings"}
-              className={`${({ isActive }) =>
-                isActive ? classes.navbar__active : undefined} ${
-                classes.navbar__list__elem__link
-              }`}
+              className={classes.navbar__list__elem__link}
             >
               <FontAwesomeIcon
                 icon={faDollarSign}
@@ -105,10 +133,7 @@ function Nav() {
           <li className={classes.navbar__list__elem}>
             <NavLink
               to={"summaries"}
-              className={`${({ isActive }) =>
-                isActive ? classes.navbar__active : undefined} ${
-                classes.navbar__list__elem__link
-              }`}
+              className={classes.navbar__list__elem__link}
             >
               <FontAwesomeIcon
                 icon={faDollarSign}
@@ -120,7 +145,7 @@ function Nav() {
             </NavLink>
           </li>
 
-          <div className={classes.navbar__list__indicator}></div>
+          <div className={classes.navbar__list__indicator} ref={divRef}></div>
         </ul>
         {isAuthenticated ? (
           <button className={classes.navbar__logoutBtn} onClick={handleLogout}>
