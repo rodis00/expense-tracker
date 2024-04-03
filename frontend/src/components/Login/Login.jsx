@@ -6,13 +6,13 @@ import { authActions } from "../../store/auth-slice";
 
 function Login() {
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   async function handleLogin(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData.entries());
-    console.log(data);
+
     const authData = {
       username: data.username,
       password: data.password,
