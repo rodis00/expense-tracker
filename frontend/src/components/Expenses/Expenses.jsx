@@ -23,13 +23,13 @@ function Expenses() {
 
   return (
     <div className={classes.section}>
-      <UserForm
-        onSaveUserData={handleNewExpense}
-        name="expense"
-        secondName="Expense"
-        amount="Price"
+      <UserData
+        items={expenses}
+        name="expenses"
+        secondName="expense"
+        upperName="Expense"
+        amountName="Price"
       />
-      <UserData items={expenses} name="expenses" />
     </div>
   );
 }
