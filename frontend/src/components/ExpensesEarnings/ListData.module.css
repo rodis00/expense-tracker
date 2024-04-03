@@ -1,6 +1,6 @@
 .list {
-  width: calc(100% - 2rem);
-  inset: 1rem;
+  width: 60%;
+  margin: 0 auto;
   position: relative;
   color: white;
   display: flex;
