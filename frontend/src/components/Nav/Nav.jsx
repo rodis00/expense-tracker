@@ -46,6 +46,11 @@ function Nav() {
             ? "translateY(calc(2.5rem * 3 + 30px))"
             : "translateY(calc(3rem * 3 + 30px))";
           break;
+        case "/login":
+          indicator.style.transform = isSmallScreen
+            ? "translateY(34.5rem)"
+            : "translateY(34.05rem)";
+          break;
         default:
           console.log("wrong pathname");
           break;
@@ -144,8 +149,6 @@ function Nav() {
               </span>
             </NavLink>
           </li>
-
-          <div className={classes.navbar__list__indicator} ref={divRef}></div>
         </ul>
         {isAuthenticated ? (
           <button className={classes.navbar__logoutBtn} onClick={handleLogout}>
@@ -157,13 +160,16 @@ function Nav() {
           </button>
         ) : (
           <NavLink to={"login"} className={classes.navbar__loginBtn}>
-            <FontAwesomeIcon
-              icon={faRightToBracket}
-              className={classes.navbar__loginBtn__icon}
-            />
-            <span className={classes.navbar__loginBtn__text}>Login</span>
+            <span className={classes.navbar__login__link}>
+              <FontAwesomeIcon
+                icon={faRightToBracket}
+                className={classes.navbar__loginBtn__icon}
+              />
+              <span className={classes.navbar__loginBtn__text}>Login</span>
+            </span>
           </NavLink>
         )}
+        <div className={classes.navbar__list__indicator} ref={divRef}></div>
       </nav>
     </>
   );
