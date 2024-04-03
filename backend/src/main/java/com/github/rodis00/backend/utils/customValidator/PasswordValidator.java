@@ -27,7 +27,7 @@ public class PasswordValidator implements ConstraintValidator<Password, String> 
             ConstraintValidatorContext context
     ) {
         if (value == null) {
-            return false;
+            return true;
         }
 
         boolean isValid = true;
@@ -35,7 +35,8 @@ public class PasswordValidator implements ConstraintValidator<Password, String> 
         if (value.length() < minLength) {
             isValid = false;
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(
+            context
+                    .buildConstraintViolationWithTemplate(
                             "Password is too short. Minimum length is " + minLength + " characters.")
                     .addConstraintViolation();
         }
@@ -43,7 +44,8 @@ public class PasswordValidator implements ConstraintValidator<Password, String> 
         if (countOccurrences(value, Character::isUpperCase) < minUpperCase) {
             isValid = false;
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(
+            context
+                    .buildConstraintViolationWithTemplate(
                             "Password must contain at least " + minUpperCase + " uppercase letter(s).")
                     .addConstraintViolation();
         }
@@ -51,7 +53,8 @@ public class PasswordValidator implements ConstraintValidator<Password, String> 
         if (countOccurrences(value, Character::isLowerCase) < minLowerCase) {
             isValid = false;
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(
+            context
+                    .buildConstraintViolationWithTemplate(
                             "Password must contain at least " + minLowerCase + " lowercase letter(s).")
                     .addConstraintViolation();
         }
@@ -59,7 +62,8 @@ public class PasswordValidator implements ConstraintValidator<Password, String> 
         if (countOccurrences(value, Character::isDigit) < minDigit) {
             isValid = false;
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(
+            context
+                    .buildConstraintViolationWithTemplate(
                             "Password must contain at least " + minDigit + " digit(s).")
                     .addConstraintViolation();
         }
@@ -67,7 +71,8 @@ public class PasswordValidator implements ConstraintValidator<Password, String> 
         if (countOccurrences(value, ch -> !Character.isLetterOrDigit(ch)) < minSpecialChar) {
             isValid = false;
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(
+            context
+                    .buildConstraintViolationWithTemplate(
                             "Password must contain at least " + minSpecialChar + " special character(s).")
                     .addConstraintViolation();
         }
@@ -79,7 +84,8 @@ public class PasswordValidator implements ConstraintValidator<Password, String> 
             String value,
             IntPredicate predicate
     ) {
-        return value.chars()
+        return value
+                .chars()
                 .filter(predicate)
                 .count();
     }
