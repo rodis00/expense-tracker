@@ -1,8 +1,9 @@
 import React from "react";
 import classes from "./Login.module.css";
 import { json, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../store/auth-slice";
+import { jwtDecode } from "jwt-decode";
 
 function Login() {
   const dispatch = useDispatch();
@@ -13,7 +14,7 @@ function Login() {
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData.entries());
 
-    const authData = {
+    const userData = {
       username: data.username,
       password: data.password,
     };
@@ -23,7 +24,7 @@ function Login() {
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(authData),
+        body: JSON.stringify(userData),
       }
     );
 
@@ -31,13 +32,24 @@ function Login() {
       throw json({ message: "Could not authenticate user." }, { status: 500 });
     }
 
-    dispatch(authActions.login(authData));
-
     const resData = await response.json();
 
     const token = resData.token;
 
     localStorage.setItem("token", token);
+
+    if (!token) {
+      return null;
+    }
+
+    const userId = jwtDecode(token).userId;
+
+    const authData = {
+      ...userData,
+      userId,
+    };
+
+    dispatch(authActions.login(authData));
 
     navigate("/");
   }
