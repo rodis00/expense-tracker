@@ -1,7 +1,7 @@
 import React from "react";
 import classes from "./Login.module.css";
 import { json, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { authActions } from "../../store/auth-slice";
 import { jwtDecode } from "jwt-decode";
 
@@ -44,12 +44,7 @@ function Login() {
 
     const userId = jwtDecode(token).userId;
 
-    const authData = {
-      ...userData,
-      userId,
-    };
-
-    dispatch(authActions.login(authData));
+    dispatch(authActions.login(userId));
 
     navigate("/");
   }
