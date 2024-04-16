@@ -65,6 +65,7 @@ function Earnings() {
         secondName="earning"
         upperName="Earning"
         amountName="Amount"
+        secondAmountName="amount"
       />
     </div>
   );

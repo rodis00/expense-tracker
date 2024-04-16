@@ -65,6 +65,7 @@ function Expenses() {
         secondName="expense"
         upperName="Expense"
         amountName="Price"
+        secondAmountName="price"
       />
     </div>
   );

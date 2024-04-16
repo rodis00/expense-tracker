@@ -11,7 +11,14 @@ import { modalActions } from "../../store/modal-slice";
 import Modal from "../Modal/Modal";
 import UserForm from "./UserForm";
 
-function UserData({ items, name, secondName, upperName, amountName }) {
+function UserData({
+  items,
+  name,
+  secondName,
+  upperName,
+  amountName,
+  secondAmountName,
+}) {
   const [selectedYear, setSelectedYear] = useState("2024");
 
   const version = useSelector((state) => state.modal.modalVersion);
@@ -40,9 +47,11 @@ function UserData({ items, name, secondName, upperName, amountName }) {
       <Modal open={version}>
         <UserForm
           // onSaveUserData={handleNewExpense}
+          httpName={name}
           name={secondName}
           secondName={upperName}
           amount={amountName}
+          httpAmount={secondAmountName}
         />
       </Modal>
       <main className={classes.main}>
