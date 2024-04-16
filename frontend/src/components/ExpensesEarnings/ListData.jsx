@@ -11,7 +11,7 @@ function ListData({ items, name }) {
     <ul className={classes.list}>
       {items.map((prev) => (
         <ItemData
-          key={Math.random.toString()}
+          key={prev.id}
           title={prev.title}
           amount={prev.amount}
           date={prev.date}
