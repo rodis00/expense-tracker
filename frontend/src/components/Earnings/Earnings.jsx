@@ -1,20 +1,21 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import UserData from "../ExpensesEarnings/UserData";
 import classes from "./Earnings.module.css";
-import { useSelector } from "react-redux";
-
-const EARNINGS = [];
+import { useSelector, useDispatch } from "react-redux";
+import { earningsActions } from "../../store/earnings-slice";
 
 function Earnings() {
-  const [earnings, setEarnings] = useState([]);
+  const dispatch = useDispatch();
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const user = useSelector((state) => state.auth.user);
 
   const token = localStorage.getItem("token");
 
-  const fetchExpenses = useCallback(async () => {
-    if (isAuthenticated) {
+  const earningItems = useSelector((state) => state.earning.items);
+
+  useEffect(() => {
+    async function fetchEarnings() {
       const response = await fetch(
         `http://localhost:8080/expense-tracker/api/v1/earnings/pages/users/${user}`,
         {
@@ -26,41 +27,25 @@ function Earnings() {
 
       const resData = await response.json();
 
-      resData.content.map((item) => {
-        let date = new Date(item.date);
-        const newEarning = {
-          id: item.id,
-          title: item.title,
-          amount: +item.amount,
-          date,
-        };
+      dispatch(earningsActions.fetchEarnings(resData.content));
 
-        const isExisting = EARNINGS.some((item) => {
-          return item.id === newEarning.id;
-        });
+      let maxId = 0;
 
-        if (!isExisting) EARNINGS.push(newEarning);
-
-        return EARNINGS;
+      resData.content.forEach((item) => {
+        if (item.id > maxId) maxId = item.id;
+        dispatch(earningsActions.setLastId(maxId));
       });
-      setEarnings(EARNINGS);
     }
-  }, [isAuthenticated, user, token]);
 
-  useEffect(() => {
-    fetchExpenses();
-  }, [fetchExpenses]);
+    if (isAuthenticated) {
+      fetchEarnings();
+    }
+  }, [isAuthenticated, user, token, dispatch]);
 
-  // function handleNewEarning(earning) {
-  //   setEarnings((prevEarning) => {
-  //     return [earning, ...prevEarning];
-  //   });
-  // }
-  
   return (
     <div className={classes.section}>
       <UserData
-        items={earnings}
+        items={earningItems}
         name="earnings"
         secondName="earning"
         upperName="Earning"
