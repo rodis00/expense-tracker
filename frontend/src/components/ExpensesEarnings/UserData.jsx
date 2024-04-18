@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./UserData.module.css";
 import ListData from "./ListData";
 import Chart from "../Chart/Chart";
@@ -20,6 +20,26 @@ function UserData({
   secondAmountName,
 }) {
   const [selectedYear, setSelectedYear] = useState("2024");
+  const [newItems, setNewItems] = useState([]);
+
+  useEffect(() => {
+    items.forEach((item) => {
+      let newDate = new Date(item.date);
+      const newItem = {
+        id: item.id,
+        title: item.title,
+        amount: secondAmountName === "price" ? item.price : item.amount,
+        date: newDate,
+      };
+      const isExisting = newItems.some((elem) => {
+        return elem.id === item.id;
+      });
+
+      if (!isExisting) {
+        setNewItems((prev) => [newItem, ...prev]);
+      }
+    });
+  }, [secondAmountName, items, newItems]);
 
   const version = useSelector((state) => state.modal.modalVersion);
   const dispatch = useDispatch();
@@ -32,7 +52,7 @@ function UserData({
     setSelectedYear(year);
   };
 
-  const filteredItems = items.filter((item) => {
+  const filteredItems = newItems.filter((item) => {
     return item.date.getFullYear().toString() === selectedYear;
   });
 
@@ -46,7 +66,6 @@ function UserData({
     <>
       <Modal open={version}>
         <UserForm
-          // onSaveUserData={handleNewExpense}
           httpName={name}
           name={secondName}
           secondName={upperName}
@@ -66,7 +85,7 @@ function UserData({
               }`}
             >
               {name === "expenses" ? "-" : ""}
-              {amount} <FontAwesomeIcon icon={faDollarSign} />
+              {amount.toFixed(2)} <FontAwesomeIcon icon={faDollarSign} />
             </span>
           )}
         </h2>
