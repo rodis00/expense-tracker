@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../../store/modal-slice";
+import { expenseActions } from "../../store/expense-slice";
+import { earningsActions } from "../../store/earnings-slice";
 
 function UserForm({ httpName, httpAmount, name, secondName, amount }) {
   const dateInputRef = useRef();
@@ -16,6 +18,9 @@ function UserForm({ httpName, httpAmount, name, secondName, amount }) {
   const user = useSelector((state) => state.auth.user);
 
   const token = localStorage.getItem("token");
+
+  const lastExpenseId = useSelector((state) => state.expense.lastId);
+  const lastEarningId = useSelector((state) => state.earning.lastId);
 
   function handleCloseForm() {
     dispatch(modalActions.closeModal());
@@ -31,9 +36,10 @@ function UserForm({ httpName, httpAmount, name, secondName, amount }) {
     const data = Object.fromEntries(formData.entries());
 
     const userData = {
+      id: httpName === "expenses" ? lastExpenseId + 1 : lastEarningId + 1,
       title: data.title,
-      [httpAmount]: data.amount,
-      date: data.date.toString(),
+      [httpAmount]: +data.amount,
+      date: data.date,
     };
 
     const response = await fetch(
@@ -50,6 +56,12 @@ function UserForm({ httpName, httpAmount, name, secondName, amount }) {
 
     if (!response.ok) {
       throw json({ message: "Could not add data." }, { status: 500 });
+    }
+
+    if (httpName === "expenses") {
+      dispatch(expenseActions.addExpense(userData));
+    } else {
+      dispatch(earningsActions.addEarnings(userData));
     }
   }
 
