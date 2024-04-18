@@ -1,20 +1,21 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import UserData from "../ExpensesEarnings/UserData";
 import classes from "./Expenses.module.css";
-import { useSelector } from "react-redux";
-
-const EXPENSES = [];
+import { useSelector, useDispatch } from "react-redux";
+import { expenseActions } from "../../store/expense-slice";
 
 function Expenses() {
-  const [expenses, setExpenses] = useState([]);
+  const dispatch = useDispatch();
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const user = useSelector((state) => state.auth.user);
 
   const token = localStorage.getItem("token");
 
-  const fetchExpenses = useCallback(async () => {
-    if (isAuthenticated) {
+  const expenseItems = useSelector((state) => state.expense.items);
+
+  useEffect(() => {
+    async function fetchExpenses() {
       const response = await fetch(
         `http://localhost:8080/expense-tracker/api/v1/expenses/pages/users/${user}`,
         {
@@ -26,41 +27,25 @@ function Expenses() {
 
       const resData = await response.json();
 
-      resData.content.map((item) => {
-        let date = new Date(item.date);
-        const newExpense = {
-          id: item.id,
-          title: item.title,
-          amount: +item.price,
-          date,
-        };
+      dispatch(expenseActions.fetchExpenses(resData.content));
 
-        const isExisting = EXPENSES.some((item) => {
-          return item.id === newExpense.id;
-        });
+      let maxId = 0;
 
-        if (!isExisting) EXPENSES.push(newExpense);
-
-        return EXPENSES;
+      resData.content.forEach((item) => {
+        if (item.id > maxId) maxId = item.id;
+        dispatch(expenseActions.setLastId(maxId));
       });
-      setExpenses(EXPENSES);
     }
-  }, [isAuthenticated, user, token]);
 
-  useEffect(() => {
-    fetchExpenses();
-  }, [fetchExpenses]);
-
-  // function handleNewExpense(expense) {
-  //   setExpenses((prevExpense) => {
-  //     return [expense, ...prevExpense];
-  //   });
-  // }
+    if (isAuthenticated) {
+      fetchExpenses();
+    }
+  }, [isAuthenticated, token, user, dispatch]);
 
   return (
     <div className={classes.section}>
       <UserData
-        items={expenses}
+        items={expenseItems}
         name="expenses"
         secondName="expense"
         upperName="Expense"
