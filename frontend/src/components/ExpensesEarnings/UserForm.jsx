@@ -19,9 +19,6 @@ function UserForm({ httpName, httpAmount, name, secondName, amount }) {
 
   const token = localStorage.getItem("token");
 
-  const lastExpenseId = useSelector((state) => state.expense.lastId);
-  const lastEarningId = useSelector((state) => state.earning.lastId);
-
   function handleCloseForm() {
     dispatch(modalActions.closeModal());
   }
@@ -36,7 +33,6 @@ function UserForm({ httpName, httpAmount, name, secondName, amount }) {
     const data = Object.fromEntries(formData.entries());
 
     const userData = {
-      id: httpName === "expenses" ? lastExpenseId + 1 : lastEarningId + 1,
       title: data.title,
       [httpAmount]: +data.amount,
       date: data.date,
@@ -58,10 +54,12 @@ function UserForm({ httpName, httpAmount, name, secondName, amount }) {
       throw json({ message: "Could not add data." }, { status: 500 });
     }
 
+    const resData = await response.json();
+
     if (httpName === "expenses") {
-      dispatch(expenseActions.addExpense(userData));
+      dispatch(expenseActions.addExpense(resData));
     } else {
-      dispatch(earningsActions.addEarnings(userData));
+      dispatch(earningsActions.addEarnings(resData));
     }
   }
 
