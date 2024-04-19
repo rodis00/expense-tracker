@@ -28,13 +28,6 @@ function Expenses() {
       const resData = await response.json();
 
       dispatch(expenseActions.fetchExpenses(resData.content));
-
-      let maxId = 0;
-
-      resData.content.forEach((item) => {
-        if (item.id > maxId) maxId = item.id;
-        dispatch(expenseActions.setLastId(maxId));
-      });
     }
 
     if (isAuthenticated) {

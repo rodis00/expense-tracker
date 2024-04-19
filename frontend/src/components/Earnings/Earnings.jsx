@@ -28,13 +28,6 @@ function Earnings() {
       const resData = await response.json();
 
       dispatch(earningsActions.fetchEarnings(resData.content));
-
-      let maxId = 0;
-
-      resData.content.forEach((item) => {
-        if (item.id > maxId) maxId = item.id;
-        dispatch(earningsActions.setLastId(maxId));
-      });
     }
 
     if (isAuthenticated) {
