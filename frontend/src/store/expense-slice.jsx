@@ -16,8 +16,8 @@ const expenseSlice = createSlice({
         state.items.push(action.payload);
       }
     },
-    setLastId(state, action) {
-      state.lastId = action.payload;
+    deleteExpense(state, action) {
+      state.items = state.items.filter((item) => item.id !== action.payload);
     },
   },
 });

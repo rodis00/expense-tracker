@@ -16,8 +16,8 @@ const earningsSlice = createSlice({
         state.items.push(action.payload);
       }
     },
-    setLastId(state, action) {
-      state.lastId = action.payload;
+    deleteEarning(state, action) {
+      state.items = state.items.filter((item) => item.id !== action.payload);
     },
   },
 });
