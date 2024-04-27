@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../../store/modal-slice";
 import { expenseActions } from "../../store/expense-slice";
 import { earningsActions } from "../../store/earnings-slice";
+import Modal from "../Modal/Modal";
 
 function UserForm({ httpName, httpAmount, name, secondName, amount }) {
   const dateInputRef = useRef();
@@ -61,52 +62,71 @@ function UserForm({ httpName, httpAmount, name, secondName, amount }) {
     } else {
       dispatch(earningsActions.addEarnings(resData));
     }
+
+    dispatch(modalActions.showAddInfo());
   }
 
   return (
-    <form onSubmit={handleSubmit} className={classes.userForm}>
-      <div className={classes.userForm__itemsData}>
-        <div className={classes.userForm__itemData}>
-          <label>{secondName} Title</label>
-          <input type="text" name="title" placeholder="Enter Title" required />
+    <>
+      <Modal open={version === "info"}>
+        <p className={classes.modal__p}>
+          Your {secondName} was added succesfully!
+        </p>
+        <div className={classes.modal__div}>
+          <button className={classes.modal__button} onClick={handleCloseForm}>
+            Close
+          </button>
         </div>
-        <div className={classes.userForm__itemData}>
-          <label>{amount}</label>
-          <input
-            type="number"
-            name="amount"
-            min="0.01"
-            step="0.01"
-            placeholder={`Enter ${amount}`}
-            required
-          />
+      </Modal>
+      <form onSubmit={handleSubmit} className={classes.userForm}>
+        <div className={classes.userForm__itemsData}>
+          <div className={classes.userForm__itemData}>
+            <label>{secondName} Title</label>
+            <input
+              type="text"
+              name="title"
+              placeholder="Enter Title"
+              required
+            />
+          </div>
+          <div className={classes.userForm__itemData}>
+            <label>{amount}</label>
+            <input
+              type="number"
+              name="amount"
+              min="0.01"
+              step="0.01"
+              placeholder={`Enter ${amount}`}
+              required
+            />
+          </div>
+          <div className={classes.userForm__itemData}>
+            <label>Date</label>
+            <input
+              type="date"
+              name="date"
+              min="2021-01-01"
+              onFocus={handleFocus}
+              ref={dateInputRef}
+              required
+            />
+          </div>
         </div>
-        <div className={classes.userForm__itemData}>
-          <label>Date</label>
-          <input
-            type="date"
-            name="date"
-            min="2021-01-01"
-            onFocus={handleFocus}
-            ref={dateInputRef}
-            required
-          />
+        <div className={classes.actions}>
+          <button
+            className={classes.userForm__closeBtn}
+            onClick={handleCloseForm}
+            type="button"
+          >
+            Close
+          </button>
+          <button type="submit" className={classes.userForm__btn}>
+            <FontAwesomeIcon icon={faPlus} />
+            <span>Add {name}</span>
+          </button>
         </div>
-      </div>
-      <div className={classes.actions}>
-        <button
-          className={classes.userForm__closeBtn}
-          onClick={handleCloseForm}
-          type="button"
-        >
-          Close
-        </button>
-        <button type="submit" className={classes.userForm__btn}>
-          <FontAwesomeIcon icon={faPlus} />
-          <span>Add {name}</span>
-        </button>
-      </div>
-    </form>
+      </form>
+    </>
   );
 }
 
