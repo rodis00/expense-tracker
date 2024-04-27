@@ -22,6 +22,9 @@ function UserData({
   const [selectedYear, setSelectedYear] = useState("2024");
   const [newItems, setNewItems] = useState([]);
 
+  const version = useSelector((state) => state.modal.modalVersion);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     items.forEach((item) => {
       let newDate = new Date(item.date);
@@ -41,9 +44,6 @@ function UserData({
     });
   }, [secondAmountName, items, newItems]);
 
-  const version = useSelector((state) => state.modal.modalVersion);
-  const dispatch = useDispatch();
-
   function handleOpenModalForm() {
     dispatch(modalActions.showForm());
   }
@@ -60,6 +60,11 @@ function UserData({
 
   for (const element of filteredItems) {
     amount += element.amount;
+  }
+
+  function handleDelete(id) {
+    const updatedItems = newItems.filter((item) => item.id !== id);
+    setNewItems(updatedItems);
   }
 
   return (
@@ -106,7 +111,7 @@ function UserData({
           />
         </div>
         <div className={classes.section}>
-          <ListData items={filteredItems} name={name} />
+          <ListData items={filteredItems} name={name} onDelete={handleDelete} />
         </div>
       </main>
     </>
