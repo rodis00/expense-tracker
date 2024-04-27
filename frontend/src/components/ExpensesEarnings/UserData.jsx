@@ -69,7 +69,7 @@ function UserData({
 
   return (
     <>
-      <Modal open={version}>
+      <Modal open={version === "form"}>
         <UserForm
           httpName={name}
           name={secondName}
@@ -111,7 +111,12 @@ function UserData({
           />
         </div>
         <div className={classes.section}>
-          <ListData items={filteredItems} name={name} onDelete={handleDelete} />
+          <ListData
+            items={filteredItems}
+            name={name}
+            secondName={secondName}
+            onDelete={handleDelete}
+          />
         </div>
       </main>
     </>
