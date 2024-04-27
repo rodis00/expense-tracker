@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDollarSign } from "@fortawesome/free-solid-svg-icons";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
-function ItemData({ title, amount, date }) {
+function ItemData({ title, amount, date, onDelete }) {
   return (
     <li className={classes.listItem}>
       <Date date={date} />
@@ -14,7 +14,7 @@ function ItemData({ title, amount, date }) {
         <FontAwesomeIcon icon={faDollarSign} />
         <span>{amount}</span>
       </div>
-      <button className={classes.listItem__btn}>
+      <button className={classes.listItem__btn} onClick={onDelete}>
         <FontAwesomeIcon icon={faTrash} />
       </button>
     </li>
