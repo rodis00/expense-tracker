@@ -1,22 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import ItemData from "./ItemData";
 import classes from "./ListData.module.css";
 import { json } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { expenseActions } from "../../store/expense-slice";
 import { earningsActions } from "../../store/earnings-slice";
+import { modalActions } from "../../store/modal-slice";
 
-function ListData({ items, name, onDelete }) {
+function ListData({ items, name, onDelete, secondName }) {
+  const [selectedItem, setSelectedItem] = useState();
+
   const dispatch = useDispatch();
-
-  const expenses = useSelector((state) => state.expense.items);
-  console.log(expenses);
 
   const token = localStorage.getItem("token");
 
-  async function handleDelete(id) {
+  async function handleDelete() {
     const response = await fetch(
-      `http://localhost:8080/expense-tracker/api/v1/${name}/${id}`,
+      `http://localhost:8080/expense-tracker/api/v1/${name}/${selectedItem.id}`,
       {
         method: "DELETE",
         headers: {
@@ -31,12 +31,18 @@ function ListData({ items, name, onDelete }) {
     }
 
     if (name === "expenses") {
-      dispatch(expenseActions.deleteExpense(id));
+      dispatch(expenseActions.deleteExpense(selectedItem.id));
     }
     if (name === "earnings") {
-      dispatch(earningsActions.deleteEarning(id));
+      dispatch(earningsActions.deleteEarning(selectedItem.id));
     }
-    onDelete(id);
+    onDelete(selectedItem.id);
+    dispatch(modalActions.closeModal());
+  }
+
+  function handleShowModal(item) {
+    setSelectedItem(item);
+    dispatch(modalActions.showDeleteModal());
   }
 
   if (items.length === 0) {
@@ -44,17 +50,22 @@ function ListData({ items, name, onDelete }) {
   }
 
   return (
-    <ul className={classes.list}>
-      {items.map((item) => (
-        <ItemData
-          key={item.id}
-          title={item.title}
-          amount={item.amount}
-          date={item.date}
-          onDelete={() => handleDelete(item.id)}
-        />
-      ))}
-    </ul>
+    <>
+      <ul className={classes.list}>
+        {items.map((item) => (
+          <ItemData
+            key={item.id}
+            title={item.title}
+            amount={item.amount}
+            date={item.date}
+            secondName={secondName}
+            onShowModal={() => handleShowModal(item)}
+            onDelete={handleDelete}
+            selectedItem={selectedItem}
+          />
+        ))}
+      </ul>
+    </>
   );
 }
 
