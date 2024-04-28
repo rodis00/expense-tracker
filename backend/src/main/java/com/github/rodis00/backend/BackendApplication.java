@@ -13,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 
 @SpringBootApplication
 public class BackendApplication implements CommandLineRunner {
@@ -68,14 +67,14 @@ public class BackendApplication implements CommandLineRunner {
             Earning earning1 = new Earning();
             earning1.setTitle("bitcoin");
             earning1.setAmount(5000.0);
-            earning1.setDate(new Date());
+            earning1.setDate(LocalDateTime.now());
             earning1.setUser(user);
             earningRepository.save(earning1);
 
             Earning earning2 = new Earning();
             earning2.setTitle("house sale");
             earning2.setAmount(28000.85);
-            earning2.setDate(new Date());
+            earning2.setDate(LocalDateTime.now());
             earning2.setUser(user);
             earningRepository.save(earning2);
         }
