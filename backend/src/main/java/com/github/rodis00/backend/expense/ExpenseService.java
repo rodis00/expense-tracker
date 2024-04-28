@@ -93,7 +93,7 @@ public class ExpenseService implements ExpenseServiceInterface {
                     .sorted(new Comparator<Expense>() {
                         @Override
                         public int compare(Expense o1, Expense o2) {
-                            if (page.getSortDirection() == Sort.Direction.ASC) {
+                            if (page.getSortDirection() == Sort.Direction.DESC) {
                                 return o2.getDate().compareTo(o1.getDate());
                             }
                             return o1.getDate().compareTo(o2.getDate());
