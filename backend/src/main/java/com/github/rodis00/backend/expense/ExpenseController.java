@@ -70,7 +70,8 @@ public class ExpenseController {
             @RequestParam(defaultValue = "0") @Min(0) Integer pageNumber,
             @RequestParam(defaultValue = "10") @Min(1) Integer pageSize,
             @RequestParam(defaultValue = "DESC") Sort.Direction sortDirection,
-            @RequestParam(defaultValue = "date") String sortBy
+            @RequestParam(defaultValue = "date") String sortBy,
+            @RequestParam(defaultValue = "") Integer year
     ) {
         GlobalPage expensePage = new GlobalPage();
         expensePage.setPageNumber(pageNumber);
@@ -81,7 +82,7 @@ public class ExpenseController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(expenseService
-                        .findAllExpensesByUserId(userId, expensePage)
+                        .findAllExpensesByUserId(userId, expensePage, year)
                         .map(ExpenseDto::from));
     }
 

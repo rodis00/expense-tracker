@@ -11,6 +11,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -53,14 +54,14 @@ public class BackendApplication implements CommandLineRunner {
             Expense expense1 = new Expense();
             expense1.setTitle("new computer");
             expense1.setPrice(2500.99);
-            expense1.setDate(new Date());
+            expense1.setDate(LocalDateTime.now());
             expense1.setUser(user);
             expenseRepository.save(expense1);
 
             Expense expense2 = new Expense();
             expense2.setTitle("new car");
             expense2.setPrice(12000.0);
-            expense2.setDate(new Date());
+            expense2.setDate(LocalDateTime.now());
             expense2.setUser(user);
             expenseRepository.save(expense2);
 
