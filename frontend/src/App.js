@@ -6,6 +6,7 @@ import Expenses from "./components/Expenses/Expenses";
 import Earnings from "./components/Earnings/Earnings";
 import Summaries from "./components/Summaries/Summaries";
 import Login from "./components/Login/Login";
+import Signup from "./components/Signup/Signup";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,7 @@ const router = createBrowserRouter([
       { path: "earnings", element: <Earnings /> },
       { path: "summaries", element: <Summaries /> },
       { path: "login", element: <Login /> },
+      { path: "signup", element: <Signup /> },
     ],
   },
 ]);
