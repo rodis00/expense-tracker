@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const earningsSlice = createSlice({
   name: "earning",
-  initialState: { items: [], lastId: null },
+  initialState: { items: [] },
   reducers: {
     fetchEarnings(state, action) {
       state.items = action.payload;
@@ -18,6 +18,9 @@ const earningsSlice = createSlice({
     },
     deleteEarning(state, action) {
       state.items = state.items.filter((item) => item.id !== action.payload);
+    },
+    setInitialStateOnLogout(state) {
+      state.items = [];
     },
   },
 });

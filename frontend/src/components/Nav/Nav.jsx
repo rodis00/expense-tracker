@@ -9,6 +9,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { authActions } from "../../store/auth-slice";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { useMediaQuery } from "@react-hook/media-query";
+import { expenseActions } from "../../store/expense-slice";
+import { earningsActions } from "../../store/earnings-slice";
 
 function Nav() {
   const [menuActive, setMenuActive] = useState(false);
@@ -69,6 +71,8 @@ function Nav() {
   function handleLogout() {
     localStorage.removeItem("token");
     dispatch(authActions.logout());
+    dispatch(expenseActions.setInitialStateOnLogout());
+    dispatch(earningsActions.setInitialStateOnLogout());
   }
 
   function handleMenuActiveChange() {

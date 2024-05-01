@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const expenseSlice = createSlice({
   name: "expense",
-  initialState: { items: [], lastId: null },
+  initialState: { items: [] },
   reducers: {
     fetchExpenses(state, action) {
       state.items = action.payload;
@@ -18,6 +18,9 @@ const expenseSlice = createSlice({
     },
     deleteExpense(state, action) {
       state.items = state.items.filter((item) => item.id !== action.payload);
+    },
+    setInitialStateOnLogout(state) {
+      state.items = [];
     },
   },
 });
