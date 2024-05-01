@@ -30,7 +30,6 @@
 
 .field input {
   border: none;
-  border-bottom: 1px solid gray;
   padding-left: 10px;
   color: white;
   width: 80%;
@@ -47,6 +46,7 @@
 }
 
 .field label {
+  font-size: 18px;
   margin: 10px 0 10px 10%;
 }
 
@@ -68,6 +68,8 @@
 }
 
 .signupBtn {
+  margin: 0 auto;
+  text-decoration: none;
   border: none;
   background-color: transparent;
   font-size: 16px;
@@ -81,4 +83,15 @@
 
 .field input:focus {
   font-size: 14px;
+}
+
+.textError {
+  font-size: 15px;
+  color: red;
+  background-color: rgb(37, 37, 37);
+  margin-left: 10%;
+}
+
+.field .inputError {
+  background-color: rgba(118, 2, 2, 0.427);
 }
