@@ -1,11 +1,9 @@
 .modal {
   background-color: rgb(40, 40, 40);
   border-radius: 20px;
-  width: 30vw;
-  height: 55vh;
-  position: absolute;
-  top: 50%;
+  position: fixed;
   left: 50%;
+  top: 50%;
   animation: slide-up 0.5s ease-out forwards;
 }
 

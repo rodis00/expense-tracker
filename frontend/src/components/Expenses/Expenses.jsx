@@ -1,34 +1,49 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import UserData from "../ExpensesEarnings/UserData";
 import classes from "./Expenses.module.css";
-import UserForm from "../ExpensesEarnings/UserForm";
-
-const INITIAL_EXPENSES = [
-  {
-    id: "e1",
-    title: "Doctor",
-    amount: 200,
-    date: new Date(2021, 2, 28),
-  },
-];
+import { useSelector, useDispatch } from "react-redux";
+import { expenseActions } from "../../store/expense-slice";
 
 function Expenses() {
-  const [expenses, setExpenses] = useState(INITIAL_EXPENSES);
+  const dispatch = useDispatch();
 
-  function handleNewExpense(expense) {
-    setExpenses((prevExpense) => {
-      return [expense, ...prevExpense];
-    });
-  }
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const user = useSelector((state) => state.auth.user);
+
+  const token = localStorage.getItem("token");
+
+  const expenseItems = useSelector((state) => state.expense.items);
+
+  useEffect(() => {
+    async function fetchExpenses() {
+      const response = await fetch(
+        `http://localhost:8080/expense-tracker/api/v1/expenses/pages/users/${user}`,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      const resData = await response.json();
+
+      dispatch(expenseActions.fetchExpenses(resData.content));
+    }
+
+    if (isAuthenticated) {
+      fetchExpenses();
+    }
+  }, [isAuthenticated, token, user, dispatch]);
 
   return (
     <div className={classes.section}>
       <UserData
-        items={expenses}
+        items={expenseItems}
         name="expenses"
         secondName="expense"
         upperName="Expense"
         amountName="Price"
+        secondAmountName="price"
       />
     </div>
   );

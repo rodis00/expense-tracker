@@ -5,9 +5,9 @@
   background-color: rgb(20, 20, 20);
 }
 
-.login {
+.signup {
   width: 30%;
-  height: 30rem;
+  min-height: 30rem;
   background-color: rgb(37, 37, 37);
   position: relative;
   top: 50%;
@@ -16,12 +16,12 @@
   border-radius: 15px;
 }
 
-.login h2 {
+.signup h2 {
   text-align: center;
   margin: 30px 0;
 }
 
-.loginForm,
+.signupForm,
 .field,
 .actions {
   display: flex;
@@ -30,6 +30,7 @@
 
 .field input {
   border: none;
+  border-bottom: 1px solid gray;
   padding-left: 10px;
   color: white;
   width: 80%;
@@ -50,7 +51,7 @@
   margin: 10px 0 10px 10%;
 }
 
-.loginBtn {
+.signupBtn {
   width: 50%;
   margin: 50px auto 20px auto;
   height: 2rem;
@@ -63,21 +64,22 @@
   transition: 0.5s;
 }
 
-.loginBtn:hover {
+.signupBtn:hover {
   background-color: #15d79d;
 }
 
-.signupBtn {
-  margin: 0 auto;
-  text-decoration: none;
+.loginBtn {
   border: none;
+  text-decoration: none;
+  margin: 0 auto;
+  padding-bottom: 25px;
   background-color: transparent;
   font-size: 16px;
   cursor: pointer;
   color: white;
 }
 
-.signupBtn:hover {
+.loginBtn:hover {
   color: red;
 }
 
@@ -85,11 +87,11 @@
   font-size: 14px;
 }
 
-.textError {
+.field .textError {
   font-size: 15px;
-  color: red;
   background-color: rgb(37, 37, 37);
-  margin-left: 10%;
+  color: red;
+  margin: 0 10%;
 }
 
 .field .inputError {

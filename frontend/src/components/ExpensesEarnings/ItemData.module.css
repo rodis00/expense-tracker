@@ -49,3 +49,41 @@
 .listItem__btn:hover {
   background-color: red;
 }
+
+.modal__p {
+  padding: 20px;
+  color: white;
+}
+
+.modal__div {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+}
+
+.modal__closeBtn,
+.modal__deleteBtn {
+  height: 2.5rem;
+  width: 5rem;
+  cursor: pointer;
+  border: none;
+  border-radius: var(--border-radius);
+  transition: 0.5s;
+  color: white;
+}
+
+.modal__closeBtn {
+  background-color: gray;
+}
+
+.modal__closeBtn:hover {
+  background-color: #109977;
+}
+
+.modal__deleteBtn {
+  background-color: rgb(156, 14, 42);
+}
+
+.modal__deleteBtn:hover {
+  background-color: red;
+}

@@ -51,6 +51,11 @@ function Nav() {
             ? "translateY(34.5rem)"
             : "translateY(34.05rem)";
           break;
+        case "/signup":
+          indicator.style.transform = isSmallScreen
+            ? "translateY(34.5rem)"
+            : "translateY(34.05rem)";
+          break;
         default:
           console.log("wrong pathname");
           break;

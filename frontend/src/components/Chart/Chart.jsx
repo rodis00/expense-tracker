@@ -39,7 +39,21 @@ function Chart({ items, name }) {
             },
           ],
         }}
-        options={{ maintainAspectRatio: false }}
+        options={{
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              ticks: {
+                color: "white",
+              },
+            },
+            y: {
+              ticks: {
+                color: "white",
+              },
+            },
+          },
+        }}
       />
     </div>
   );
