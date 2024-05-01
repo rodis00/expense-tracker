@@ -69,6 +69,7 @@ function Signup() {
               username: resData.username,
               password: resData.password,
             }));
+            setResult(resData.detail);
           }
         }
 
