@@ -47,7 +47,6 @@ function Login() {
 
       const resData = await response.json();
 
-      console.log(resData.detail)
       if (!response.ok) {
         if (response.status === 400) {
           setErrors(() => ({
@@ -78,6 +77,8 @@ function Login() {
       console.log(error)
     }
   }
+
+  console.log(errors)
 
   return (
     <div className={classes.box}>
