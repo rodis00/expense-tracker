@@ -12,5 +12,5 @@ public interface ExpenseServiceInterface {
     List<Expense> getAllExpenses();
     List<Expense> getAllUserExpenses(Integer userId);
     void deleteExpenseById(Integer id);
-    Page<Expense> findAllExpensesByUserId(Integer userId, GlobalPage page);
+    Page<Expense> findAllExpensesByUserId(Integer userId, GlobalPage page, Integer year);
 }

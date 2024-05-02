@@ -1,74 +1,102 @@
 package com.github.rodis00.backend.exception;
 
+import com.github.rodis00.backend.api.ApiResponse;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(EarningNotFoundException.class)
-    public ProblemDetail handleEarningNotFoundException(EarningNotFoundException e) {
-        return ProblemDetail.forStatusAndDetail(
+    public ApiResponse handleEarningNotFoundException(EarningNotFoundException e) {
+        return new ApiResponse(
                 HttpStatus.NOT_FOUND,
-                e.getMessage()
+                HttpStatus.NOT_FOUND.value(),
+                Collections.singletonMap(e.getFieldName(), e.getMessage())
         );
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ExpenseNotFoundException.class)
-    public ProblemDetail handleExpenseNotFoundException(ExpenseNotFoundException e) {
-        return ProblemDetail.forStatusAndDetail(
+    public ApiResponse handleExpenseNotFoundException(ExpenseNotFoundException e) {
+        return new ApiResponse(
                 HttpStatus.NOT_FOUND,
-                e.getMessage()
+                HttpStatus.NOT_FOUND.value(),
+                Collections.singletonMap(e.getFieldName(), e.getMessage())
         );
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(UserNotFoundException.class)
-    public ProblemDetail handleUserNotFoundException(UserNotFoundException e) {
-        return ProblemDetail.forStatusAndDetail(
+    public ApiResponse handleUserNotFoundException(UserNotFoundException e) {
+        return new ApiResponse(
                 HttpStatus.NOT_FOUND,
-                e.getMessage()
+                HttpStatus.NOT_FOUND.value(),
+                Collections.singletonMap(e.getFieldName(), e.getMessage())
         );
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+    public ApiResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         Map<String, String> errorMap = new HashMap<>();
         e.getBindingResult()
                 .getFieldErrors()
                 .forEach(error -> {
                     errorMap.put(error.getField(), error.getDefaultMessage());
                 });
-        return errorMap;
+        return new ApiResponse(
+                HttpStatus.BAD_REQUEST,
+                HttpStatus.BAD_REQUEST.value(),
+                errorMap
+        );
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(UserAlreadyExistsException.class)
-    public ProblemDetail handleUserAlreadyExistsException(UserAlreadyExistsException e) {
-        return ProblemDetail.forStatusAndDetail(
+    public ApiResponse handleUserAlreadyExistsException(UserAlreadyExistsException e) {
+        return new ApiResponse(
                 HttpStatus.BAD_REQUEST,
-                e.getMessage()
+                HttpStatus.BAD_REQUEST.value(),
+                Collections.singletonMap(e.getFieldName(), e.getMessage())
         );
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(UsernameIsTakenException.class)
-    public ProblemDetail handleUsernameIsTakenException(UsernameIsTakenException e) {
-        return ProblemDetail.forStatusAndDetail(
+    public ApiResponse handleUsernameIsTakenException(UsernameIsTakenException e) {
+        return new ApiResponse(
                 HttpStatus.BAD_REQUEST,
-                e.getMessage()
+                HttpStatus.BAD_REQUEST.value(),
+                Collections.singletonMap(e.getFieldName(), e.getMessage())
         );
     }
 
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(InvalidPasswordException.class)
-    public ProblemDetail handleInvalidPasswordException(InvalidPasswordException e) {
-        return ProblemDetail.forStatusAndDetail(
-                HttpStatus.BAD_REQUEST,
-                e.getMessage()
+    public ApiResponse handleInvalidPasswordException(InvalidPasswordException e) {
+        return new ApiResponse(
+                HttpStatus.UNAUTHORIZED,
+                HttpStatus.UNAUTHORIZED.value(),
+                Collections.singletonMap(e.getFieldName(), e.getMessage())
+        );
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(InvalidUsernameException.class)
+    public ApiResponse handleInvalidUsernameException(InvalidUsernameException e) {
+        return new ApiResponse(
+                HttpStatus.UNAUTHORIZED,
+                HttpStatus.UNAUTHORIZED.value(),
+                Collections.singletonMap(e.getFieldName(), e.getMessage())
         );
     }
 }
