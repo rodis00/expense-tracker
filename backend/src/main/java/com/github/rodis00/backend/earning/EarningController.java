@@ -70,7 +70,8 @@ public class EarningController {
             @RequestParam(defaultValue = "0") @Min(0) Integer pageNumber,
             @RequestParam(defaultValue = "10") @Min(1) Integer pageSize,
             @RequestParam(defaultValue = "DESC") Sort.Direction sortDirection,
-            @RequestParam(defaultValue = "date") String sortBy
+            @RequestParam(defaultValue = "date") String sortBy,
+            @RequestParam(defaultValue = "") Integer year
     ) {
         GlobalPage earningsPage = new GlobalPage();
         earningsPage.setPageNumber(pageNumber);
@@ -81,7 +82,7 @@ public class EarningController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(earningService
-                        .findAllEarningsByUserId(userId, earningsPage)
+                        .findAllEarningsByUserId(userId, earningsPage, year)
                         .map(EarningDto::from));
     }
 

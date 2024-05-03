@@ -4,12 +4,10 @@ import com.github.rodis00.backend.exception.EarningNotFoundException;
 import com.github.rodis00.backend.page.GlobalPage;
 import com.github.rodis00.backend.user.User;
 import com.github.rodis00.backend.user.UserService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -79,12 +77,31 @@ public class EarningService implements EarningServiceInterface {
     @Override
     public Page<Earning> findAllEarningsByUserId(
             Integer userId,
-            GlobalPage page
+            GlobalPage page,
+            Integer year
     ) {
         User user = userService.getUserById(userId);
 
         Sort sort = Sort.by(page.getSortDirection(), page.getSortBy());
         Pageable pageable = PageRequest.of(page.getPageNumber(), page.getPageSize(), sort);
-        return earningRepository.findAllEarningsByUserId(userId, pageable);
+        Page<Earning> earnings = earningRepository.findAllEarningsByUserId(userId, pageable);
+
+        if (year != null) {
+            List<Earning> allEarnings = earningRepository.findAllByUserId(userId);
+            List<Earning> filtered = allEarnings.stream()
+                    .filter(earning -> earning.getDate().getYear() == year)
+                    .sorted(new Comparator<Earning>() {
+                        @Override
+                        public int compare(Earning o1, Earning o2) {
+                            if (page.getSortDirection() == Sort.Direction.DESC) {
+                                return o2.getDate().compareTo(o1.getDate());
+                            }
+                            return o1.getDate().compareTo(o2.getDate());
+                        }
+                    })
+                    .toList();
+            return new PageImpl<>(filtered, pageable, filtered.size());
+        }
+        return earnings;
     }
 }
