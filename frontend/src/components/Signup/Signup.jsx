@@ -24,7 +24,6 @@ function Signup() {
     password: "",
     confirmPassword: "",
   });
-  const [result, setResult] = useState("");
 
   function handleInputValues(event) {
     setSignupValues((prevValues) => ({
@@ -36,8 +35,6 @@ function Signup() {
       ...prevErrors,
       [event.target.name]: "",
     }));
-
-    setResult("");
   }
 
   function handleConfirmPassword(event) {
@@ -62,14 +59,15 @@ function Signup() {
 
         const resData = await response.json();
 
+        console.log(resData);
+
         if (!response.ok) {
           if (response.status === 400) {
             setErrors(() => ({
-              email: resData.email,
-              username: resData.username,
-              password: resData.password,
+              email: resData.message.email,
+              username: resData.message.username,
+              password: resData.message.password,
             }));
-            setResult(resData.detail);
           }
         }
 
@@ -106,7 +104,7 @@ function Signup() {
               placeholder="Type your email"
               onChange={handleInputValues}
               value={signupValues.email}
-              className={(errors.email || result) && classes.inputError}
+              className={errors.email && classes.inputError}
             />
             {errors.email && (
               <div className={classes.textError}>{errors.email}</div>
@@ -122,7 +120,7 @@ function Signup() {
               placeholder="Type your username"
               onChange={handleInputValues}
               value={signupValues.username}
-              className={(errors.username || result) && classes.inputError}
+              className={errors.username && classes.inputError}
             />
             {errors.username && (
               <div className={classes.textError}>{errors.username}</div>
@@ -138,7 +136,7 @@ function Signup() {
               placeholder="Type your password"
               onChange={handleInputValues}
               value={signupValues.password}
-              className={(errors.password || result) && classes.inputError}
+              className={errors.password && classes.inputError}
             />
             {errors.password && (
               <div className={classes.textError}>{errors.password}</div>
@@ -154,16 +152,12 @@ function Signup() {
               placeholder="Confirm your password"
               onChange={handleConfirmPassword}
               value={confirmPassword}
-              className={
-                (errors.confirmPassword || result) && classes.inputError
-              }
+              className={errors.confirmPassword && classes.inputError}
             />
             {errors.confirmPassword && (
               <div className={classes.textError}>{errors.confirmPassword}</div>
             )}
           </div>
-
-          {result && <p className={classes.textError}>{result}</p>}
           <div className={classes.actions}>
             <button className={classes.signupBtn} type="submit">
               Sign up

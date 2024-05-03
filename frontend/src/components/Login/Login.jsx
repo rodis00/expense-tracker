@@ -47,16 +47,20 @@ function Login() {
 
       const resData = await response.json();
 
+      console.log(resData);
+
       if (!response.ok) {
         if (response.status === 400) {
           setErrors(() => ({
-            username: resData.username,
-            password: resData.password,
+            username: resData.message.username,
+            password: resData.message.password,
           }));
-          setResult(resData.detail);
         }
-        if (response.status === 404) {
-          setResult(resData.detail);
+        if (response.status === 401) {
+          if (resData.message.username !== "")
+            setResult(resData.message.username);
+          if (resData.message.password !== "")
+            setResult(resData.message.password);
         }
       }
 
@@ -74,11 +78,9 @@ function Login() {
 
       navigate("/");
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
-
-  console.log(errors)
 
   return (
     <div className={classes.box}>
