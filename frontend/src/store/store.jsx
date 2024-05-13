@@ -13,6 +13,7 @@ const store = configureStore({
     expense: expenseSlice.reducer,
     earning: earningsSlice.reducer,
     allExpenses: allExpensesSlice.reducer,
+    allEarnings: allExpensesSlice.reducer,
   },
 });
 
