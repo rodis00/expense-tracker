@@ -5,6 +5,7 @@ import authSlice from "./auth-slice";
 import expenseSlice from "./expense-slice";
 import earningsSlice from "./earnings-slice";
 import allExpensesSlice from "./allExpenses-slice";
+import allEarningsSlice from "./allEarnings-slice";
 
 const store = configureStore({
   reducer: {
@@ -13,7 +14,7 @@ const store = configureStore({
     expense: expenseSlice.reducer,
     earning: earningsSlice.reducer,
     allExpenses: allExpensesSlice.reducer,
-    allEarnings: allExpensesSlice.reducer,
+    allEarnings: allEarningsSlice.reducer,
   },
 });
 
