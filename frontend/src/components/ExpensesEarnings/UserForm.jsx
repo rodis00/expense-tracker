@@ -36,7 +36,7 @@ function UserForm({ httpName, httpAmount, name, secondName, amount }) {
     const userData = {
       title: data.title,
       [httpAmount]: +data.amount,
-      date: data.date,
+      date: new Date(data.date),
     };
 
     const response = await fetch(
