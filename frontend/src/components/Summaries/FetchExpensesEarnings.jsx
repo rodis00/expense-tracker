@@ -29,7 +29,7 @@ export async function fetchAllEarnings(user, token, dispatch) {
   );
 
   if (!response.ok) {
-    throw new Error("Could not fetch expenses");
+    throw new Error("Could not fetch earnings");
   }
 
   const resData = await response.json();
