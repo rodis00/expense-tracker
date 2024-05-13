@@ -1,7 +1,7 @@
 package com.github.rodis00.backend.exception;
 
-public class UserAlreadyExistsException extends RuntimeException implements FieldName{
-    public UserAlreadyExistsException(String message) {
+public class InvalidUsernameException extends RuntimeException implements FieldName{
+    public InvalidUsernameException(String message) {
         super(message);
     }
 

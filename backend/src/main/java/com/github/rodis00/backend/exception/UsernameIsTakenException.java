@@ -4,4 +4,8 @@ public class UsernameIsTakenException extends RuntimeException {
     public UsernameIsTakenException(String message) {
         super(message);
     }
+
+    public String getFieldName() {
+        return Fields.username.name();
+    }
 }

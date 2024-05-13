@@ -12,5 +12,5 @@ public interface EarningServiceInterface {
     List<Earning> getAllEarnings();
     List<Earning> getAllUserEarnings(Integer userId);
     void deleteEarningById(Integer id);
-    Page<Earning> findAllEarningsByUserId(Integer userId, GlobalPage page);
+    Page<Earning> findAllEarningsByUserId(Integer userId, GlobalPage page, Integer year);
 }
