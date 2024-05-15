@@ -53,10 +53,14 @@ function ChartLine({ expenses, earnings }) {
             {
               label: "expenses",
               data: ChartDataPointsExpenses.map((data) => data.value),
+              backgroundColor: "red",
+              borderColor: "red",
             },
             {
               label: "earnings",
               data: ChartDataPointsEarnings.map((data) => data.value),
+              backgroundColor: "limegreen",
+              borderColor: "limegreen",
             },
           ],
         }}
