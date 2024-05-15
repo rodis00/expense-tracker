@@ -286,7 +286,8 @@
     font-size: var(--mediaFontSize);
   }
 
-  .navbar__loginBtn__icon {
+  .navbar__loginBtn__icon,
+  .navbar__logoutBtn__icon {
     width: var(--navWidthMedia);
     font-size: var(--mediaFontSize);
   }
