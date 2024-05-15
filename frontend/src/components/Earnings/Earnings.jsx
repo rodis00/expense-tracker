@@ -13,11 +13,12 @@ function Earnings() {
   const token = localStorage.getItem("token");
 
   const earningItems = useSelector((state) => state.earning.items);
+  const earningsPageSize = useSelector((state) => state.earning.pageSize);
 
   useEffect(() => {
     async function fetchEarnings() {
       const response = await fetch(
-        `http://localhost:8080/expense-tracker/api/v1/earnings/pages/users/${user}`,
+        `http://localhost:8080/expense-tracker/api/v1/earnings/pages/users/${user}?pageSize=${earningsPageSize}`,
         {
           headers: {
             Authorization: "Bearer " + token,
@@ -33,7 +34,7 @@ function Earnings() {
     if (isAuthenticated) {
       fetchEarnings();
     }
-  }, [isAuthenticated, user, token, dispatch]);
+  }, [isAuthenticated, user, token, earningsPageSize, dispatch]);
 
   return (
     <div className={classes.section}>
