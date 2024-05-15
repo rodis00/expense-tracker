@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const earningsSlice = createSlice({
   name: "earning",
-  initialState: { items: [] },
+  initialState: { items: [], pageSize: 10 },
   reducers: {
     fetchEarnings(state, action) {
       state.items = action.payload;
@@ -19,8 +19,12 @@ const earningsSlice = createSlice({
     deleteEarning(state, action) {
       state.items = state.items.filter((item) => item.id !== action.payload);
     },
+    increasePageSize(state, action) {
+      state.pageSize = action.payload;
+    },
     setInitialStateOnLogout(state) {
       state.items = [];
+      state.pageSize = 10;
     },
   },
 });

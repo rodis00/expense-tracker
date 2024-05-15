@@ -2,12 +2,16 @@ import React, { useEffect, useRef, useState } from "react";
 import classes from "./Nav.module.css";
 import { NavLink, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHouse } from "@fortawesome/free-solid-svg-icons";
-import { faDollarSign } from "@fortawesome/free-solid-svg-icons";
-import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
+import {
+  faHouse,
+  faDollarSign,
+  faArrowTrendUp,
+  faArrowTrendDown,
+  faRightToBracket,
+  faRightFromBracket,
+} from "@fortawesome/free-solid-svg-icons";
 import { useSelector, useDispatch } from "react-redux";
 import { authActions } from "../../store/auth-slice";
-import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { useMediaQuery } from "@react-hook/media-query";
 import { expenseActions } from "../../store/expense-slice";
 import { earningsActions } from "../../store/earnings-slice";
@@ -50,13 +54,13 @@ function Nav() {
           break;
         case "/login":
           indicator.style.transform = isSmallScreen
-            ? "translateY(34.5rem)"
-            : "translateY(34.05rem)";
+            ? "translateY(calc(100vh - 150px))"
+            : "translateY(calc(100vh - 159px))";
           break;
         case "/signup":
           indicator.style.transform = isSmallScreen
-            ? "translateY(34.5rem)"
-            : "translateY(34.05rem)";
+          ? "translateY(calc(100vh - 150px))"
+          : "translateY(calc(100vh - 159px))";
           break;
         default:
           console.log("wrong pathname");
@@ -120,7 +124,7 @@ function Nav() {
               className={classes.navbar__list__elem__link}
             >
               <FontAwesomeIcon
-                icon={faDollarSign}
+                icon={faArrowTrendDown}
                 className={classes.navbar__list__elem__link__icon}
               />
               <span className={classes.navbar__list__elem__link__title}>
@@ -135,7 +139,7 @@ function Nav() {
               className={classes.navbar__list__elem__link}
             >
               <FontAwesomeIcon
-                icon={faDollarSign}
+                icon={faArrowTrendUp}
                 className={classes.navbar__list__elem__link__icon}
               />
               <span className={classes.navbar__list__elem__link__title}>

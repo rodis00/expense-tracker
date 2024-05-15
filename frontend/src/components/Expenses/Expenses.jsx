@@ -13,11 +13,12 @@ function Expenses() {
   const token = localStorage.getItem("token");
 
   const expenseItems = useSelector((state) => state.expense.items);
+  const expensePageSize = useSelector((state) => state.expense.pageSize);
 
   useEffect(() => {
     async function fetchExpenses() {
       const response = await fetch(
-        `http://localhost:8080/expense-tracker/api/v1/expenses/pages/users/${user}`,
+        `http://localhost:8080/expense-tracker/api/v1/expenses/pages/users/${user}?pageSize=${expensePageSize}`,
         {
           headers: {
             Authorization: "Bearer " + token,
@@ -33,7 +34,7 @@ function Expenses() {
     if (isAuthenticated) {
       fetchExpenses();
     }
-  }, [isAuthenticated, token, user, dispatch]);
+  }, [isAuthenticated, token, user, expensePageSize, dispatch]);
 
   return (
     <div className={classes.section}>

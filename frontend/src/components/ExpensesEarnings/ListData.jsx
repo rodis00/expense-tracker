@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ItemData from "./ItemData";
 import classes from "./ListData.module.css";
 import { json } from "react-router-dom";
@@ -9,10 +9,21 @@ import { modalActions } from "../../store/modal-slice";
 
 function ListData({ items, name, onDelete, secondName }) {
   const [selectedItem, setSelectedItem] = useState();
+  const [expensesPageSize, setExpensesPageSize] = useState(10);
+  const [earningsPageSize, setEarningsPageSize] = useState(10);
 
   const dispatch = useDispatch();
 
   const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    if (name === "expenses") {
+      dispatch(expenseActions.increasePageSize(expensesPageSize));
+    }
+    if (name === "earnings") {
+      dispatch(expenseActions.increasePageSize(earningsPageSize));
+    }
+  }, [earningsPageSize, expensesPageSize, name, dispatch]);
 
   async function handleDelete() {
     const response = await fetch(
@@ -49,6 +60,15 @@ function ListData({ items, name, onDelete, secondName }) {
     return <h2 className={classes.list}>Found no {name}.</h2>;
   }
 
+  function handleShowMore() {
+    if (name === "expenses") {
+      setExpensesPageSize((prev) => prev + 10);
+    }
+    if (name === "earnings") {
+      setEarningsPageSize((prev) => prev + 10);
+    }
+  }
+
   return (
     <>
       <ul className={classes.list}>
@@ -64,6 +84,9 @@ function ListData({ items, name, onDelete, secondName }) {
             selectedItem={selectedItem}
           />
         ))}
+        <button className={classes.moreBtn} onClick={handleShowMore}>
+          Show more
+        </button>
       </ul>
     </>
   );

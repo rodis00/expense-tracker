@@ -12,8 +12,14 @@ function RootLayout() {
 
   if (token) {
     const userId = jwtDecode(token).userId;
-
+    const exp = jwtDecode(token).exp;
+    const currentDate = new Date();
+    const tokenDate = new Date(exp * 1000);
+    if (currentDate > tokenDate) {
+      localStorage.removeItem("token");
+    } else {
     dispatch(authActions.login(userId));
+    }
   }
 
   return (

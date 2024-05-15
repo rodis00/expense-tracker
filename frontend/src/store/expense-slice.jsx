@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const expenseSlice = createSlice({
   name: "expense",
-  initialState: { items: [] },
+  initialState: { items: [], pageSize: 10 },
   reducers: {
     fetchExpenses(state, action) {
       state.items = action.payload;
@@ -19,8 +19,12 @@ const expenseSlice = createSlice({
     deleteExpense(state, action) {
       state.items = state.items.filter((item) => item.id !== action.payload);
     },
+    increasePageSize(state, action) {
+      state.pageSize = action.payload;
+    },
     setInitialStateOnLogout(state) {
       state.items = [];
+      state.pageSize = 10;
     },
   },
 });
