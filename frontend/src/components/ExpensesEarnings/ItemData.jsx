@@ -29,7 +29,7 @@ function ItemData({
       <Modal open={version === "delete"}>
         <p className={classes.modal__p}>
           Are you sure you want to remove this {secondName}:{" "}
-          {selectedItem && selectedItem.title}?
+          <span className={classes.modal__selectedItem}>{selectedItem && selectedItem.title}</span> ?
         </p>
         <div className={classes.modal__div}>
           <button
