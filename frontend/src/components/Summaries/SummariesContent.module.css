@@ -1,0 +1,41 @@
+.filter {
+  margin-top: 50px;
+}
+
+.section {
+  min-height: 10rem;
+  width: 75%;
+  margin: 10rem auto 0 auto;
+  display: flex;
+  justify-content: space-between;
+  color: white;
+}
+
+.section div {
+  width: 20%;
+}
+
+.section div p {
+  text-align: center;
+}
+
+.box {
+  display: block;
+  text-align: center;
+  margin: 20px;
+  padding: 10px 0;
+  border-radius: 20px;
+  background-color: rgb(37, 37, 37);
+}
+
+.box1 {
+  color: red;
+}
+
+.box2 {
+  color: yellow;
+}
+
+.box3 {
+  color: limegreen;
+}

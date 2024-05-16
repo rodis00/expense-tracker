@@ -31,7 +31,7 @@ function Chart({ items, name }) {
           labels: ChartDataPoints.map((data) => data.label),
           datasets: [
             {
-              label: "count",
+              label: "Count",
               barThickness: 15,
               backgroundColor: name === "expenses" ? "red" : "limegreen",
               borderRadius: "20",
@@ -46,10 +46,41 @@ function Chart({ items, name }) {
               ticks: {
                 color: "white",
               },
+              grid: {
+                display: false,
+              },
+              title: {
+                display: true,
+                text: "Months",
+                color: "rgb(100,100,100)",
+                font: {
+                  size: "20px",
+                },
+              },
             },
             y: {
               ticks: {
                 color: "white",
+              },
+              grid: {
+                color: "rgb(35,35,35)",
+              },
+              title: {
+                display: true,
+                text: "Currency - $",
+                color: "rgb(100,100,100)",
+                font: {
+                  size: "20px",
+                },
+              },
+            },
+          },
+          plugins: {
+            legend: {
+              labels: {
+                font: {
+                  size: "17px",
+                },
               },
             },
           },
