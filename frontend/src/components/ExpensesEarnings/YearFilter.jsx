@@ -1,13 +1,13 @@
 import React from "react";
 import classes from "./YearFilter.module.css";
 
-function YearFilter({ selected, onYearChange }) {
+function YearFilter({ selected, onYearChange, summaries }) {
   const handleYearChange = (event) => {
     onYearChange(event.target.value);
   };
 
   return (
-    <div className={classes.filter}>
+    <div className={summaries ? classes.filterSummaries : classes.filter}>
       <label>Filter by year</label>
       <select value={selected} onChange={handleYearChange}>
         <option value="2025">2025</option>

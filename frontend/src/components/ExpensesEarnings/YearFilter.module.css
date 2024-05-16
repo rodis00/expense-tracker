@@ -2,14 +2,24 @@
   width: 13rem;
   height: 2rem;
   position: relative;
-  left: calc(75% - 10rem);
+  left: calc(75% - 15rem);
 }
 
-.filter label {
+.filterSummaries {
+  width: 13rem;
+  height: 2rem;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.filter label,
+.filterSummaries label {
   color: white;
 }
 
-.filter select {
+.filter select,
+.filterSummaries select {
   text-align: center;
   margin-left: 15px;
   border: none;
@@ -19,11 +29,13 @@
   width: 5rem;
 }
 
-.filter select:focus {
+.filter select:focus,
+.filterSummaries select:focus {
   outline: none;
 }
 
-.filter select option {
+.filter select option,
+.filterSummaries select option {
   background-color: rgb(70, 70, 70);
   color: white;
 }
