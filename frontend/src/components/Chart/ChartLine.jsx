@@ -71,10 +71,41 @@ function ChartLine({ expenses, earnings }) {
               ticks: {
                 color: "white",
               },
+              grid: {
+                display: false,
+              },
+              title: {
+                display: true,
+                text: "Months",
+                color: "rgb(100,100,100)",
+                font: {
+                  size: "20px",
+                },
+              },
             },
             y: {
               ticks: {
                 color: "white",
+              },
+              grid: {
+                color: "rgb(35,35,35)",
+              },
+              title: {
+                display: true,
+                text: "Currency - $",
+                color: "rgb(100,100,100)",
+                font: {
+                  size: "20px",
+                },
+              },
+            },
+          },
+          plugins: {
+            legend: {
+              labels: {
+                font: {
+                  size: "17px",
+                },
               },
             },
           },
