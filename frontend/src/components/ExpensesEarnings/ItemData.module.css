@@ -32,7 +32,8 @@
   font-size: 20px;
 }
 
-.listItem__btn {
+.listItem__btn,
+.listItem__editBtn {
   color: white;
   font-size: 20px;
   cursor: pointer;
@@ -44,6 +45,15 @@
   position: absolute;
   right: 1rem;
   transition: 0.5s;
+}
+
+.listItem__editBtn{
+  background-color: rgb(125, 125, 0);
+  right: 5rem;
+}
+
+.listItem__editBtn:hover{
+  background-color: rgb(200, 200, 0);
 }
 
 .listItem__btn:hover {
