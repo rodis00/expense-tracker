@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const earningsSlice = createSlice({
   name: "earning",
-  initialState: { items: [], pageSize: 10 },
+  initialState: { items: [], itemToUpdate: 0, pageSize: 10 },
   reducers: {
     fetchEarnings(state, action) {
       state.items = action.payload;
@@ -18,6 +18,20 @@ const earningsSlice = createSlice({
     },
     deleteEarning(state, action) {
       state.items = state.items.filter((item) => item.id !== action.payload);
+    },
+    setItemToUpdate(state, action) {
+      state.itemToUpdate = action.payload;
+    },
+    updateEarningItem(state, action) {
+      const index = state.items.findIndex(
+        (item) => item.id === action.payload.id
+      );
+      state.items[index] = {
+        id: action.payload.id,
+        title: action.payload.title,
+        amount: action.payload.amount,
+        date: action.payload.date,
+      };
     },
     increasePageSize(state, action) {
       state.pageSize = action.payload;
