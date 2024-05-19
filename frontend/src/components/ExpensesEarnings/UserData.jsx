@@ -25,6 +25,14 @@ function UserData({
   const version = useSelector((state) => state.modal.modalVersion);
   const dispatch = useDispatch();
 
+  const earningItemToUpdate = useSelector(
+    (state) => state.earning.itemToUpdate
+  );
+
+  const expenseItemToUpdate = useSelector(
+    (state) => state.expense.itemToUpdate
+  );
+
   useEffect(() => {
     items.forEach((item) => {
       let newDate = new Date(item.date);
@@ -67,15 +75,42 @@ function UserData({
     setNewItems(updatedItems);
   }
 
+  function handleUpdate(item) {
+    const newItem = {
+      id: item.id,
+      title: item.title,
+      amount: name === "expenses" ? item.price : item.amount,
+      date: new Date(item.date),
+    };
+    const updatedItems = newItems.map((elem) =>
+      elem.id === item.id ? newItem : elem
+    );
+    setNewItems(updatedItems);
+  }
+
   return (
     <>
       <Modal open={version === "form"}>
         <UserForm
-          httpName={name}
-          name={secondName}
-          secondName={upperName}
+          name={name}
+          secondName={secondName}
+          upperName={upperName}
           amount={amountName}
           httpAmount={secondAmountName}
+        />
+      </Modal>
+      <Modal open={version === "updateForm"}>
+        <UserForm
+          name={name}
+          secondName={secondName}
+          upperName={upperName}
+          amount={amountName}
+          httpAmount={secondAmountName}
+          selectedItem={
+            name === "expenses" ? expenseItemToUpdate : earningItemToUpdate
+          }
+          onUpdate={handleUpdate}
+          update={true}
         />
       </Modal>
       <main className={classes.main}>
