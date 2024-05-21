@@ -34,23 +34,16 @@ function UserData({
   );
 
   useEffect(() => {
-    items.forEach((item) => {
-      let newDate = new Date(item.date);
-      const newItem = {
+    const modifiedElements = items.map((item) => {
+      return {
         id: item.id,
         title: item.title,
         amount: secondAmountName === "price" ? item.price : item.amount,
-        date: newDate,
+        date: new Date(item.date),
       };
-      const isExisting = newItems.some((elem) => {
-        return elem.id === item.id;
-      });
-
-      if (!isExisting) {
-        setNewItems((prev) => [newItem, ...prev]);
-      }
     });
-  }, [secondAmountName, items, newItems]);
+    setNewItems(modifiedElements);
+  }, [secondAmountName, items]);
 
   function handleOpenModalForm() {
     dispatch(modalActions.showForm());
