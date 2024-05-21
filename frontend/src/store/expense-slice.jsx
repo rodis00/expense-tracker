@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const expenseSlice = createSlice({
   name: "expense",
-  initialState: { items: [], itemToUpdate: 0, pageSize: 10 },
+  initialState: { items: [], itemToUpdate: 0, pageNumber: 0 },
   reducers: {
     fetchExpenses(state, action) {
       state.items = action.payload;
@@ -33,8 +33,11 @@ const expenseSlice = createSlice({
         date: action.payload.date,
       };
     },
-    increasePageSize(state, action) {
-      state.pageSize = action.payload;
+    increasePageNumber(state) {
+      state.pageNumber++;
+    },
+    decreasePageNumber(state) {
+      state.pageNumber--;
     },
     setInitialStateOnLogout(state) {
       state.items = [];
