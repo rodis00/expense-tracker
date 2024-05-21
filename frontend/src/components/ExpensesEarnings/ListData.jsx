@@ -2,28 +2,20 @@ import React, { useEffect, useState } from "react";
 import ItemData from "./ItemData";
 import classes from "./ListData.module.css";
 import { json } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { expenseActions } from "../../store/expense-slice";
 import { earningsActions } from "../../store/earnings-slice";
 import { modalActions } from "../../store/modal-slice";
 
 function ListData({ items, name, onDelete, secondName }) {
   const [selectedItem, setSelectedItem] = useState();
-  const [expensesPageSize, setExpensesPageSize] = useState(10);
-  const [earningsPageSize, setEarningsPageSize] = useState(10);
+
+  const expensePageNumber = useSelector((state) => state.expense.pageNumber);
+  const earningPageNumber = useSelector((state) => state.earning.pageNumber);
 
   const dispatch = useDispatch();
 
   const token = localStorage.getItem("token");
-
-  useEffect(() => {
-    if (name === "expenses") {
-      dispatch(expenseActions.increasePageSize(expensesPageSize));
-    }
-    if (name === "earnings") {
-      dispatch(expenseActions.increasePageSize(earningsPageSize));
-    }
-  }, [earningsPageSize, expensesPageSize, name, dispatch]);
 
   async function handleDelete() {
     const response = await fetch(
@@ -60,34 +52,94 @@ function ListData({ items, name, onDelete, secondName }) {
     return <h2 className={classes.list}>Found no {name}.</h2>;
   }
 
-  function handleShowMore() {
+  function handlePrevPage() {
     if (name === "expenses") {
-      setExpensesPageSize((prev) => prev + 10);
+      dispatch(expenseActions.decreasePageNumber());
     }
     if (name === "earnings") {
-      setEarningsPageSize((prev) => prev + 10);
+      dispatch(earningsActions.decreasePageNumber());
     }
+  }
+
+  function handleNextPage() {
+    if (name === "expenses") {
+      dispatch(expenseActions.increasePageNumber());
+      console.log(items)
+    }
+    if (name === "earnings") {
+      dispatch(earningsActions.increasePageNumber());
+    }
+  }
+
+  function handleShowUpdateForm(item) {
+    if (name === "expenses") {
+      dispatch(expenseActions.setItemToUpdate(item.id));
+    }
+    if (name === "earnings") {
+      dispatch(earningsActions.setItemToUpdate(item.id));
+    }
+    dispatch(modalActions.showUpdateForm());
   }
 
   return (
     <>
-      <ul className={classes.list}>
-        {items.map((item) => (
-          <ItemData
-            key={item.id}
-            title={item.title}
-            amount={item.amount}
-            date={item.date}
-            secondName={secondName}
-            onShowModal={() => handleShowModal(item)}
-            onDelete={handleDelete}
-            selectedItem={selectedItem}
-          />
-        ))}
-        <button className={classes.moreBtn} onClick={handleShowMore}>
-          Show more
-        </button>
-      </ul>
+      {items.length === 0 ? (
+        <h2 className={classes.list}>Found no {name}.</h2>
+      ) : (
+        <ul className={classes.list}>
+          {items.map((item) => (
+            <ItemData
+              key={item.id}
+              title={item.title}
+              amount={item.amount}
+              date={item.date}
+              secondName={secondName}
+              onShowModal={() => handleShowModal(item)}
+              onShowUpdateModal={() => handleShowUpdateForm(item)}
+              onDelete={handleDelete}
+              selectedItem={selectedItem}
+            />
+          ))}
+        </ul>
+      )}
+      {name === "expenses" && (
+        <div className={classes.pageActions}>
+          <button
+            className={classes.moreBtn}
+            onClick={handlePrevPage}
+            disabled={expensePageNumber <= 0}
+          >
+            prev
+          </button>
+          <span className={classes.pageNumber}>{expensePageNumber + 1}</span>
+          <button
+            className={classes.moreBtn}
+            onClick={handleNextPage}
+            disabled={items.length < 5}
+          >
+            next
+          </button>
+        </div>
+      )}
+      {name === "earnings" && (
+        <div className={classes.pageActions}>
+          <button
+            className={classes.moreBtn}
+            onClick={handlePrevPage}
+            disabled={earningPageNumber <= 0}
+          >
+            prev
+          </button>
+          <span className={classes.pageNumber}>{earningPageNumber + 1}</span>
+          <button
+            className={classes.moreBtn}
+            onClick={handleNextPage}
+            disabled={items.length < 5}
+          >
+            next
+          </button>
+        </div>
+      )}
     </>
   );
 }
