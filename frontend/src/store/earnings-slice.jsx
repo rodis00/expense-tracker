@@ -13,7 +13,7 @@ const earningsSlice = createSlice({
       });
 
       if (!isExisting) {
-        state.items.push(action.payload);
+        state.items = [action.payload, ...state.items];
       }
     },
     deleteEarning(state, action) {

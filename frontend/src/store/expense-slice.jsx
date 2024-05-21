@@ -13,7 +13,7 @@ const expenseSlice = createSlice({
       });
 
       if (!isExisting) {
-        state.items.push(action.payload);
+        state.items = [action.payload, ...state.items];
       }
     },
     deleteExpense(state, action) {
