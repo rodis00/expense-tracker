@@ -1,6 +1,6 @@
 .list {
-  width: calc(100% - 2rem);
-  inset: 1rem;
+  width: 60%;
+  margin: 0 auto;
   position: relative;
   color: white;
   display: flex;
@@ -8,4 +8,16 @@
   align-items: center;
   gap: 1rem;
   margin-bottom: 2rem;
+}
+
+.moreBtn{
+  margin: 3rem 0;
+  width: 8rem;
+  height: 2.5rem;
+  cursor: pointer;
+  border-radius: 20px;
+  border: none;
+  background-color: #109977;
+  color: white;
+  transition: .5s;
 }

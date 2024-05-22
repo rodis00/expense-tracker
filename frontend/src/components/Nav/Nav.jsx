@@ -1,33 +1,90 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import classes from "./Nav.module.css";
-import { BrowserRouter as Router, Link, Routes, Route } from "react-router-dom";
-import Expenses from "../Expenses/Expenses";
-import Earnings from "../Earnings/Earnings";
-import Home from "../Home/Home";
-import Summaries from "../Summaries/Summaries";
-import Login from "../Login/Login";
+import { NavLink, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHouse } from "@fortawesome/free-solid-svg-icons";
-import { faDollarSign } from "@fortawesome/free-solid-svg-icons";
-import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
+import {
+  faHouse,
+  faDollarSign,
+  faArrowTrendUp,
+  faArrowTrendDown,
+  faRightToBracket,
+  faRightFromBracket,
+} from "@fortawesome/free-solid-svg-icons";
+import { useSelector, useDispatch } from "react-redux";
+import { authActions } from "../../store/auth-slice";
+import { useMediaQuery } from "@react-hook/media-query";
+import { expenseActions } from "../../store/expense-slice";
+import { earningsActions } from "../../store/earnings-slice";
 
 function Nav() {
   const [menuActive, setMenuActive] = useState(false);
-  const [chosenLink, setChosenLink] = useState("Home");
 
-  const navElements = [
-    { icon: <FontAwesomeIcon icon={faHouse} />, title: "Home" },
-    { icon: <FontAwesomeIcon icon={faDollarSign} />, title: "Expenses" },
-    { icon: <FontAwesomeIcon icon={faDollarSign} />, title: "Earnings" },
-    { icon: <FontAwesomeIcon icon={faDollarSign} />, title: "Summaries" },
-  ];
+  const divRef = useRef();
+
+  const location = useLocation();
+
+  const isSmallScreen = useMediaQuery(
+    "(min-width: 601px) and (max-width: 1000px)"
+  );
+
+  useEffect(() => {
+    const indicator = divRef.current;
+
+    if (indicator) {
+      switch (location.pathname) {
+        case "/":
+          indicator.style.transform = isSmallScreen
+            ? "translateY(calc(2.5rem * 0))"
+            : "translateY(calc(3rem * 0))";
+          break;
+        case "/expenses":
+          indicator.style.transform = isSmallScreen
+            ? "translateY(calc(2.5rem * 1 + 10px))"
+            : "translateY(calc(3rem * 1 + 10px))";
+          break;
+        case "/earnings":
+          indicator.style.transform = isSmallScreen
+            ? "translateY(calc(2.5rem * 2 + 20px))"
+            : "translateY(calc(3rem * 2 + 20px))";
+          break;
+        case "/summaries":
+          indicator.style.transform = isSmallScreen
+            ? "translateY(calc(2.5rem * 3 + 30px))"
+            : "translateY(calc(3rem * 3 + 30px))";
+          break;
+        case "/login":
+          indicator.style.transform = isSmallScreen
+            ? "translateY(calc(100vh - 150px))"
+            : "translateY(calc(100vh - 159px))";
+          break;
+        case "/signup":
+          indicator.style.transform = isSmallScreen
+          ? "translateY(calc(100vh - 150px))"
+          : "translateY(calc(100vh - 159px))";
+          break;
+        default:
+          console.log("wrong pathname");
+          break;
+      }
+    }
+  }, [location.pathname, isSmallScreen]);
+
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const dispatch = useDispatch();
+
+  function handleLogout() {
+    localStorage.removeItem("token");
+    dispatch(authActions.logout());
+    dispatch(expenseActions.setInitialStateOnLogout());
+    dispatch(earningsActions.setInitialStateOnLogout());
+  }
 
   function handleMenuActiveChange() {
     setMenuActive((active) => !active);
   }
 
   return (
-    <Router>
+    <>
       <button
         onClick={handleMenuActiveChange}
         className={`${classes.toogleNav} ${
@@ -49,49 +106,85 @@ function Nav() {
           <p className={classes.navbar__logo__p}>A&A</p>
         </div>
         <ul className={classes.navbar__list}>
-          {navElements.map((elem) => (
-            <li
-              key={elem.title}
-              className={`${classes.navbar__list__elem} ${
-                chosenLink === elem.title
-                  ? classes.navbar__list__elem__active
-                  : ""
-              }`}
+          <li className={classes.navbar__list__elem}>
+            <NavLink to={"/"} className={classes.navbar__list__elem__link} end>
+              <FontAwesomeIcon
+                icon={faHouse}
+                className={classes.navbar__list__elem__link__icon}
+              />
+              <span className={classes.navbar__list__elem__link__title}>
+                home
+              </span>
+            </NavLink>
+          </li>
+
+          <li className={classes.navbar__list__elem}>
+            <NavLink
+              to={"expenses"}
+              className={classes.navbar__list__elem__link}
             >
-              <Link
-                onClick={() => setChosenLink(elem.title)}
-                to={`/${elem.title}`}
-                className={`${classes.navbar__list__elem__link}`}
-              >
-                <span className={classes.navbar__list__elem__link__icon}>
-                  {elem.icon}
-                </span>
-                <span className={classes.navbar__list__elem__link__title}>
-                  {elem.title}
-                </span>
-              </Link>
-            </li>
-          ))}
-          <div className={classes.navbar__list__indicator}></div>
+              <FontAwesomeIcon
+                icon={faArrowTrendDown}
+                className={classes.navbar__list__elem__link__icon}
+              />
+              <span className={classes.navbar__list__elem__link__title}>
+                expenses
+              </span>
+            </NavLink>
+          </li>
+
+          <li className={classes.navbar__list__elem}>
+            <NavLink
+              to={"earnings"}
+              className={classes.navbar__list__elem__link}
+            >
+              <FontAwesomeIcon
+                icon={faArrowTrendUp}
+                className={classes.navbar__list__elem__link__icon}
+              />
+              <span className={classes.navbar__list__elem__link__title}>
+                earnings
+              </span>
+            </NavLink>
+          </li>
+
+          <li className={classes.navbar__list__elem}>
+            <NavLink
+              to={"summaries"}
+              className={classes.navbar__list__elem__link}
+            >
+              <FontAwesomeIcon
+                icon={faDollarSign}
+                className={classes.navbar__list__elem__link__icon}
+              />
+              <span className={classes.navbar__list__elem__link__title}>
+                summaries
+              </span>
+            </NavLink>
+          </li>
         </ul>
-        <button className={classes.navbar__loginBtn}>
-          <Link to={"/Login"} className={classes.loginLink}>
+        {isAuthenticated ? (
+          <button className={classes.navbar__logoutBtn} onClick={handleLogout}>
             <FontAwesomeIcon
-              icon={faRightToBracket}
-              className={classes.navbar__loginBtn__icon}
+              icon={faRightFromBracket}
+              className={classes.navbar__logoutBtn__icon}
             />
-            <span className={classes.navbar__loginBtn__text}>Login</span>
-          </Link>
-        </button>
+            <span className={classes.navbar__logoutBtn__text}>Logout</span>
+          </button>
+        ) : (
+          <NavLink to={"login"} className={classes.navbar__loginBtn}>
+            <span className={classes.navbar__login__link}>
+              <FontAwesomeIcon
+                icon={faRightToBracket}
+                className={classes.navbar__loginBtn__icon}
+              />
+              <span className={classes.navbar__loginBtn__text}>Login</span>
+            </span>
+          </NavLink>
+        )}
+        <div className={classes.navbar__list__indicator} ref={divRef}></div>
       </nav>
-      <Routes>
-        <Route path="Home" exact={true} element={<Home />} />
-        <Route path="expenses" element={<Expenses />} />
-        <Route path="earnings" element={<Earnings />} />
-        <Route path="summaries" element={<Summaries />} />
-        <Route path="Login" element={<Login />} />
-      </Routes>
-    </Router>
+    </>
   );
 }
 

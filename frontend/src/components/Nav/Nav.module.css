@@ -1,5 +1,5 @@
 :root {
-  --navBgc: #19222a;
+  --navBgc: rgb(37, 37, 37);
   --navWidth: 4rem;
   --elemHeight: 3rem;
   --activeColor: gray;
@@ -172,7 +172,8 @@
   margin-left: var(--navWidth);
 }
 
-.navbar__loginBtn {
+.navbar__loginBtn,
+.navbar__logoutBtn {
   width: 100%;
   height: var(--elemHeight);
   cursor: pointer;
@@ -187,18 +188,21 @@
   transition: 1s;
 }
 
-.navbar__loginBtn:hover {
+.navbar__loginBtn:hover,
+.navbar__logoutBtn:hover {
   background-color: var(--activeColor);
 }
 
-.navbar__loginBtn__icon {
+.navbar__loginBtn__icon,
+.navbar__logoutBtn__icon {
   display: block;
   position: absolute;
   width: var(--navWidth);
   font-size: 20px;
 }
 
-.navbar__loginBtn__text {
+.navbar__loginBtn__text,
+.navbar__logoutBtn__text {
   font-family: "Times New Roman", Times, serif;
   font-size: 15px;
   text-transform: uppercase;
@@ -208,43 +212,26 @@
   margin-left: var(--navWidth);
 }
 
+.navbar__login__link {
+  display: block;
+  position: absolute;
+  height: 3rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  z-index: 1;
+}
+
 .navbar__list__indicator {
   width: 100%;
   height: var(--elemHeight);
   position: absolute;
   top: 3rem;
-  background-color: aqua;
+  bottom: 0;
+  background-color: #109977;
   border-radius: 10px;
   margin-top: 30px;
   transition: 1s;
-}
-
-.navbar__list__elem__active:nth-child(1) ~ .navbar__list__indicator {
-  transform: translateY(calc(3rem * 0));
-}
-
-.navbar__list__elem__active:nth-child(2) ~ .navbar__list__indicator {
-  transform: translateY(calc(3rem * 1 + 10px));
-  background-color: red;
-}
-
-.navbar__list__elem__active:nth-child(3) ~ .navbar__list__indicator {
-  transform: translateY(calc(3rem * 2 + 20px));
-  background-color: green;
-}
-
-.navbar__list__elem__active:nth-child(4) ~ .navbar__list__indicator {
-  transform: translateY(calc(3rem * 3 + 30px));
-  background-color: yellow;
-}
-
-.loginLink{
-  display: block;
-  color: white;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
 }
 
 @media (max-width: 600px) {
@@ -268,9 +255,9 @@
   }
 
   .navbar__logo__container {
-    width: 35px;
-    height: 35px;
-    margin-left: calc((var(--navWidthMedia) - 35px) / 2);
+    width: 40px;
+    height: 40px;
+    margin-left: calc((var(--navWidthMedia) - 40px) / 2);
   }
 
   .logo__first,
@@ -299,7 +286,8 @@
     font-size: var(--mediaFontSize);
   }
 
-  .navbar__loginBtn__icon {
+  .navbar__loginBtn__icon,
+  .navbar__logoutBtn__icon {
     width: var(--navWidthMedia);
     font-size: var(--mediaFontSize);
   }
@@ -312,22 +300,9 @@
     height: 2.5rem;
   }
 
-  .navbar__list__elem__active:nth-child(1) ~ .navbar__list__indicator {
-    transform: translateY(calc(2.5rem * 0));
-  }
-
-  .navbar__list__elem__active:nth-child(2) ~ .navbar__list__indicator {
-    transform: translateY(calc(2.5rem * 1 + 10px));
-    background-color: red;
-  }
-
-  .navbar__list__elem__active:nth-child(3) ~ .navbar__list__indicator {
-    transform: translateY(calc(2.5rem * 2 + 20px));
-    background-color: green;
-  }
-
-  .navbar__list__elem__active:nth-child(4) ~ .navbar__list__indicator {
-    transform: translateY(calc(2.5rem * 3 + 30px));
-    background-color: yellow;
+  .navbar__loginBtn,
+  .navbar__logoutBtn,
+  .navbar__login__link {
+    height: 2.5rem;
   }
 }
