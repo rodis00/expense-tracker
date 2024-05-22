@@ -60,7 +60,7 @@ public class BackendApplication implements CommandLineRunner {
             int year = 2021;
             for (int y = 0; y < 5; y++) {
                 for (int m = 0; m < 12; m++) {
-                    for (int d = 0; d < 12; d++) {
+                    for (int d = 0; d < 2; d++) {
                         Expense expense = new Expense();
                         expense.setTitle("new expense - " + d);
                         expense.setPrice(getPrice());
@@ -101,9 +101,7 @@ public class BackendApplication implements CommandLineRunner {
     }
 
     public double getPrice() {
-        int min = 1;
-        int max = 2500;
-        double price = new Random().nextDouble(((max - min) + 1) + min);
+        double price = new Random().nextDouble(2500) + 1;
         return BigDecimal
                 .valueOf(price)
                 .setScale(2, RoundingMode.HALF_UP)
