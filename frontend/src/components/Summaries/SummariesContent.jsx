@@ -12,43 +12,28 @@ function SummariesContent({ allExpenses, allEarnings }) {
   let totalEarnings = 0;
 
   useEffect(() => {
-    allExpenses.forEach((item) => {
-      let newDate = new Date(item.date);
-      const newItem = {
+    const modifiedExpenses = allExpenses.map((item) => {
+      return {
         id: item.id,
         title: item.title,
         amount: item.price,
-        date: newDate,
+        date: new Date(item.date),
       };
-      const isExisting = allNewExpenses.some((elem) => {
-        return elem.id === item.id;
-      });
-
-      if (!isExisting) {
-        setAllNewExpenses((prev) => [newItem, ...prev]);
-      }
     });
-  }, [allExpenses, allNewExpenses]);
+    setAllNewExpenses(modifiedExpenses);
+  }, [allExpenses]);
 
   useEffect(() => {
-    allEarnings.forEach((item) => {
-      let newDate = new Date(item.date);
-      const newItem = {
+    const modifiedEarnings = allEarnings.map((item) => {
+      return {
         id: item.id,
         title: item.title,
         amount: item.amount,
-        date: newDate,
+        date: new Date(item.date),
       };
-
-      const isExisting = allNewEarnings.some((elem) => {
-        return elem.id === item.id;
-      });
-
-      if (!isExisting) {
-        setAllNewEarnings((prev) => [newItem, ...prev]);
-      }
     });
-  }, [allEarnings, allNewEarnings]);
+    setAllNewEarnings(modifiedEarnings);
+  }, [allEarnings]);
 
   function handleFilteredYear(year) {
     setSelectedYear(year);
@@ -71,7 +56,7 @@ function SummariesContent({ allExpenses, allEarnings }) {
   }
 
   let balans = totalEarnings - totalExpenses;
-  
+
   return (
     <>
       <div>
