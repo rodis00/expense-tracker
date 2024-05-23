@@ -111,7 +111,7 @@ function UserForm({
       dispatch(earningsActions.updateEarningItem(resData));
     }
 
-    onUpdate(resData);
+    onUpdate();
     dispatch(modalActions.showUpdateInfo());
   }
 
