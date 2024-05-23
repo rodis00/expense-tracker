@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ItemData from "./ItemData";
 import classes from "./ListData.module.css";
 import { json } from "react-router-dom";
@@ -6,12 +6,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { expenseActions } from "../../store/expense-slice";
 import { earningsActions } from "../../store/earnings-slice";
 import { modalActions } from "../../store/modal-slice";
+import { fetchExpenses } from "../Expenses/FetchExpenses";
+import { fetchEarnings } from "../Earnings/FetchEarnings";
 
 function ListData({ items, name, onDelete, secondName }) {
   const [selectedItem, setSelectedItem] = useState();
 
+  const user = useSelector((state) => state.auth.user);
+  const expenseYear = useSelector((state) => state.expense.year);
+  const earningYear = useSelector((state) => state.earning.year);
   const expensePageNumber = useSelector((state) => state.expense.pageNumber);
   const earningPageNumber = useSelector((state) => state.earning.pageNumber);
+  const expenseTotalPages = useSelector((state) => state.expense.maxPage);
+  const earningTotalPages = useSelector((state) => state.earning.maxPage);
 
   const dispatch = useDispatch();
 
@@ -41,15 +48,17 @@ function ListData({ items, name, onDelete, secondName }) {
     }
     onDelete(selectedItem.id);
     dispatch(modalActions.closeModal());
+    if (name === "expenses") {
+      fetchExpenses(user, token, expensePageNumber, expenseYear, dispatch);
+    }
+    if (name === "earnings") {
+      fetchEarnings(user, token, earningPageNumber, earningYear, dispatch);
+    }
   }
 
   function handleShowModal(item) {
     setSelectedItem(item);
     dispatch(modalActions.showDeleteModal());
-  }
-
-  if (items.length === 0) {
-    return <h2 className={classes.list}>Found no {name}.</h2>;
   }
 
   function handlePrevPage() {
@@ -64,7 +73,6 @@ function ListData({ items, name, onDelete, secondName }) {
   function handleNextPage() {
     if (name === "expenses") {
       dispatch(expenseActions.increasePageNumber());
-      console.log(items)
     }
     if (name === "earnings") {
       dispatch(earningsActions.increasePageNumber());
@@ -115,7 +123,7 @@ function ListData({ items, name, onDelete, secondName }) {
           <button
             className={classes.moreBtn}
             onClick={handleNextPage}
-            disabled={items.length < 5}
+            disabled={expensePageNumber >= expenseTotalPages - 1}
           >
             next
           </button>
@@ -134,7 +142,7 @@ function ListData({ items, name, onDelete, secondName }) {
           <button
             className={classes.moreBtn}
             onClick={handleNextPage}
-            disabled={items.length < 5}
+            disabled={earningPageNumber >= earningTotalPages - 1}
           >
             next
           </button>
