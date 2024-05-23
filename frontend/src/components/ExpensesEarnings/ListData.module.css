@@ -10,7 +10,22 @@
   margin-bottom: 2rem;
 }
 
-.moreBtn{
+.pageActions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
+}
+
+.pageActionsInvisible {
+  visibility: hidden;
+}
+
+.pageNumber {
+  color: white;
+}
+
+.moreBtn {
   margin: 3rem 0;
   width: 8rem;
   height: 2.5rem;
@@ -19,5 +34,14 @@
   border: none;
   background-color: #109977;
   color: white;
-  transition: .5s;
+  transition: 0.5s;
+}
+
+:disabled {
+  background-color: #003c2d;
+}
+
+:disabled:hover {
+  background-color: #003c2d;
+  cursor: not-allowed;
 }

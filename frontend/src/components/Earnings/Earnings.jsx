@@ -2,44 +2,32 @@ import React, { useEffect } from "react";
 import UserData from "../ExpensesEarnings/UserData";
 import classes from "./Earnings.module.css";
 import { useSelector, useDispatch } from "react-redux";
-import { earningsActions } from "../../store/earnings-slice";
+import { fetchEarnings } from "./FetchEarnings";
+import { fetchAllEarnings } from "../Summaries/FetchExpensesEarnings";
 
 function Earnings() {
   const dispatch = useDispatch();
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const user = useSelector((state) => state.auth.user);
-
+  const earningItems = useSelector((state) => state.earning.items);
+  const earningsPageNumber = useSelector((state) => state.earning.pageNumber);
+  const earningYear = useSelector((state) => state.earning.year);
+  const allEarnings = useSelector((state) => state.allEarnings.items);
   const token = localStorage.getItem("token");
 
-  const earningItems = useSelector((state) => state.earning.items);
-  const earningsPageSize = useSelector((state) => state.earning.pageSize);
-
   useEffect(() => {
-    async function fetchEarnings() {
-      const response = await fetch(
-        `http://localhost:8080/expense-tracker/api/v1/earnings/pages/users/${user}?pageSize=${earningsPageSize}`,
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-
-      const resData = await response.json();
-
-      dispatch(earningsActions.fetchEarnings(resData.content));
-    }
-
     if (isAuthenticated) {
-      fetchEarnings();
+      fetchEarnings(user, token, earningsPageNumber, earningYear, dispatch);
+      fetchAllEarnings(user, token, dispatch);
     }
-  }, [isAuthenticated, user, token, earningsPageSize, dispatch]);
+  }, [isAuthenticated, user, token, earningsPageNumber, earningYear, dispatch]);
 
   return (
     <div className={classes.section}>
       <UserData
         items={earningItems}
+        allItems={allEarnings}
         name="earnings"
         secondName="earning"
         upperName="Earning"
