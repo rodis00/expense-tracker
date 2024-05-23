@@ -84,24 +84,7 @@ public class EarningService implements EarningServiceInterface {
 
         Sort sort = Sort.by(page.getSortDirection(), page.getSortBy());
         Pageable pageable = PageRequest.of(page.getPageNumber(), page.getPageSize(), sort);
-        Page<Earning> earnings = earningRepository.findAllEarningsByUserId(userId, pageable);
 
-        if (year != null) {
-            List<Earning> allEarnings = earningRepository.findAllByUserId(userId);
-            List<Earning> filtered = allEarnings.stream()
-                    .filter(earning -> earning.getDate().getYear() == year)
-                    .sorted(new Comparator<Earning>() {
-                        @Override
-                        public int compare(Earning o1, Earning o2) {
-                            if (page.getSortDirection() == Sort.Direction.DESC) {
-                                return o2.getDate().compareTo(o1.getDate());
-                            }
-                            return o1.getDate().compareTo(o2.getDate());
-                        }
-                    })
-                    .toList();
-            return new PageImpl<>(filtered, pageable, filtered.size());
-        }
-        return earnings;
+        return earningRepository.findAllEarningsByUserIdAndYear(userId, year, pageable);
     }
 }

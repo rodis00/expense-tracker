@@ -7,6 +7,6 @@ public class UserAlreadyExistsException extends RuntimeException implements Fiel
 
     @Override
     public String getFieldName() {
-        return Fields.username.name();
+        return Fields.email.name();
     }
 }

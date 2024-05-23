@@ -11,8 +11,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 @SpringBootApplication
 public class BackendApplication implements CommandLineRunner {
@@ -45,38 +49,62 @@ public class BackendApplication implements CommandLineRunner {
             User user = new User();
             user.setEmail("user@example.com");
             user.setUsername("user");
-            user.setPassword(passwordEncoder.encode("U$3r2024"));
+            user.setPassword(passwordEncoder.encode("User@2024"));
             user.setExpenses(new ArrayList<>());
             user.setEarnings(new ArrayList<>());
             userRepository.save(user);
 
-            Expense expense1 = new Expense();
-            expense1.setTitle("new computer");
-            expense1.setPrice(2500.99);
-            expense1.setDate(LocalDateTime.now());
-            expense1.setUser(user);
-            expenseRepository.save(expense1);
+            List<Expense> expenses = new ArrayList<>();
+            List<Earning> earnings = new ArrayList<>();
 
-            Expense expense2 = new Expense();
-            expense2.setTitle("new car");
-            expense2.setPrice(12000.0);
-            expense2.setDate(LocalDateTime.now());
-            expense2.setUser(user);
-            expenseRepository.save(expense2);
+            int year = 2021;
+            for (int y = 0; y < 5; y++) {
+                for (int m = 0; m < 12; m++) {
+                    for (int d = 0; d < 2; d++) {
+                        Expense expense = new Expense();
+                        expense.setTitle("new expense - " + d);
+                        expense.setPrice(getPrice());
+                        expense.setDate(getDate(year, m + 1));
+                        expense.setUser(user);
+                        expenses.add(expense);
 
-            Earning earning1 = new Earning();
-            earning1.setTitle("bitcoin");
-            earning1.setAmount(5000.0);
-            earning1.setDate(LocalDateTime.now());
-            earning1.setUser(user);
-            earningRepository.save(earning1);
+                        Earning earning = new Earning();
+                        earning.setTitle("new earning - " + d);
+                        earning.setAmount(getPrice());
+                        earning.setDate(getDate(year, m + 1));
+                        earning.setUser(user);
+                        earnings.add(earning);
+                    }
+                }
+                year++;
+            }
 
-            Earning earning2 = new Earning();
-            earning2.setTitle("house sale");
-            earning2.setAmount(28000.85);
-            earning2.setDate(LocalDateTime.now());
-            earning2.setUser(user);
-            earningRepository.save(earning2);
+            earningRepository.saveAll(earnings);
+            expenseRepository.saveAll(expenses);
         }
+    }
+
+    public LocalDateTime getDate(
+            int year,
+            int month
+    ) {
+        Random random = new Random();
+        return LocalDateTime.of(
+                year,
+                month,
+                random.nextInt(28) + 1,
+                random.nextInt(24),
+                random.nextInt(60),
+                random.nextInt(60),
+                random.nextInt(999999999)
+        );
+    }
+
+    public double getPrice() {
+        double price = new Random().nextDouble(2500) + 1;
+        return BigDecimal
+                .valueOf(price)
+                .setScale(2, RoundingMode.HALF_UP)
+                .doubleValue();
     }
 }

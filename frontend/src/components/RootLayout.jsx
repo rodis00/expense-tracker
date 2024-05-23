@@ -1,12 +1,15 @@
 import React from "react";
 import Nav from "./Nav/Nav";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { authActions } from "../store/auth-slice";
 import { jwtDecode } from "jwt-decode";
+import { expenseActions } from "../store/expense-slice";
+import { earningsActions } from "../store/earnings-slice";
 
 function RootLayout() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const token = localStorage.getItem("token");
 
@@ -17,8 +20,12 @@ function RootLayout() {
     const tokenDate = new Date(exp * 1000);
     if (currentDate > tokenDate) {
       localStorage.removeItem("token");
+      dispatch(authActions.logout());
+      dispatch(expenseActions.setInitialStateOnLogout());
+      dispatch(earningsActions.setInitialStateOnLogout());
+      navigate("/login");
     } else {
-    dispatch(authActions.login(userId));
+      dispatch(authActions.login(userId));
     }
   }
 
