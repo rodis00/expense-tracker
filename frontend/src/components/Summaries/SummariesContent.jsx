@@ -73,17 +73,17 @@ function SummariesContent({ allExpenses, allEarnings }) {
         <div>
           <p>Total expenses in this year:</p>
           <span className={`${classes.box} ${classes.box1}`}>
-            {totalExpenses} $
+            {totalExpenses.toFixed(2)} $
           </span>
         </div>
         <div>
           <p>Your balance:</p>
-          <span className={`${classes.box} ${classes.box2}`}>{balans} $</span>
+          <span className={`${classes.box} ${classes.box2}`}>{balans.toFixed(2)} $</span>
         </div>
         <div>
           <p>Total earnings in this year:</p>
           <span className={`${classes.box} ${classes.box3}`}>
-            {totalEarnings} $
+            {totalEarnings.toFixed(2)} $
           </span>
         </div>
       </section>
