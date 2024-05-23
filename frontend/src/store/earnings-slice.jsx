@@ -2,7 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const earningsSlice = createSlice({
   name: "earning",
-  initialState: { items: [], itemToUpdate: 0, pageNumber: 0 },
+  initialState: {
+    items: [],
+    itemToUpdate: 0,
+    pageNumber: 0,
+    year: 2024,
+    maxPage: 0,
+  },
   reducers: {
     fetchEarnings(state, action) {
       state.items = action.payload;
@@ -39,9 +45,18 @@ const earningsSlice = createSlice({
     decreasePageNumber(state) {
       state.pageNumber--;
     },
+    setYear(state, action) {
+      state.year = action.payload;
+    },
+    setMaxPages(state, action) {
+      state.maxPage = action.payload;
+    },
     setInitialStateOnLogout(state) {
       state.items = [];
-      state.pageSize = 10;
+      state.itemToUpdate = 0;
+      state.pageNumber = 0;
+      state.year = 2024;
+      state.maxPage = 0;
     },
   },
 });

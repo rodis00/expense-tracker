@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const expenseSlice = createSlice({
   name: "expense",
-  initialState: { items: [], itemToUpdate: 0, pageNumber: 0 },
+  initialState: { items: [], itemToUpdate: 0, pageNumber: 0, year: 2024, maxPage: 0 },
   reducers: {
     fetchExpenses(state, action) {
       state.items = action.payload;
@@ -29,7 +29,7 @@ const expenseSlice = createSlice({
       state.items[index] = {
         id: action.payload.id,
         title: action.payload.title,
-        amount: action.payload.amount,
+        price: action.payload.price,
         date: action.payload.date,
       };
     },
@@ -39,9 +39,18 @@ const expenseSlice = createSlice({
     decreasePageNumber(state) {
       state.pageNumber--;
     },
+    setYear(state, action) {
+      state.year = action.payload;
+    },
+    setMaxPages(state, action) {
+      state.maxPage = action.payload;
+    },
     setInitialStateOnLogout(state) {
       state.items = [];
-      state.pageSize = 10;
+      state.itemToUpdate = 0;
+      state.pageNumber = 0;
+      state.year = 2024;
+      state.maxPage = 0;
     },
   },
 });
