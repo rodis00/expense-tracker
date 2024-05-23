@@ -10,9 +10,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../../store/modal-slice";
 import Modal from "../Modal/Modal";
 import UserForm from "./UserForm";
+import { expenseActions } from "../../store/expense-slice";
+import { earningsActions } from "../../store/earnings-slice";
 
 function UserData({
   items,
+  allItems,
   name,
   secondName,
   upperName,
@@ -21,6 +24,7 @@ function UserData({
 }) {
   const [selectedYear, setSelectedYear] = useState("2024");
   const [newItems, setNewItems] = useState([]);
+  const [allNewItems, setAllNewItems] = useState([]);
 
   const version = useSelector((state) => state.modal.modalVersion);
   const dispatch = useDispatch();
@@ -45,21 +49,43 @@ function UserData({
     setNewItems(modifiedElements);
   }, [secondAmountName, items]);
 
+  useEffect(() => {
+    const modifiedElements = allItems.map((item) => {
+      return {
+        id: item.id,
+        title: item.title,
+        amount: secondAmountName === "price" ? item.price : item.amount,
+        date: new Date(item.date),
+      };
+    });
+    setAllNewItems(modifiedElements);
+  }, [allItems, secondAmountName]);
+
   function handleOpenModalForm() {
     dispatch(modalActions.showForm());
   }
 
   const handleFilteredYear = (year) => {
     setSelectedYear(year);
+    if (name === "expenses") {
+      dispatch(expenseActions.setYear(+year));
+    }
+    if (name === "earnings") {
+      dispatch(earningsActions.setYear(+year));
+    }
   };
 
   const filteredItems = newItems.filter((item) => {
     return item.date.getFullYear().toString() === selectedYear;
   });
 
+  const filteredAllItems = allNewItems.filter((item) => {
+    return item.date.getFullYear().toString() === selectedYear;
+  });
+
   let amount = 0;
 
-  for (const element of filteredItems) {
+  for (const element of filteredAllItems) {
     amount += element.amount;
   }
 
@@ -68,17 +94,17 @@ function UserData({
     setNewItems(updatedItems);
   }
 
-  function handleUpdate(item) {
-    const newItem = {
-      id: item.id,
-      title: item.title,
-      amount: name === "expenses" ? item.price : item.amount,
-      date: new Date(item.date),
-    };
-    const updatedItems = newItems.map((elem) =>
-      elem.id === item.id ? newItem : elem
-    );
-    setNewItems(updatedItems);
+  function handleUpdate() {
+    const modifiedElements = items.map((item) => {
+      return {
+        id: item.id,
+        title: item.title,
+        amount: name === "expenses" ? item.price : item.amount,
+        date: new Date(item.date),
+      };
+    });
+
+    setNewItems(modifiedElements);
   }
 
   return (
@@ -122,7 +148,7 @@ function UserData({
             </span>
           )}
         </h2>
-        <Chart items={filteredItems} name={name} />
+        <Chart items={filteredAllItems} name={name} />
         <div className={classes.options}>
           <button
             className={classes.modalOpenBtn}
