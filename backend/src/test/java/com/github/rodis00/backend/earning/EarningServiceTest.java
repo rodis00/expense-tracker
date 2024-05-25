@@ -303,6 +303,7 @@ class EarningServiceTest {
                 .getContent()
                 .get(0)
                 .getTitle());
+        assertTrue(filteredEarnings.getContent().get(0).getDate().isAfter(filteredEarnings.getContent().get(1).getDate()));
 
         verify(userService, times(1)).getUserById(1);
         verify(earningRepository, times(1))
@@ -359,6 +360,7 @@ class EarningServiceTest {
                 .getContent()
                 .get(0)
                 .getTitle());
+        assertTrue(filteredEarnings.getContent().get(0).getDate().isBefore(filteredEarnings.getContent().get(1).getDate()));
 
         verify(userService, times(1)).getUserById(1);
         verify(earningRepository, times(1))
