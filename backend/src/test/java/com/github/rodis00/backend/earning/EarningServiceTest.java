@@ -194,6 +194,7 @@ class EarningServiceTest {
         Page<Earning> earningPage = new PageImpl<>(List.of(earning1, earning2));
 
         Sort sort = Sort.by(page.getSortDirection(), page.getSortBy());
+
         Pageable pageable = PageRequest.of(
                 page.getPageNumber(),
                 page.getPageSize(),
@@ -227,6 +228,7 @@ class EarningServiceTest {
         int year = 2024;
 
         Sort sort = Sort.by(page.getSortDirection(), page.getSortBy());
+
         Pageable pageable = PageRequest.of(
                 page.getPageNumber(),
                 page.getPageSize(),
@@ -242,11 +244,7 @@ class EarningServiceTest {
 
         assertNotNull(filteredEarnings);
         assertEquals(1, filteredEarnings.getTotalElements());
-        assertEquals(year, filteredEarnings
-                .getContent()
-                .get(0)
-                .getDate()
-                .getYear());
+        assertEquals(year, filteredEarnings.getContent().get(0).getDate().getYear());
 
         verify(userService, times(1)).getUserById(1);
         verify(earningRepository, times(1))
@@ -278,6 +276,7 @@ class EarningServiceTest {
         page.setSortDirection(Sort.Direction.DESC);
 
         Sort sort = Sort.by(page.getSortDirection(), page.getSortBy());
+
         Pageable pageable = PageRequest.of(
                 page.getPageNumber(),
                 page.getPageSize(),
@@ -294,15 +293,8 @@ class EarningServiceTest {
         assertNotNull(filteredEarnings);
         assertEquals(Sort.Direction.DESC, page.getSortDirection());
         assertEquals(2, filteredEarnings.getTotalElements());
-        assertEquals(year, filteredEarnings
-                .getContent()
-                .get(0)
-                .getDate()
-                .getYear());
-        assertEquals(earning1.getTitle(), filteredEarnings
-                .getContent()
-                .get(0)
-                .getTitle());
+        assertEquals(year, filteredEarnings.getContent().get(0).getDate().getYear());
+        assertEquals(earning1.getTitle(), filteredEarnings.getContent().get(0).getTitle());
         assertTrue(filteredEarnings.getContent().get(0).getDate().isAfter(filteredEarnings.getContent().get(1).getDate()));
 
         verify(userService, times(1)).getUserById(1);
@@ -335,6 +327,7 @@ class EarningServiceTest {
         page.setSortDirection(Sort.Direction.ASC);
 
         Sort sort = Sort.by(page.getSortDirection(), page.getSortBy());
+
         Pageable pageable = PageRequest.of(
                 page.getPageNumber(),
                 page.getPageSize(),
@@ -351,15 +344,8 @@ class EarningServiceTest {
         assertNotNull(filteredEarnings);
         assertEquals(Sort.Direction.ASC, page.getSortDirection());
         assertEquals(2, filteredEarnings.getTotalElements());
-        assertEquals(year, filteredEarnings
-                .getContent()
-                .get(0)
-                .getDate()
-                .getYear());
-        assertEquals(earning2.getTitle(), filteredEarnings
-                .getContent()
-                .get(0)
-                .getTitle());
+        assertEquals(year, filteredEarnings.getContent().get(0).getDate().getYear());
+        assertEquals(earning2.getTitle(), filteredEarnings.getContent().get(0).getTitle());
         assertTrue(filteredEarnings.getContent().get(0).getDate().isBefore(filteredEarnings.getContent().get(1).getDate()));
 
         verify(userService, times(1)).getUserById(1);
