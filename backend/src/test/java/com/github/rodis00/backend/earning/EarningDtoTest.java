@@ -1,40 +1,42 @@
 package com.github.rodis00.backend.earning;
 
-import com.github.rodis00.backend.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class EarningDtoTest {
 
     private Earning earning;
-    private User user;
 
     @BeforeEach
     void setUp() {
-        user = new User();
-        user.setId(1);
-
         earning = new Earning();
         earning.setId(1);
         earning.setTitle("earning");
         earning.setAmount(100.0);
         earning.setDate(LocalDateTime.of(2024,5,24,18,4));
-        earning.setUser(user);
+        earning.setUser(null);
     }
 
     @Test
     void shouldReturnEarningDto() {
+        EarningDto expectedDto = new EarningDto(
+                earning.getId(),
+                earning.getTitle(),
+                earning.getAmount(),
+                earning.getDate()
+        );
+
         EarningDto earningDto = EarningDto.from(earning);
 
         assertNotNull(earningDto);
-        assertEquals(earning.getId(), earningDto.getId());
-        assertEquals(earning.getTitle(), earningDto.getTitle());
-        assertEquals(earning.getAmount(), earningDto.getAmount());
-        assertEquals(earning.getDate(), earningDto.getDate());
-
+        assertEquals(expectedDto.getId(), earningDto.getId());
+        assertEquals(expectedDto.getTitle(), earningDto.getTitle());
+        assertEquals(expectedDto.getAmount(), earningDto.getAmount());
+        assertEquals(expectedDto.getDate(), earningDto.getDate());
     }
 }
