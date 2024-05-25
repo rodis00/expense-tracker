@@ -1,9 +1,10 @@
 package com.github.rodis00.backend.user;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
 @AllArgsConstructor
 public class UserDto {
     private Integer id;
