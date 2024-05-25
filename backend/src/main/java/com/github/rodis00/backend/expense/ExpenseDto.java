@@ -1,11 +1,11 @@
 package com.github.rodis00.backend.expense;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
 @AllArgsConstructor
 public class ExpenseDto {
     private Integer id;
