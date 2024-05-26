@@ -117,7 +117,8 @@
 
 .link {
   text-decoration: none;
-  color: white;
+  color: forestgreen;
+  font-weight: bolder;
 }
 .link:hover {
   color: red;
