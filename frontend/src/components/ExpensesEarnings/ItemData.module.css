@@ -7,7 +7,6 @@
   height: 6rem;
   display: flex;
   border-radius: 20px;
-  /* border: 3px solid #0e3d8b; */
   align-items: center;
   color: white;
   overflow: hidden;
@@ -75,9 +74,9 @@
 .modal__deleteBtn {
   height: 2.5rem;
   width: 5rem;
+  border-radius: 15px;
   cursor: pointer;
   border: none;
-  border-radius: var(--border-radius);
   transition: 0.5s;
   color: white;
 }
@@ -87,7 +86,7 @@
 }
 
 .modal__closeBtn:hover {
-  background-color: #109977;
+  background-color: limegreen;
 }
 
 .modal__deleteBtn {
