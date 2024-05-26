@@ -1,5 +1,7 @@
 :root {
   --widthDate: 10vh;
+  --widthSmallScreenDate: 5vh;
+  --widthMediumScreenDate: 7vh;
 }
 
 .listItem {
@@ -7,7 +9,6 @@
   height: 6rem;
   display: flex;
   border-radius: 20px;
-  /* border: 3px solid #0e3d8b; */
   align-items: center;
   color: white;
   overflow: hidden;
@@ -47,12 +48,12 @@
   transition: 0.5s;
 }
 
-.listItem__editBtn{
+.listItem__editBtn {
   background-color: rgb(125, 125, 0);
   right: 5rem;
 }
 
-.listItem__editBtn:hover{
+.listItem__editBtn:hover {
   background-color: rgb(200, 200, 0);
 }
 
@@ -75,9 +76,9 @@
 .modal__deleteBtn {
   height: 2.5rem;
   width: 5rem;
+  border-radius: 15px;
   cursor: pointer;
   border: none;
-  border-radius: var(--border-radius);
   transition: 0.5s;
   color: white;
 }
@@ -87,7 +88,7 @@
 }
 
 .modal__closeBtn:hover {
-  background-color: #109977;
+  background-color: limegreen;
 }
 
 .modal__deleteBtn {
@@ -98,6 +99,72 @@
   background-color: red;
 }
 
-.modal__selectedItem{
+.modal__selectedItem {
   color: red;
+}
+
+.listItem__editBtn:disabled {
+  background-color: rgb(125, 125, 0);
+}
+
+.listItem__editBtn:disabled:hover {
+  background-color: rgb(125, 125, 0);
+  cursor: auto;
+}
+
+.listItem__btn:disabled {
+  background-color: rgb(99, 2, 2);
+}
+
+.listItem__btn:disabled:hover {
+  background-color: rgb(99, 2, 2);
+  cursor: auto;
+}
+
+@media (max-width: 600px) {
+  .listItem__title {
+    font-size: 18px;
+    left: calc(var(--widthSmallScreenDate) + 50px);
+  }
+  .listItem__price {
+    font-size: 17px;
+    left: calc(var(--widthSmallScreenDate) + 50px);
+  }
+  .listItem__price span {
+    font-size: 17px;
+  }
+  .listItem__btn,
+  .listItem__editBtn {
+    width: 45px;
+    height: 45px;
+    bottom: 0.5rem;
+    right: 0.5rem;
+  }
+  .listItem__editBtn {
+    right: 3.5rem;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1000px) {
+  .listItem__title {
+    font-size: 22px;
+    left: calc(var(--widthMediumScreenDate) + 50px);
+  }
+  .listItem__price {
+    font-size: 18px;
+    left: calc(var(--widthMediumScreenDate) + 50px);
+  }
+  .listItem__price span {
+    font-size: 18px;
+  }
+  .listItem__btn,
+  .listItem__editBtn {
+    width: 45px;
+    height: 45px;
+    bottom: 0.5rem;
+    right: 0.5rem;
+  }
+  .listItem__editBtn {
+    right: 3.5rem;
+  }
 }

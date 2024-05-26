@@ -9,6 +9,7 @@ import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
 import Error from "./components/Error-page/Error";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedAuthRoute from "./components/ProtectedAuthRoute";
 
 const router = createBrowserRouter([
   {
@@ -26,8 +27,13 @@ const router = createBrowserRouter([
           { path: "summaries", element: <Summaries /> },
         ],
       },
-      { path: "login", element: <Login /> },
-      { path: "signup", element: <Signup /> },
+      {
+        element: <ProtectedAuthRoute />,
+        children: [
+          { path: "login", element: <Login /> },
+          { path: "signup", element: <Signup /> },
+        ],
+      },
     ],
   },
 ]);

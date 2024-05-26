@@ -39,3 +39,9 @@
   background-color: rgb(70, 70, 70);
   color: white;
 }
+
+@media (max-width: 600px) {
+  .filter {
+    left: 0;
+  }
+}
