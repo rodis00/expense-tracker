@@ -95,3 +95,15 @@
 .field .inputError {
   background-color: rgba(118, 2, 2, 0.427);
 }
+
+@media (max-width: 600px) {
+  .login {
+    width: 80%;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1000px) {
+  .login {
+    width: 60%;
+  }
+}
