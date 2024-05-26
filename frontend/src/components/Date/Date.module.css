@@ -11,3 +11,16 @@
   align-items: center;
   border-radius: 20px;
 }
+
+@media (max-width: 600px) {
+  .dateSection{
+    left: 0.5rem;
+    width: 10vh;
+    height: 85%;
+    font-size: 13px;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1000px) {
+}
+

@@ -39,3 +39,18 @@
 .box3 {
   color: limegreen;
 }
+
+@media (max-width: 600px) {
+  .section {
+    flex-direction: column;
+    width: 90%;
+    margin: 5rem auto 0 auto;
+  }
+
+  .section div {
+    width: 100%;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1000px) {
+}

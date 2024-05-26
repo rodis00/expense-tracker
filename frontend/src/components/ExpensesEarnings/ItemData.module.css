@@ -1,5 +1,6 @@
 :root {
   --widthDate: 10vh;
+  --widthSmallScreenDate: 5vh;
 }
 
 .listItem {
@@ -117,4 +118,31 @@
 .listItem__btn:disabled:hover {
   background-color: rgb(99, 2, 2);
   cursor: auto;
+}
+
+@media (max-width: 600px) {
+  .listItem__title {
+    font-size: 18px;
+    left: calc(var(--widthSmallScreenDate) + 50px);
+  }
+  .listItem__price {
+    font-size: 17px;
+    left: calc(var(--widthSmallScreenDate) + 50px);
+  }
+  .listItem__price span{
+    font-size: 17px;
+  }
+  .listItem__btn,
+  .listItem__editBtn {
+    width: 45px;
+    height: 45px;
+    bottom: 0.5rem;
+    right: 0.5rem;
+  }
+  .listItem__editBtn {
+    right: 3.5rem;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1000px) {
 }

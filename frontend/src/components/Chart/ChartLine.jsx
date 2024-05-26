@@ -2,8 +2,10 @@ import React from "react";
 import { Chart as ChartJS } from "chart.js/auto";
 import { Line } from "react-chartjs-2";
 import classes from "./Chart.module.css";
+import { useMediaQuery } from "@react-hook/media-query";
 
 function ChartLine({ expenses, earnings }) {
+  const isSmallScreen = useMediaQuery("(max-width: 600px)");
   const ChartDataPointsExpenses = [
     { label: "Jan", value: 0 },
     { label: "Feb", value: 0 },
@@ -91,7 +93,7 @@ function ChartLine({ expenses, earnings }) {
                 color: "rgb(35,35,35)",
               },
               title: {
-                display: true,
+                display: isSmallScreen ? false : true,
                 text: "Currency - $",
                 color: "rgb(100,100,100)",
                 font: {

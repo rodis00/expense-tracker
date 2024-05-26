@@ -57,3 +57,22 @@
 .modalOpenBtn:hover {
   background-color: limegreen;
 }
+
+@media (max-width: 600px) {
+  .total {
+    margin: 50px auto 0 auto;
+  }
+
+  .modalOpenBtn {
+    left: 0;
+  }
+
+  .options {
+    flex-direction: column;
+    width: 100%;
+    gap: 3rem;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1000px) {
+}

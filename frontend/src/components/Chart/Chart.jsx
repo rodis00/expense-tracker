@@ -2,8 +2,10 @@ import React from "react";
 import { Chart as ChartJS } from "chart.js/auto";
 import { Bar } from "react-chartjs-2";
 import classes from "./Chart.module.css";
+import { useMediaQuery } from "@react-hook/media-query";
 
 function Chart({ items, name }) {
+  const isSmallScreen = useMediaQuery("(max-width: 600px)");
   const ChartDataPoints = [
     { label: "Jan", value: 0 },
     { label: "Feb", value: 0 },
@@ -66,7 +68,7 @@ function Chart({ items, name }) {
                 color: "rgb(35,35,35)",
               },
               title: {
-                display: true,
+                display: isSmallScreen ? false : true,
                 text: "Currency - $",
                 color: "rgb(100,100,100)",
                 font: {
