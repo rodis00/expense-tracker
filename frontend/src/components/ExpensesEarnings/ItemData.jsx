@@ -17,6 +17,7 @@ function ItemData({
   onDelete,
   selectedItem,
   onShowUpdateModal,
+  disabled,
 }) {
   const dispatch = useDispatch();
   const version = useSelector((state) => state.modal.modalVersion);
@@ -60,10 +61,15 @@ function ItemData({
         <button
           className={classes.listItem__editBtn}
           onClick={onShowUpdateModal}
+          disabled={disabled}
         >
           <FontAwesomeIcon icon={faPenToSquare} />
         </button>
-        <button className={classes.listItem__btn} onClick={onShowModal}>
+        <button
+          className={classes.listItem__btn}
+          onClick={onShowModal}
+          disabled={disabled}
+        >
           <FontAwesomeIcon icon={faTrash} />
         </button>
       </li>

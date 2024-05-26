@@ -46,12 +46,12 @@
   transition: 0.5s;
 }
 
-.listItem__editBtn{
+.listItem__editBtn {
   background-color: rgb(125, 125, 0);
   right: 5rem;
 }
 
-.listItem__editBtn:hover{
+.listItem__editBtn:hover {
   background-color: rgb(200, 200, 0);
 }
 
@@ -97,6 +97,24 @@
   background-color: red;
 }
 
-.modal__selectedItem{
+.modal__selectedItem {
   color: red;
+}
+
+.listItem__editBtn:disabled {
+  background-color: rgb(125, 125, 0);
+}
+
+.listItem__editBtn:disabled:hover {
+  background-color: rgb(125, 125, 0);
+  cursor: auto;
+}
+
+.listItem__btn:disabled {
+  background-color: rgb(99, 2, 2);
+}
+
+.listItem__btn:disabled:hover {
+  background-color: rgb(99, 2, 2);
+  cursor: auto;
 }
