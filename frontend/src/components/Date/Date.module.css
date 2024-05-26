@@ -22,5 +22,11 @@
 }
 
 @media (min-width: 601px) and (max-width: 1000px) {
+  .dateSection{
+    left: 0.5rem;
+    width: 11vh;
+    height: 85%;
+    font-size: 14px;
+  }
 }
 

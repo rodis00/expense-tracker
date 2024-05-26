@@ -143,4 +143,28 @@
 }
 
 @media (min-width: 601px) and (max-width: 1000px) {
+  .section {
+    margin: 5rem auto 0 auto;
+    flex-direction: column;
+    height: 140vh;
+  }
+
+  .sectionElem {
+    margin: 0 auto;
+    width: 70%;
+  }
+
+  .sectionText{
+    margin: 20px 10px 30px 10px;
+  }
+
+  .chartText {
+    width: 70%;
+    margin: 5rem auto;
+    text-align: center;
+  }
+
+  .list{
+    width: 80%;
+  }
 }

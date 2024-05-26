@@ -1,6 +1,7 @@
 :root {
   --widthDate: 10vh;
   --widthSmallScreenDate: 5vh;
+  --widthMediumScreenDate: 7vh;
 }
 
 .listItem {
@@ -129,7 +130,7 @@
     font-size: 17px;
     left: calc(var(--widthSmallScreenDate) + 50px);
   }
-  .listItem__price span{
+  .listItem__price span {
     font-size: 17px;
   }
   .listItem__btn,
@@ -145,4 +146,25 @@
 }
 
 @media (min-width: 601px) and (max-width: 1000px) {
+  .listItem__title {
+    font-size: 22px;
+    left: calc(var(--widthMediumScreenDate) + 50px);
+  }
+  .listItem__price {
+    font-size: 18px;
+    left: calc(var(--widthMediumScreenDate) + 50px);
+  }
+  .listItem__price span {
+    font-size: 18px;
+  }
+  .listItem__btn,
+  .listItem__editBtn {
+    width: 45px;
+    height: 45px;
+    bottom: 0.5rem;
+    right: 0.5rem;
+  }
+  .listItem__editBtn {
+    right: 3.5rem;
+  }
 }
