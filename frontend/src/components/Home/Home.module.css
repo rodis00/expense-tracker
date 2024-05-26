@@ -14,13 +14,13 @@
   background-attachment: fixed;
 }
 
-.title{
+.title {
   color: white;
   text-align: center;
   margin-top: 5rem;
 }
 
-.section{
+.section {
   width: 90%;
   height: 50vh;
   margin: 10rem auto 0 auto;
@@ -28,7 +28,7 @@
   justify-content: space-around;
 }
 
-.sectionElem{
+.sectionElem {
   width: 30%;
   background-color: rgb(37, 37, 37);
   display: flex;
@@ -38,7 +38,7 @@
 
 .iconContainerExpenses,
 .iconContainerEarnings,
-.iconContainerSummaries{
+.iconContainerSummaries {
   width: 60px;
   height: 60px;
   display: flex;
@@ -49,53 +49,53 @@
   margin-top: 30px;
 }
 
-.iconContainerExpenses{
+.iconContainerExpenses {
   border: 3px solid red;
 }
 
-.iconContainerEarnings{
+.iconContainerEarnings {
   border: 3px solid limegreen;
 }
 
-.iconContainerSummaries{
+.iconContainerSummaries {
   border: 3px solid yellow;
 }
 
 .sectionTitleExpenses,
 .sectionTitleEarnings,
-.sectionTitleSummaries{
+.sectionTitleSummaries {
   margin: 50px 0 20px 0;
   color: white;
   font-size: 25px;
 }
 
-.sectionTitleExpenses{
+.sectionTitleExpenses {
   color: red;
 }
 
-.sectionTitleEarnings{
+.sectionTitleEarnings {
   color: limegreen;
 }
 
-.sectionTitleSummaries{
+.sectionTitleSummaries {
   color: yellow;
 }
 
-.sectionText{
+.sectionText {
   margin: 10px 20px;
   color: white;
   font-size: 18px;
   text-align: center;
 }
 
-.chartText{
+.chartText {
   margin: 5rem 0;
   text-align: center;
   color: white;
   font-size: 25px;
 }
 
-.account{
+.account {
   height: 5rem;
   line-height: 5rem;
   margin-top: 5rem;
@@ -105,19 +105,42 @@
   background-color: #003c2d;
 }
 
-.list{
+.list {
   margin: 50px auto;
   width: 60%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem ;
+  gap: 2rem;
 }
 
-.link{
+.link {
   text-decoration: none;
   color: white;
 }
-.link:hover{
+.link:hover {
   color: red;
+}
+
+@media (max-width: 600px) {
+  .section {
+    margin: 5rem auto 0 auto;
+    flex-direction: column;
+    height: 140vh;
+  }
+
+  .sectionElem {
+    width: 100%;
+  }
+
+  .sectionText{
+    margin: 20px 10px 30px 10px;
+  }
+
+  .list{
+    width: 100%;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1000px) {
 }
