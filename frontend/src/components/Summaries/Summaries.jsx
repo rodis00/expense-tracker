@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import classes from "./Summaries.module.css";
 import { fetchAllEarnings, fetchAllExpenses } from "./FetchExpensesEarnings";
 import { useDispatch, useSelector } from "react-redux";

@@ -10,9 +10,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../../store/modal-slice";
 import Modal from "../Modal/Modal";
 import UserForm from "./UserForm";
+import { expenseActions } from "../../store/expense-slice";
+import { earningsActions } from "../../store/earnings-slice";
 
 function UserData({
   items,
+  allItems,
   name,
   secondName,
   upperName,
@@ -21,28 +24,42 @@ function UserData({
 }) {
   const [selectedYear, setSelectedYear] = useState("2024");
   const [newItems, setNewItems] = useState([]);
+  const [allNewItems, setAllNewItems] = useState([]);
 
   const version = useSelector((state) => state.modal.modalVersion);
   const dispatch = useDispatch();
 
+  const earningItemToUpdate = useSelector(
+    (state) => state.earning.itemToUpdate
+  );
+
+  const expenseItemToUpdate = useSelector(
+    (state) => state.expense.itemToUpdate
+  );
+
   useEffect(() => {
-    items.forEach((item) => {
-      let newDate = new Date(item.date);
-      const newItem = {
+    const modifiedElements = items.map((item) => {
+      return {
         id: item.id,
         title: item.title,
         amount: secondAmountName === "price" ? item.price : item.amount,
-        date: newDate,
+        date: new Date(item.date),
       };
-      const isExisting = newItems.some((elem) => {
-        return elem.id === item.id;
-      });
-
-      if (!isExisting) {
-        setNewItems((prev) => [newItem, ...prev]);
-      }
     });
-  }, [secondAmountName, items, newItems]);
+    setNewItems(modifiedElements);
+  }, [secondAmountName, items]);
+
+  useEffect(() => {
+    const modifiedElements = allItems.map((item) => {
+      return {
+        id: item.id,
+        title: item.title,
+        amount: secondAmountName === "price" ? item.price : item.amount,
+        date: new Date(item.date),
+      };
+    });
+    setAllNewItems(modifiedElements);
+  }, [allItems, secondAmountName]);
 
   function handleOpenModalForm() {
     dispatch(modalActions.showForm());
@@ -50,15 +67,25 @@ function UserData({
 
   const handleFilteredYear = (year) => {
     setSelectedYear(year);
+    if (name === "expenses") {
+      dispatch(expenseActions.setYear(+year));
+    }
+    if (name === "earnings") {
+      dispatch(earningsActions.setYear(+year));
+    }
   };
 
   const filteredItems = newItems.filter((item) => {
     return item.date.getFullYear().toString() === selectedYear;
   });
 
+  const filteredAllItems = allNewItems.filter((item) => {
+    return item.date.getFullYear().toString() === selectedYear;
+  });
+
   let amount = 0;
 
-  for (const element of filteredItems) {
+  for (const element of filteredAllItems) {
     amount += element.amount;
   }
 
@@ -67,15 +94,42 @@ function UserData({
     setNewItems(updatedItems);
   }
 
+  function handleUpdate() {
+    const modifiedElements = items.map((item) => {
+      return {
+        id: item.id,
+        title: item.title,
+        amount: name === "expenses" ? item.price : item.amount,
+        date: new Date(item.date),
+      };
+    });
+
+    setNewItems(modifiedElements);
+  }
+
   return (
     <>
       <Modal open={version === "form"}>
         <UserForm
-          httpName={name}
-          name={secondName}
-          secondName={upperName}
+          name={name}
+          secondName={secondName}
+          upperName={upperName}
           amount={amountName}
           httpAmount={secondAmountName}
+        />
+      </Modal>
+      <Modal open={version === "updateForm"}>
+        <UserForm
+          name={name}
+          secondName={secondName}
+          upperName={upperName}
+          amount={amountName}
+          httpAmount={secondAmountName}
+          selectedItem={
+            name === "expenses" ? expenseItemToUpdate : earningItemToUpdate
+          }
+          onUpdate={handleUpdate}
+          update={true}
         />
       </Modal>
       <main className={classes.main}>
@@ -94,7 +148,7 @@ function UserData({
             </span>
           )}
         </h2>
-        <Chart items={filteredItems} name={name} />
+        <Chart items={filteredAllItems} name={name} />
         <div className={classes.options}>
           <button
             className={classes.modalOpenBtn}

@@ -1,11 +1,13 @@
 import React from "react";
+import classes from "./DummyChartLine.module.css";
 import { Chart as ChartJS } from "chart.js/auto";
 import { Line } from "react-chartjs-2";
-import classes from "./Chart.module.css";
+import { DUMMY_DATA_EXPENSES, DUMMY_DATA_EARNINGS } from "./DummyData";
 import { useMediaQuery } from "@react-hook/media-query";
 
-function ChartLine({ expenses, earnings }) {
+function DummyChartLine() {
   const isSmallScreen = useMediaQuery("(max-width: 600px)");
+
   const ChartDataPointsExpenses = [
     { label: "Jan", value: 0 },
     { label: "Feb", value: 0 },
@@ -36,12 +38,12 @@ function ChartLine({ expenses, earnings }) {
     { label: "Dec", value: 0 },
   ];
 
-  for (const elem of expenses) {
+  for (const elem of DUMMY_DATA_EXPENSES) {
     const elemMonth = elem.date.getMonth();
     ChartDataPointsExpenses[elemMonth].value += elem.amount;
   }
 
-  for (const elem of earnings) {
+  for (const elem of DUMMY_DATA_EARNINGS) {
     const elemMonth = elem.date.getMonth();
     ChartDataPointsEarnings[elemMonth].value += elem.amount;
   }
@@ -117,4 +119,4 @@ function ChartLine({ expenses, earnings }) {
   );
 }
 
-export default ChartLine;
+export default DummyChartLine;

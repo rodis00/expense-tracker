@@ -47,8 +47,6 @@ function Login() {
 
       const resData = await response.json();
 
-      console.log(resData);
-
       if (!response.ok) {
         if (response.status === 400) {
           setErrors(() => ({

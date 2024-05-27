@@ -9,7 +9,16 @@ import { expenseActions } from "../../store/expense-slice";
 import { earningsActions } from "../../store/earnings-slice";
 import Modal from "../Modal/Modal";
 
-function UserForm({ httpName, httpAmount, name, secondName, amount }) {
+function UserForm({
+  name,
+  httpAmount,
+  upperName,
+  secondName,
+  amount,
+  onUpdate,
+  update,
+  selectedItem,
+}) {
   const dateInputRef = useRef();
 
   const dispatch = useDispatch();
@@ -40,7 +49,7 @@ function UserForm({ httpName, httpAmount, name, secondName, amount }) {
     };
 
     const response = await fetch(
-      `http://localhost:8080/expense-tracker/api/v1/${httpName}/users/${user}`,
+      `http://localhost:8080/expense-tracker/api/v1/${name}/users/${user}`,
       {
         method: "POST",
         headers: {
@@ -57,13 +66,53 @@ function UserForm({ httpName, httpAmount, name, secondName, amount }) {
 
     const resData = await response.json();
 
-    if (httpName === "expenses") {
+    if (name === "expenses") {
       dispatch(expenseActions.addExpense(resData));
     } else {
       dispatch(earningsActions.addEarnings(resData));
     }
 
     dispatch(modalActions.showAddInfo());
+  }
+
+  async function handleUpdate(event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const data = Object.fromEntries(formData.entries());
+
+    const userData = {
+      title: data.title,
+      [httpAmount]: +data.amount,
+      date: new Date(data.date),
+    };
+
+    const response = await fetch(
+      `http://localhost:8080/expense-tracker/api/v1/${name}/${selectedItem}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        body: JSON.stringify(userData),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Could not update data.");
+    }
+
+    const resData = await response.json();
+
+    if (name === "expenses") {
+      dispatch(expenseActions.updateExpenseItem(resData));
+    } else {
+      dispatch(earningsActions.updateEarningItem(resData));
+    }
+
+    onUpdate();
+    dispatch(modalActions.showUpdateInfo());
   }
 
   return (
@@ -78,14 +127,28 @@ function UserForm({ httpName, httpAmount, name, secondName, amount }) {
           </button>
         </div>
       </Modal>
-      <form onSubmit={handleSubmit} className={classes.userForm}>
+      <Modal open={version === "updateInfo"}>
+        <p className={classes.modal__p}>
+          Your {secondName} was updated succesfully!
+        </p>
+        <div className={classes.modal__div}>
+          <button className={classes.modal__button} onClick={handleCloseForm}>
+            Close
+          </button>
+        </div>
+      </Modal>
+      <form
+        onSubmit={update ? (e) => handleUpdate(e, selectedItem) : handleSubmit}
+        className={classes.userForm}
+      >
         <div className={classes.userForm__itemsData}>
           <div className={classes.userForm__itemData}>
-            <label>{secondName} Title</label>
+            <label>{upperName} Title</label>
             <input
               type="text"
               name="title"
               placeholder="Enter Title"
+              maxLength={'50'}
               required
             />
           </div>
@@ -121,8 +184,10 @@ function UserForm({ httpName, httpAmount, name, secondName, amount }) {
             Close
           </button>
           <button type="submit" className={classes.userForm__btn}>
-            <FontAwesomeIcon icon={faPlus} />
-            <span>Add {name}</span>
+            {update ? "" : <FontAwesomeIcon icon={faPlus} />}
+            <span>
+              {update ? "Update" : "Add"} {secondName}
+            </span>
           </button>
         </div>
       </form>

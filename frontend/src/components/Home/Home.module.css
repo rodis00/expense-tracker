@@ -1,5 +1,172 @@
-.home {
+.container {
+  width: 100%;
+  min-height: 100vh;
+  background-color: rgb(20, 20, 20);
+}
+
+.header {
+  width: 100%;
+  height: 100vh;
+  background-image: url("../img/business-concept-with-graphic-holography.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.title {
   color: white;
-  font-size: 15px;
-  margin-left: 5rem;
+  text-align: center;
+  margin-top: 5rem;
+}
+
+.section {
+  width: 90%;
+  height: 50vh;
+  margin: 10rem auto 0 auto;
+  display: flex;
+  justify-content: space-around;
+}
+
+.sectionElem {
+  width: 30%;
+  background-color: rgb(37, 37, 37);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.iconContainerExpenses,
+.iconContainerEarnings,
+.iconContainerSummaries {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
+  color: white;
+  margin-top: 30px;
+}
+
+.iconContainerExpenses {
+  border: 3px solid red;
+}
+
+.iconContainerEarnings {
+  border: 3px solid limegreen;
+}
+
+.iconContainerSummaries {
+  border: 3px solid yellow;
+}
+
+.sectionTitleExpenses,
+.sectionTitleEarnings,
+.sectionTitleSummaries {
+  margin: 50px 0 20px 0;
+  color: white;
+  font-size: 25px;
+}
+
+.sectionTitleExpenses {
+  color: red;
+}
+
+.sectionTitleEarnings {
+  color: limegreen;
+}
+
+.sectionTitleSummaries {
+  color: yellow;
+}
+
+.sectionText {
+  margin: 10px 20px;
+  color: white;
+  font-size: 18px;
+  text-align: center;
+}
+
+.chartText {
+  width: 80%;
+  margin: 5rem auto;
+  text-align: center;
+  color: white;
+  font-size: 25px;
+}
+
+.account {
+  height: 5rem;
+  line-height: 5rem;
+  margin-top: 5rem;
+  font-size: 20px;
+  color: white;
+  text-align: center;
+  background-color: #003c2d;
+}
+
+.list {
+  margin: 50px auto;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.link {
+  text-decoration: none;
+  color: forestgreen;
+  font-weight: bolder;
+}
+.link:hover {
+  color: red;
+}
+
+@media (max-width: 600px) {
+  .section {
+    margin: 5rem auto 0 auto;
+    flex-direction: column;
+    height: 140vh;
+  }
+
+  .sectionElem {
+    width: 100%;
+  }
+
+  .sectionText{
+    margin: 20px 10px 30px 10px;
+  }
+
+  .list{
+    width: 100%;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1100px) {
+  .section {
+    margin: 5rem auto 0 auto;
+    flex-direction: column;
+    height: 140vh;
+  }
+
+  .sectionElem {
+    margin: 0 auto;
+    width: 70%;
+  }
+
+  .sectionText{
+    margin: 20px 10px 30px 10px;
+  }
+
+  .chartText {
+    width: 70%;
+    margin: 5rem auto;
+    text-align: center;
+  }
+
+  .list{
+    width: 80%;
+  }
 }

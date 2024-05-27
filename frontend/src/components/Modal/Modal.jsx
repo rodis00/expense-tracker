@@ -1,9 +1,17 @@
 import React, { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import classes from "./Modal.module.css";
+import { useDispatch } from "react-redux";
+import { modalActions } from "../../store/modal-slice";
 
-function Modal({ children, open, onClose, className = "" }) {
+function Modal({ children, open, className = "" }) {
   const dialog = useRef();
+
+  const dispatch = useDispatch()
+
+  function handleCloseModal(){
+    dispatch(modalActions.closeModal())
+  }
 
   useEffect(() => {
     const modal = dialog.current;
@@ -17,7 +25,7 @@ function Modal({ children, open, onClose, className = "" }) {
   return createPortal(
     <dialog
       ref={dialog}
-      onClose={onClose}
+      onClose={handleCloseModal}
       className={`${classes.modal} ${className}`}
     >
       {children}
