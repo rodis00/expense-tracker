@@ -148,6 +148,7 @@ function UserForm({
               type="text"
               name="title"
               placeholder="Enter Title"
+              maxLength={'50'}
               required
             />
           </div>

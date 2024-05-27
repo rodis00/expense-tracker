@@ -6,7 +6,7 @@
 
 .listItem {
   width: 90%;
-  height: 6rem;
+  min-height: 6rem;
   display: flex;
   border-radius: 20px;
   align-items: center;
@@ -17,8 +17,10 @@
 }
 
 .listItem__title {
-  position: absolute;
+  position: relative;
   top: 10px;
+  padding-right: 15rem;
+  margin-bottom: 5rem;
   left: calc(var(--widthDate) + 50px);
 }
 
@@ -124,6 +126,8 @@
 @media (max-width: 600px) {
   .listItem__title {
     font-size: 18px;
+    padding-right: 5rem;
+    margin-bottom: 5rem;
     left: calc(var(--widthSmallScreenDate) + 50px);
   }
   .listItem__price {
@@ -148,6 +152,8 @@
 @media (min-width: 601px) and (max-width: 1000px) {
   .listItem__title {
     font-size: 22px;
+    padding-right: 7rem;
+    margin-bottom: 5rem;
     left: calc(var(--widthMediumScreenDate) + 50px);
   }
   .listItem__price {
