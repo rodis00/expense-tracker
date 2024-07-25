@@ -1,135 +1,98 @@
 import React, { useState } from "react";
-import classes from "./Login.module.css";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { authActions } from "../../store/auth-slice";
-import { jwtDecode } from "jwt-decode";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faLock,
+  faEye,
+  faEyeSlash,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
+import googleIcon from "../../assets/google-color-icon.png";
+import Input from "../../util/Input";
+import { Link } from "react-router-dom";
 
-function Login() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+const Login = () => {
+  const [typePassword, setTypePassword] = useState("password");
 
-  const [loginValues, setLoginValues] = useState({
-    username: "",
-    password: "",
-  });
-  const [errors, setErrors] = useState({
-    username: "",
-    password: "",
-  });
-  const [result, setResult] = useState("");
-
-  function handleInputValues(event) {
-    setLoginValues((prevValues) => ({
-      ...prevValues,
-      [event.target.name]: event.target.value,
-    }));
-
-    setErrors((prevError) => ({
-      ...prevError,
-      [event.target.name]: "",
-    }));
-
-    setResult("");
-  }
-
-  async function handleLogin(event) {
-    event.preventDefault();
-    try {
-      const response = await fetch(
-        "http://localhost:8080/expense-tracker/api/v1/auth/authenticate",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(loginValues),
-        }
-      );
-
-      const resData = await response.json();
-
-      if (!response.ok) {
-        if (response.status === 400) {
-          setErrors(() => ({
-            username: resData.message.username,
-            password: resData.message.password,
-          }));
-        }
-        if (response.status === 401) {
-          if (resData.message.username !== "")
-            setResult(resData.message.username);
-          if (resData.message.password !== "")
-            setResult(resData.message.password);
-        }
-      }
-
-      const token = resData.token;
-
-      if (!token) {
-        return null;
-      }
-
-      localStorage.setItem("token", token);
-
-      const userId = jwtDecode(token).userId;
-
-      dispatch(authActions.login(userId));
-
-      navigate("/");
-    } catch (error) {
-      console.log(error);
+  function handleShowPassword() {
+    if (typePassword === "password") {
+      setTypePassword("text");
+    } else {
+      setTypePassword("password");
     }
   }
 
   return (
-    <div className={classes.box}>
-      <div className={classes.login}>
-        <h2>Login</h2>
-        <form onSubmit={handleLogin} className={classes.loginForm}>
-          <div className={classes.field}>
-            <label htmlFor="">Username</label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              placeholder="Type your username"
-              onChange={handleInputValues}
-              value={loginValues.username}
-              className={(errors.username || result) && classes.inputError}
-            />
-            {errors.username && (
-              <div className={classes.textError}>{errors.username}</div>
-            )}
-          </div>
+    <div className="w-full h-screen flex items-center justify-center">
+      <form
+        action=""
+        className="bg-main sm:bg-fourthColor w-full sm:w-2/3 md:w-1/2 lg:w-1/3 min-h-[35rem] flex flex-col rounded-3xl"
+      >
+        <h1 className="text-center text-3xl text-white my-8 h-[10%] lg:text-2xl">Login</h1>
+        <div className="w-[80%] mx-auto">
+          <Input
+            labelText="Username"
+            icon={faUser}
+            placeholder="Enter your username"
+            type="text"
+            inputId="username"
+          />
 
-          <div className={classes.field}>
-            <label htmlFor="">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Type your password"
-              onChange={handleInputValues}
-              value={loginValues.password}
-              className={(errors.password || result) && classes.inputError}
-            />
-            {errors.password && (
-              <div className={classes.textError}>{errors.password}</div>
-            )}
-          </div>
-
-          {result && <div className={classes.textError}>{result}</div>}
-          <div className={classes.actions}>
-            <button className={classes.loginBtn} type="submit">
-              Login
+          <Input
+            labelText="Password"
+            icon={faLock}
+            placeholder="Enter your password"
+            type={typePassword}
+            inputId="password"
+          >
+            <button
+              type="button"
+              className="absolute right-4"
+              onClick={handleShowPassword}
+            >
+              <FontAwesomeIcon
+                icon={typePassword === "password" ? faEyeSlash : faEye}
+              />
             </button>
-            <Link to={"/signup"} className={classes.signupBtn}>
+          </Input>
+
+          <button className="text-neutral-500 -mt-3 transition-all duration-300 hover:text-red-500 relative float-right lg:text-sm">
+            Forgot your password?
+          </button>
+        </div>
+
+        <div className="flex flex-col items-center gap-4 mt-12">
+          <button
+            type="button"
+            className="h-10 lg:h-9 w-40 text-white text-lg lg:text-base bg-secondColor rounded-3xl border-none transition-all duration-300 hover:bg-[#28bf8a]"
+          >
+            Login
+          </button>
+          <div>
+            <span className="text-white pr-2">Don't have an account?</span>
+            <Link
+              to={'/signup'}
+              className="text-secondColor transition-all duration-300 hover:text-red-600"
+            >
               Sign up
             </Link>
           </div>
-        </form>
-      </div>
+        </div>
+        <div className="flex items-center justify-between mt-6">
+          <div className="h-[3px] w-[45%] bg-neutral-500"></div>
+          <p className="text-neutral-500 text-xl">or</p>
+          <div className="h-[3px] w-[45%] bg-neutral-500"></div>
+        </div>
+
+        <button
+          type="button"
+          className="h-10 flex items-center gap-4 mx-auto my-6 rounded-3xl bg-neutral-700 p-4 text-white transition-all duration-300 hover:bg-neutral-600"
+        >
+          <img src={googleIcon} width={20} height={40} />
+          <span>Login with Google Account</span>
+        </button>
+      </form>
     </div>
   );
-}
+};
 
 export default Login;
