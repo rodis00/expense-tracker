@@ -1,0 +1,124 @@
+import React, { useRef } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPencil,
+  faDollar,
+  faCalendar,
+  faList,
+} from "@fortawesome/free-solid-svg-icons";
+import Input from "./Input";
+import { useDispatch } from "react-redux";
+import { modalActions } from "../store/modal-slice";
+import "./AddTransactionForm.css";
+
+const AddTransactionForm = () => {
+  const dateInputRef = useRef();
+  const dispatch = useDispatch();
+
+  const handleCloseForm = () => {
+    dispatch(modalActions.closeModal());
+  };
+
+  const handleShowPicker = () => {
+    dateInputRef.current.showPicker();
+  };
+
+  return (
+    <form action="" className="w-[95%] sm:w-3/4 flex flex-col">
+      <h2 className="text-center text-white my-8 xsm:my-4 text-2xl font-semibold">
+        Add your income
+      </h2>
+      <div>
+        <Input
+          labelText="Title"
+          icon={faPencil}
+          placeholder="Enter your title"
+          type="text"
+          inputId="title"
+        />
+        <Input
+          labelText="Amount"
+          icon={faDollar}
+          placeholder="Enter your amount"
+          type="number"
+          inputId="amount"
+          className="pr-2"
+        />
+
+        <div className="w-full flex flex-col xsm:flex-row items-center justify-between">
+          <div className="w-full xsm:w-1/2">
+            <label
+              htmlFor="date"
+              className="text-white text-nowrap font-semibold text-xl lg:text-base mt-8"
+            >
+              Date
+            </label>
+            <div className="w-full relative flex items-center text-white mt-2">
+              <span className="absolute left-4">
+                <FontAwesomeIcon icon={faCalendar} />
+              </span>
+              <input
+                type="date"
+                id="date"
+                ref={dateInputRef}
+                onFocus={handleShowPicker}
+                className={`w-full border-none h-12 lg:h-10 bg-neutral-800 appearance-none sm:bg-main rounded-3xl pl-12 pr-2 text-lg lg:text-base lg:focus:text-sm transition-all duration-200 focus:ring-white focus:text-base`}
+              />
+            </div>
+          </div>
+          <div className="mt-4 xsm:mt-0 w-full xsm:w-5/12">
+            <label
+              htmlFor="category"
+              className="text-white text-nowrap font-semibold text-xl lg:text-base mt-8"
+            >
+              Category
+            </label>
+            <div className="w-full bg-neutral-800 sm:bg-main rounded-3xl relative flex items-center text-white mt-2">
+              <span className="pl-4">
+                <FontAwesomeIcon icon={faList} />
+              </span>
+              <select
+                name="category"
+                id="category"
+                className="bg-neutral-800 sm:bg-main focus:outline-none w-full h-12 lg:h-10 pl-4 rounded-3xl border-none focus:ring-0"
+              >
+                <option value="work">Work</option>
+                <option value="sell">Sell</option>
+                <option value="trade">Trade</option>
+                <option value="survey">Survey</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col">
+          <label
+            htmlFor="description"
+            className="text-white text-nowrap font-semibold text-xl lg:text-base mt-8"
+          >
+            Description
+          </label>
+          <textarea
+            id="description"
+            placeholder="Enter your description"
+            className="text-white mt-2 bg-main mb-8 min-h-28 max-h-28 px-4 py-2 border-none focus:ring-white"
+          />
+        </div>
+        <div className="mb-8 xsm:mb-4 lg:mb-8 flex justify-center gap-8">
+          <button
+            type="button"
+            className="bg-neutral-700 w-28 h-12 rounded-full transition-all duration-300 hover:bg-neutral-500 text-white font-semibold"
+            onClick={handleCloseForm}
+          >
+            Close
+          </button>
+          <button className="bg-secondColor w-40 h-12 rounded-full transition-all duration-300 hover:bg-[#28bf8a] text-white font-semibold">
+            Add income
+          </button>
+        </div>
+      </div>
+    </form>
+  );
+};
+
+export default AddTransactionForm;
