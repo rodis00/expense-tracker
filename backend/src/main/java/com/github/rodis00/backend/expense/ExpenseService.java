@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ExpenseService implements ExpenseServiceInterface {
+public class ExpenseService {
 
     private final ExpenseRepository expenseRepository;
     private final UserService userService;
@@ -26,7 +26,6 @@ public class ExpenseService implements ExpenseServiceInterface {
         this.userService = userService;
     }
 
-    @Override
     public Expense saveExpense(
             Expense expense,
             Integer userId
@@ -37,14 +36,12 @@ public class ExpenseService implements ExpenseServiceInterface {
         return expense;
     }
 
-    @Override
     public Expense getExpenseById(Integer id) {
         return expenseRepository
                 .findById(id)
                 .orElseThrow(() -> new ExpenseNotFoundException("Expense not found."));
     }
 
-    @Override
     public Expense updateExpense(
             Integer id,
             Expense expense
@@ -59,24 +56,20 @@ public class ExpenseService implements ExpenseServiceInterface {
         return actualExpense;
     }
 
-    @Override
     public List<Expense> getAllExpenses() {
         return expenseRepository.findAll();
     }
 
-    @Override
     public List<Expense> getAllUserExpenses(Integer userId) {
         User user = userService.getUserById(userId);
         return expenseRepository.findAllByUserId(user.getId());
     }
 
-    @Override
     public void deleteExpenseById(Integer id) {
         Expense expense = getExpenseById(id);
         expenseRepository.delete(expense);
     }
 
-    @Override
     public Page<Expense> findAllExpensesByUserId(
             Integer userId,
             GlobalPage page,
@@ -87,6 +80,6 @@ public class ExpenseService implements ExpenseServiceInterface {
         Sort sort = Sort.by(page.getSortDirection(), page.getSortBy());
         Pageable pageable = PageRequest.of(page.getPageNumber(), page.getPageSize(), sort);
 
-        return expenseRepository.findAllExpensesByUserIdAndYear(userId, year, pageable);
+        return expenseRepository.findAllExpensesByUserIdAndYear(user.getId(), year, pageable);
     }
 }
