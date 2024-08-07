@@ -1,7 +1,7 @@
 package com.github.rodis00.backend.exception;
 
-public class EarningNotFoundException extends RuntimeException implements FieldName{
-    public EarningNotFoundException(String message) {
+public class IncomeNotFoundException extends RuntimeException implements FieldName{
+    public IncomeNotFoundException(String message) {
         super(message);
     }
 
