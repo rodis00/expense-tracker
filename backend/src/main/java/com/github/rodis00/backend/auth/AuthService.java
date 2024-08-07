@@ -1,8 +1,11 @@
 package com.github.rodis00.backend.auth;
 
 import com.github.rodis00.backend.config.JwtService;
-import com.github.rodis00.backend.exception.*;
-import com.github.rodis00.backend.user.User;
+import com.github.rodis00.backend.entity.UserEntity;
+import com.github.rodis00.backend.exception.InvalidPasswordException;
+import com.github.rodis00.backend.exception.InvalidUsernameException;
+import com.github.rodis00.backend.exception.UserAlreadyExistsException;
+import com.github.rodis00.backend.exception.UsernameIsTakenException;
 import com.github.rodis00.backend.user.UserRepository;
 import com.github.rodis00.backend.user.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -40,7 +43,7 @@ public class AuthenticateService {
         if (userService.existsByEmail(request.getEmail()))
             throw new UserAlreadyExistsException("User with this email already exists.");
 
-        User user = new User();
+        UserEntity user = new UserEntity();
         user.setEmail(request.getEmail());
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -53,9 +56,9 @@ public class AuthenticateService {
     }
 
     public AuthResponse authenticate(AuthRequest request) {
-        User user = userRepository
+        UserEntity user = userRepository
                 .findByUsername(request.getUsername())
-                .orElseThrow(() -> new InvalidUsernameException("Username does not exist."))    ;
+                .orElseThrow(() -> new InvalidUsernameException("Username does not exist."));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword()))
             throw new InvalidPasswordException("Invalid password.");
