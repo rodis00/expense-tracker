@@ -1,17 +1,19 @@
-package com.github.rodis00.backend.earning;
+package com.github.rodis00.backend.incomes;
 
-import com.github.rodis00.backend.exception.EarningNotFoundException;
+import com.github.rodis00.backend.entity.IncomeEntity;
+import com.github.rodis00.backend.entity.UserEntity;
+import com.github.rodis00.backend.exception.IncomeNotFoundException;
 import com.github.rodis00.backend.page.GlobalPage;
-import com.github.rodis00.backend.user.User;
 import com.github.rodis00.backend.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.*;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -19,40 +21,40 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(SpringExtension.class)
-class EarningServiceTest {
+@ExtendWith(MockitoExtension.class)
+class IncomeServiceTest {
 
     @Mock
-    private EarningRepository earningRepository;
+    private IncomeRepository incomeRepository;
 
     @Mock
     private UserService userService;
 
     @InjectMocks
-    private EarningService earningService;
+    private IncomeService incomeService;
 
-    private User user;
+    private UserEntity user;
 
-    private Earning earning;
+    private IncomeEntity income;
 
     private GlobalPage page;
 
     @BeforeEach
     void setUp() {
-        user = new User();
-        user.setId(1);
+        user = new UserEntity();
+        user.setId(1L);
         user.setUsername("test");
         user.setPassword("test123");
         user.setEmail("test@test.com");
-        user.setEarnings(null);
+        user.setIncomes(null);
         user.setExpenses(null);
 
-        earning = new Earning();
-        earning.setId(1);
-        earning.setUser(user);
-        earning.setAmount(100.0);
-        earning.setTitle("earning");
-        earning.setDate(LocalDateTime.of(2024, 5, 24, 14, 54));
+        income = new IncomeEntity();
+        income.setId(1L);
+        income.setUser(user);
+        income.setAmount(new BigDecimal("100.00"));
+        income.setTitle("income");
+        income.setDate(LocalDateTime.of(2024, 5, 24, 14, 54));
 
         page = new GlobalPage();
         page.setPageNumber(0);
@@ -62,136 +64,149 @@ class EarningServiceTest {
     }
 
     @Test
-    void shouldSaveEarning() {
-        when(userService.getUserById(1)).thenReturn(user);
-        when(earningRepository.save(earning)).thenReturn(earning);
+    void shouldSaveIncome() {
+        Income newIncome = new Income();
+        newIncome.setAmount(new BigDecimal("100.00"));
+        newIncome.setTitle("income");
+        newIncome.setDate(LocalDateTime.of(2024, 5, 24, 14, 54));
 
-        Earning savedEarning = earningService.saveEarning(earning, 1);
+        IncomeEntity expectedIncome = new IncomeEntity();
+        expectedIncome.setId(1L);
+        expectedIncome.setUser(user);
+        expectedIncome.setAmount(new BigDecimal("100.00"));
+        expectedIncome.setTitle("income");
+        expectedIncome.setDate(LocalDateTime.of(2024, 5, 24, 14, 54));
 
-        assertNotNull(savedEarning);
-        assertEquals(earning.getId(), savedEarning.getId());
-        assertEquals(earning.getTitle(), savedEarning.getTitle());
-        assertEquals(earning.getAmount(), savedEarning.getAmount());
-        assertEquals(earning.getDate(), savedEarning.getDate());
-        assertEquals(earning.getUser(), savedEarning.getUser());
+        when(userService.getUserById(1L)).thenReturn(user);
+        when(incomeRepository.save(any(IncomeEntity.class))).thenReturn(expectedIncome);
 
-        verify(earningRepository, times(1)).save(earning);
+        IncomeEntity savedIncome = incomeService.saveIncome(newIncome, 1L);
+
+        assertNotNull(savedIncome);
+        assertEquals(income.getTitle(), savedIncome.getTitle());
+        assertEquals(income.getAmount(), savedIncome.getAmount());
+        assertEquals(income.getDate(), savedIncome.getDate());
+        assertEquals(income.getUser(), savedIncome.getUser());
+
+        verify(incomeRepository, times(1)).save(any(IncomeEntity.class));
     }
 
     @Test
-    void shouldGetEarningById() {
-        when(earningRepository.findById(1)).thenReturn(Optional.of(earning));
+    void shouldGetIncomeById() {
+        when(incomeRepository.findById(1L)).thenReturn(Optional.of(income));
 
-        Earning existingEarning = earningService.getEarningById(1);
+        IncomeEntity existingIncome = incomeService.getIncomeById(1L);
 
-        assertNotNull(existingEarning);
-        assertEquals(earning.getId(), existingEarning.getId());
-        assertEquals(earning.getTitle(), existingEarning.getTitle());
+        assertNotNull(existingIncome);
+        assertEquals(income.getId(), existingIncome.getId());
+        assertEquals(income.getTitle(), existingIncome.getTitle());
 
-        verify(earningRepository, times(1)).findById(1);
+        verify(incomeRepository, times(1)).findById(1L);
     }
 
     @Test
-    void shouldThrowExceptionIfEarningNotFound() {
-        when(earningRepository.findById(1)).thenReturn(Optional.empty());
+    void shouldThrowExceptionIfIncomeNotFound() {
+        when(incomeRepository.findById(1L)).thenReturn(Optional.empty());
 
-        assertThrows(EarningNotFoundException.class, () -> {
-            earningService.getEarningById(1);
+        assertThrows(IncomeNotFoundException.class, () -> {
+            incomeService.getIncomeById(1L);
         });
 
-        verify(earningRepository, times(1)).findById(1);
+        verify(incomeRepository, times(1)).findById(1L);
     }
 
     @Test
-    void shouldUpdateEarning() {
+    void shouldUpdateIncome() {
         LocalDateTime newDate = LocalDateTime.of(2024, 6, 12, 12, 23);
         String newTitle = "newTitle";
-        double newAmount = 200.0;
+        BigDecimal newAmount = new BigDecimal("200.00");
 
-        Earning updatedEarning = new Earning();
-        updatedEarning.setId(1);
-        updatedEarning.setTitle(newTitle);
-        updatedEarning.setAmount(newAmount);
-        updatedEarning.setDate(newDate);
-        updatedEarning.setUser(user);
+        Income updatedIncome = new Income();
+        updatedIncome.setTitle(newTitle);
+        updatedIncome.setAmount(newAmount);
+        updatedIncome.setDate(newDate);
 
-        when(earningRepository.findById(1)).thenReturn(Optional.of(earning));
-        when(earningRepository.save(updatedEarning)).thenReturn(updatedEarning);
+        IncomeEntity expectedIncome = new IncomeEntity();
+        expectedIncome.setId(1L);
+        expectedIncome.setTitle(newTitle);
+        expectedIncome.setAmount(newAmount);
+        expectedIncome.setDate(newDate);
 
-        Earning earning = earningService.updateEarning(1, updatedEarning);
+        when(incomeRepository.findById(1L)).thenReturn(Optional.of(income));
+        when(incomeRepository.save(any(IncomeEntity.class))).thenReturn(expectedIncome);
 
-        assertNotNull(earning);
-        assertEquals(earning.getId(), updatedEarning.getId());
-        assertEquals(newTitle, earning.getTitle());
-        assertEquals(newAmount, earning.getAmount());
-        assertEquals(newDate, earning.getDate());
-        assertEquals(earning.getUser(), updatedEarning.getUser());
+        IncomeEntity income = incomeService.updateIncome(1L, updatedIncome);
 
-        verify(earningRepository, times(1)).findById(1);
-        verify(earningRepository, times(1)).save(earning);
+        assertNotNull(income);
+        assertEquals(expectedIncome.getTitle(), income.getTitle());
+        assertEquals(expectedIncome.getAmount(), income.getAmount());
+        assertEquals(expectedIncome.getDate(), income.getDate());
+
+        verify(incomeRepository, times(1)).findById(1L);
+        verify(incomeRepository, times(1)).save(any(IncomeEntity.class));
     }
 
     @Test
-    void shouldReturnAllEarnings() {
-        List<Earning> expectedEarnings = List.of(earning);
+    void shouldReturnAllIncomes() {
+        List<IncomeEntity> expectedIncomes = List.of(income);
 
-        when(earningRepository.findAll()).thenReturn(expectedEarnings);
+        when(incomeRepository.findAll()).thenReturn(expectedIncomes);
 
-        List<Earning> earnings = earningService.getAllEarnings();
+        List<IncomeEntity> incomes = incomeService.getAllIncomes();
 
-        assertNotNull(earnings);
-        assertEquals(1, earnings.size());
-        assertEquals(expectedEarnings, earnings);
+        assertNotNull(incomes);
+        assertEquals(1, incomes.size());
+        assertEquals(expectedIncomes, incomes);
 
-        verify(earningRepository, times(1)).findAll();
+        verify(incomeRepository, times(1)).findAll();
     }
 
     @Test
-    void shouldReturnAllUserEarnings() {
-        List<Earning> expectedEarnings = List.of(earning);
+    void shouldReturnAllUserIncomes() {
+        List<IncomeEntity> expectedIncomes = List.of(income);
 
-        when(userService.getUserById(1)).thenReturn(user);
-        when(earningRepository.findAllByUserId(1)).thenReturn(expectedEarnings);
+        when(userService.getUserById(1L)).thenReturn(user);
+        when(incomeRepository.findAllByUserId(1L)).thenReturn(expectedIncomes);
 
-        List<Earning> userEarnings = earningService.getAllUserEarnings(1);
+        List<IncomeEntity> userIncomes = incomeService.getAllUserIncomes(1L);
 
-        assertNotNull(userEarnings);
-        assertEquals(1, userEarnings.size());
+        assertNotNull(userIncomes);
+        assertEquals(1, userIncomes.size());
 
-        verify(userService, times(1)).getUserById(1);
-        verify(earningRepository, times(1)).findAllByUserId(1);
+        verify(userService, times(1)).getUserById(1L);
+        verify(incomeRepository, times(1)).findAllByUserId(1L);
     }
 
     @Test
-    void shouldDeleteEarningById() {
-        when(earningRepository.findById(1)).thenReturn(Optional.of(earning));
+    void shouldDeleteIncomeById() {
+        when(incomeRepository.findById(1L)).thenReturn(Optional.of(income));
         doNothing()
-                .when(earningRepository)
-                .delete(earning);
+                .when(incomeRepository)
+                .delete(income);
 
-        earningService.deleteEarningById(1);
+        incomeService.deleteIncomeById(1L);
 
-        verify(earningRepository, times(1)).findById(1);
-        verify(earningRepository, times(1)).delete(earning);
+        verify(incomeRepository, times(1)).findById(1L);
+        verify(incomeRepository, times(1)).delete(income);
     }
 
     @Test
-    void shouldReturnAllEarningsByUserId() {
-        Earning earning1 = new Earning();
-        earning1.setId(1);
-        earning1.setTitle("earning 1");
-        earning1.setDate(LocalDateTime.of(2024, 5, 4, 12, 12));
-        earning1.setAmount(100.0);
-        earning1.setUser(user);
+    void shouldReturnAllIncomesByUserId() {
+        IncomeEntity income1 = new IncomeEntity();
+        income1.setId(1L);
+        income1.setTitle("income 1");
+        income1.setDate(LocalDateTime.of(2024, 5, 4, 12, 12));
+        income1.setAmount(new BigDecimal("100.00"));
+        income1.setUser(user);
 
-        Earning earning2 = new Earning();
-        earning2.setId(2);
-        earning2.setTitle("earning 2");
-        earning2.setDate(LocalDateTime.of(2023, 6, 12, 9, 45));
-        earning2.setAmount(200.0);
-        earning2.setUser(user);
+        IncomeEntity income2 = new IncomeEntity();
+        income2.setId(2L);
+        income2.setTitle("income 2");
+        income2.setDate(LocalDateTime.of(2023, 6, 12, 9, 45));
+        income2.setAmount(new BigDecimal("200.00"));
+        income2.setUser(user);
 
-        Page<Earning> earningPage = new PageImpl<>(List.of(earning1, earning2));
+        Page<IncomeEntity> incomePage = new PageImpl<>(List.of(income1, income2));
 
         Sort sort = Sort.by(page.getSortDirection(), page.getSortBy());
 
@@ -201,29 +216,29 @@ class EarningServiceTest {
                 sort
         );
 
-        when(userService.getUserById(1)).thenReturn(user);
-        when(earningRepository
-                .findAllEarningsByUserIdAndYear(1, null, pageable)).thenReturn(earningPage);
+        when(userService.getUserById(1L)).thenReturn(user);
+        when(incomeRepository
+                .findAllIncomesByUserIdAndYear(1L, null, pageable)).thenReturn(incomePage);
 
-        Page<Earning> userEarningsPage = earningService.findAllEarningsByUserId(1, page, null);
+        Page<IncomeEntity> userIncomesPage = incomeService.findAllIncomesByUserId(1L, page, null);
 
-        assertNotNull(userEarningsPage);
-        assertEquals(2, userEarningsPage.getTotalElements());
+        assertNotNull(userIncomesPage);
+        assertEquals(2, userIncomesPage.getTotalElements());
 
 
-        verify(userService, times(1)).getUserById(1);
-        verify(earningRepository, times(1))
-                .findAllEarningsByUserIdAndYear(1, null, pageable);
+        verify(userService, times(1)).getUserById(1L);
+        verify(incomeRepository, times(1))
+                .findAllIncomesByUserIdAndYear(1L, null, pageable);
     }
 
     @Test
-    void shouldReturnUserEarningsPageWithSpecificYear() {
-        Earning earning1 = new Earning();
-        earning1.setId(1);
-        earning1.setTitle("earning 1");
-        earning1.setDate(LocalDateTime.of(2024, 5, 4, 12, 12));
-        earning1.setAmount(100.0);
-        earning1.setUser(user);
+    void shouldReturnUserIncomesPageWithSpecificYear() {
+        IncomeEntity income1 = new IncomeEntity();
+        income1.setId(1L);
+        income1.setTitle("income 1");
+        income1.setDate(LocalDateTime.of(2024, 5, 4, 12, 12));
+        income1.setAmount(new BigDecimal("100.00"));
+        income1.setUser(user);
 
         int year = 2024;
 
@@ -235,37 +250,37 @@ class EarningServiceTest {
                 sort
         );
 
-        Page<Earning> earningPage = new PageImpl<>(List.of(earning1));
+        Page<IncomeEntity> incomePage = new PageImpl<>(List.of(income1));
 
-        when(userService.getUserById(1)).thenReturn(user);
-        when(earningRepository.findAllEarningsByUserIdAndYear(1, year, pageable)).thenReturn(earningPage);
+        when(userService.getUserById(1L)).thenReturn(user);
+        when(incomeRepository.findAllIncomesByUserIdAndYear(1L, year, pageable)).thenReturn(incomePage);
 
-        Page<Earning> filteredEarnings = earningService.findAllEarningsByUserId(1, page, year);
+        Page<IncomeEntity> filteredIncomes = incomeService.findAllIncomesByUserId(1L, page, year);
 
-        assertNotNull(filteredEarnings);
-        assertEquals(1, filteredEarnings.getTotalElements());
-        assertEquals(year, filteredEarnings.getContent().get(0).getDate().getYear());
+        assertNotNull(filteredIncomes);
+        assertEquals(1, filteredIncomes.getTotalElements());
+        assertEquals(year, filteredIncomes.getContent().get(0).getDate().getYear());
 
-        verify(userService, times(1)).getUserById(1);
-        verify(earningRepository, times(1))
-                .findAllEarningsByUserIdAndYear(1, year, pageable);
+        verify(userService, times(1)).getUserById(1L);
+        verify(incomeRepository, times(1))
+                .findAllIncomesByUserIdAndYear(1L, year, pageable);
     }
 
     @Test
-    void shouldReturnUserEarningsPageWithSpecificYearAndSortDirectionDESC() {
-        Earning earning1 = new Earning();
-        earning1.setId(1);
-        earning1.setTitle("earning 1");
-        earning1.setDate(LocalDateTime.of(2024, 6, 4, 12, 12));
-        earning1.setAmount(100.0);
-        earning1.setUser(user);
+    void shouldReturnUserIncomesPageWithSpecificYearAndSortDirectionDESC() {
+        IncomeEntity income1 = new IncomeEntity();
+        income1.setId(1L);
+        income1.setTitle("income 1");
+        income1.setDate(LocalDateTime.of(2024, 6, 4, 12, 12));
+        income1.setAmount(new BigDecimal("100.00"));
+        income1.setUser(user);
 
-        Earning earning2 = new Earning();
-        earning2.setId(2);
-        earning2.setTitle("earning 2");
-        earning2.setDate(LocalDateTime.of(2024, 5, 12, 9, 45));
-        earning2.setAmount(200.0);
-        earning2.setUser(user);
+        IncomeEntity income2 = new IncomeEntity();
+        income2.setId(2L);
+        income2.setTitle("income 2");
+        income2.setDate(LocalDateTime.of(2024, 5, 12, 9, 45));
+        income2.setAmount(new BigDecimal("200.00"));
+        income2.setUser(user);
 
         int year = 2024;
 
@@ -283,40 +298,40 @@ class EarningServiceTest {
                 sort
         );
 
-        Page<Earning> earningPage = new PageImpl<>(List.of(earning1, earning2));
+        Page<IncomeEntity> incomePage = new PageImpl<>(List.of(income1, income2));
 
-        when(userService.getUserById(1)).thenReturn(user);
-        when(earningRepository.findAllEarningsByUserIdAndYear(1, year, pageable)).thenReturn(earningPage);
+        when(userService.getUserById(1L)).thenReturn(user);
+        when(incomeRepository.findAllIncomesByUserIdAndYear(1L, year, pageable)).thenReturn(incomePage);
 
-        Page<Earning> filteredEarnings = earningService.findAllEarningsByUserId(1, page, year);
+        Page<IncomeEntity> filteredIncomes = incomeService.findAllIncomesByUserId(1L, page, year);
 
-        assertNotNull(filteredEarnings);
+        assertNotNull(filteredIncomes);
         assertEquals(Sort.Direction.DESC, page.getSortDirection());
-        assertEquals(2, filteredEarnings.getTotalElements());
-        assertEquals(year, filteredEarnings.getContent().get(0).getDate().getYear());
-        assertEquals(earning1.getTitle(), filteredEarnings.getContent().get(0).getTitle());
-        assertTrue(filteredEarnings.getContent().get(0).getDate().isAfter(filteredEarnings.getContent().get(1).getDate()));
+        assertEquals(2, filteredIncomes.getTotalElements());
+        assertEquals(year, filteredIncomes.getContent().get(0).getDate().getYear());
+        assertEquals(income1.getTitle(), filteredIncomes.getContent().get(0).getTitle());
+        assertTrue(filteredIncomes.getContent().get(0).getDate().isAfter(filteredIncomes.getContent().get(1).getDate()));
 
-        verify(userService, times(1)).getUserById(1);
-        verify(earningRepository, times(1))
-                .findAllEarningsByUserIdAndYear(1, year, pageable);
+        verify(userService, times(1)).getUserById(1L);
+        verify(incomeRepository, times(1))
+                .findAllIncomesByUserIdAndYear(1L, year, pageable);
     }
 
     @Test
-    void shouldReturnUserEarningsPageWithSpecificYearAndSortDirectionASC() {
-        Earning earning1 = new Earning();
-        earning1.setId(1);
-        earning1.setTitle("earning 1");
-        earning1.setDate(LocalDateTime.of(2024, 6, 4, 12, 12));
-        earning1.setAmount(100.0);
-        earning1.setUser(user);
+    void shouldReturnUserIncomesPageWithSpecificYearAndSortDirectionASC() {
+        IncomeEntity income1 = new IncomeEntity();
+        income1.setId(1L);
+        income1.setTitle("income 1");
+        income1.setDate(LocalDateTime.of(2024, 6, 4, 12, 12));
+        income1.setAmount(new BigDecimal("100.00"));
+        income1.setUser(user);
 
-        Earning earning2 = new Earning();
-        earning2.setId(2);
-        earning2.setTitle("earning 2");
-        earning2.setDate(LocalDateTime.of(2024, 5, 12, 9, 45));
-        earning2.setAmount(200.0);
-        earning2.setUser(user);
+        IncomeEntity income2 = new IncomeEntity();
+        income2.setId(2L);
+        income2.setTitle("income 2");
+        income2.setDate(LocalDateTime.of(2024, 5, 12, 9, 45));
+        income2.setAmount(new BigDecimal("200.00"));
+        income2.setUser(user);
 
         int year = 2024;
 
@@ -334,22 +349,22 @@ class EarningServiceTest {
                 sort
         );
 
-        Page<Earning> earningPage = new PageImpl<>(List.of(earning2, earning1));
+        Page<IncomeEntity> incomePage = new PageImpl<>(List.of(income2, income1));
 
-        when(userService.getUserById(1)).thenReturn(user);
-        when(earningRepository.findAllEarningsByUserIdAndYear(1, year, pageable)).thenReturn(earningPage);
+        when(userService.getUserById(1L)).thenReturn(user);
+        when(incomeRepository.findAllIncomesByUserIdAndYear(1L, year, pageable)).thenReturn(incomePage);
 
-        Page<Earning> filteredEarnings = earningService.findAllEarningsByUserId(1, page, year);
+        Page<IncomeEntity> filteredIncomes = incomeService.findAllIncomesByUserId(1L, page, year);
 
-        assertNotNull(filteredEarnings);
+        assertNotNull(filteredIncomes);
         assertEquals(Sort.Direction.ASC, page.getSortDirection());
-        assertEquals(2, filteredEarnings.getTotalElements());
-        assertEquals(year, filteredEarnings.getContent().get(0).getDate().getYear());
-        assertEquals(earning2.getTitle(), filteredEarnings.getContent().get(0).getTitle());
-        assertTrue(filteredEarnings.getContent().get(0).getDate().isBefore(filteredEarnings.getContent().get(1).getDate()));
+        assertEquals(2, filteredIncomes.getTotalElements());
+        assertEquals(year, filteredIncomes.getContent().get(0).getDate().getYear());
+        assertEquals(income2.getTitle(), filteredIncomes.getContent().get(0).getTitle());
+        assertTrue(filteredIncomes.getContent().get(0).getDate().isBefore(filteredIncomes.getContent().get(1).getDate()));
 
-        verify(userService, times(1)).getUserById(1);
-        verify(earningRepository, times(1))
-                .findAllEarningsByUserIdAndYear(1, year, pageable);
+        verify(userService, times(1)).getUserById(1L);
+        verify(incomeRepository, times(1))
+                .findAllIncomesByUserIdAndYear(1L, year, pageable);
     }
 }

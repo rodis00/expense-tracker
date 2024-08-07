@@ -1,42 +1,44 @@
-package com.github.rodis00.backend.earning;
+package com.github.rodis00.backend.incomes;
 
+import com.github.rodis00.backend.entity.IncomeEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class EarningDtoTest {
+class IncomeDtoTest {
 
-    private Earning earning;
+    private IncomeEntity income;
 
     @BeforeEach
     void setUp() {
-        earning = new Earning();
-        earning.setId(1);
-        earning.setTitle("earning");
-        earning.setAmount(100.0);
-        earning.setDate(LocalDateTime.of(2024,5,24,18,4));
-        earning.setUser(null);
+        income = new IncomeEntity();
+        income.setId(1L);
+        income.setTitle("earning");
+        income.setAmount(new BigDecimal("100.00"));
+        income.setDate(LocalDateTime.of(2024, 5, 24, 18, 4));
+        income.setUser(null);
     }
 
     @Test
     void shouldReturnEarningDto() {
-        EarningDto expectedDto = new EarningDto(
-                earning.getId(),
-                earning.getTitle(),
-                earning.getAmount(),
-                earning.getDate()
+        IncomeDto expectedDto = new IncomeDto(
+                income.getId(),
+                income.getTitle(),
+                income.getAmount(),
+                income.getDate()
         );
 
-        EarningDto earningDto = EarningDto.from(earning);
+        IncomeDto incomeDto = IncomeDto.from(income);
 
-        assertNotNull(earningDto);
-        assertEquals(expectedDto.getId(), earningDto.getId());
-        assertEquals(expectedDto.getTitle(), earningDto.getTitle());
-        assertEquals(expectedDto.getAmount(), earningDto.getAmount());
-        assertEquals(expectedDto.getDate(), earningDto.getDate());
+        assertNotNull(incomeDto);
+        assertEquals(expectedDto.getId(), incomeDto.getId());
+        assertEquals(expectedDto.getTitle(), incomeDto.getTitle());
+        assertEquals(expectedDto.getAmount(), incomeDto.getAmount());
+        assertEquals(expectedDto.getDate(), incomeDto.getDate());
     }
 }
