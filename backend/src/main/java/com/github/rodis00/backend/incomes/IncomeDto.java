@@ -1,24 +1,26 @@
-package com.github.rodis00.backend.earning;
+package com.github.rodis00.backend.incomes;
 
+import com.github.rodis00.backend.entity.IncomeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
-public class EarningDto {
-    private Integer id;
+public class IncomeDto {
+    private Long id;
     private String title;
-    private Double amount;
+    private BigDecimal amount;
     private LocalDateTime date;
 
-    public static EarningDto from(Earning earning) {
-        return new EarningDto(
-                earning.getId(),
-                earning.getTitle(),
-                earning.getAmount(),
-                earning.getDate()
+    public static IncomeDto from(IncomeEntity income) {
+        return new IncomeDto(
+                income.getId(),
+                income.getTitle(),
+                income.getAmount(),
+                income.getDate()
         );
     }
 }

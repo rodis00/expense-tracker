@@ -1,8 +1,9 @@
-package com.github.rodis00.backend.earning;
+package com.github.rodis00.backend.incomes;
 
-import com.github.rodis00.backend.exception.EarningNotFoundException;
+import com.github.rodis00.backend.entity.IncomeEntity;
+import com.github.rodis00.backend.entity.UserEntity;
+import com.github.rodis00.backend.exception.IncomeNotFoundException;
 import com.github.rodis00.backend.page.GlobalPage;
-import com.github.rodis00.backend.user.User;
 import com.github.rodis00.backend.user.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,72 +14,78 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class EarningService {
+public class IncomeService {
 
-    private final EarningRepository earningRepository;
+    private final IncomeRepository incomeRepository;
     private final UserService userService;
 
-    public EarningService(
-            EarningRepository earningRepository,
+    public IncomeService(
+            IncomeRepository incomeRepository,
             UserService userService
     ) {
-        this.earningRepository = earningRepository;
+        this.incomeRepository = incomeRepository;
         this.userService = userService;
     }
 
-    public Earning saveEarning(
-            Earning earning,
-            Integer userId
+    public IncomeEntity saveIncome(
+            Income income,
+            Long userId
     ) {
-        User user = userService.getUserById(userId);
-        earning.setUser(user);
-        earningRepository.save(earning);
-        return earning;
+        UserEntity user = userService.getUserById(userId);
+
+        return incomeRepository.save(
+                IncomeEntity.builder()
+                        .title(income.getTitle())
+                        .amount(income.getAmount())
+                        .date(income.getDate())
+                        .user(user)
+                        .build()
+        );
     }
 
-    public Earning getEarningById(Integer id) {
-        return earningRepository.findById(id)
-                .orElseThrow(() -> new EarningNotFoundException("Earning not found."));
+    public IncomeEntity getIncomeById(Long id) {
+        return incomeRepository.findById(id)
+                .orElseThrow(() -> new IncomeNotFoundException("Income not found."));
     }
 
-    public Earning updateEarning(
-            Integer id,
-            Earning earning
+    public IncomeEntity updateIncome(
+            Long id,
+            Income income
     ) {
-        Earning actualEarning = getEarningById(id);
+        IncomeEntity actualIncome = getIncomeById(id);
 
-        actualEarning.setTitle(earning.getTitle());
-        actualEarning.setAmount(earning.getAmount());
-        actualEarning.setDate(earning.getDate());
-        earningRepository.save(actualEarning);
+        actualIncome.setTitle(income.getTitle());
+        actualIncome.setAmount(income.getAmount());
+        actualIncome.setDate(income.getDate());
+        incomeRepository.save(actualIncome);
 
-        return actualEarning;
+        return actualIncome;
     }
 
-    public List<Earning> getAllEarnings() {
-        return earningRepository.findAll();
+    public List<IncomeEntity> getAllIncomes() {
+        return incomeRepository.findAll();
     }
 
-    public List<Earning> getAllUserEarnings(Integer userId) {
-        User user = userService.getUserById(userId);
-        return earningRepository.findAllByUserId(user.getId());
+    public List<IncomeEntity> getAllUserIncomes(Long userId) {
+        UserEntity user = userService.getUserById(userId);
+        return incomeRepository.findAllByUserId(user.getId());
     }
 
-    public void deleteEarningById(Integer id) {
-        Earning earning = getEarningById(id);
-        earningRepository.delete(earning);
+    public void deleteIncomeById(Long id) {
+        IncomeEntity income = getIncomeById(id);
+        incomeRepository.delete(income);
     }
 
-    public Page<Earning> findAllEarningsByUserId(
-            Integer userId,
+    public Page<IncomeEntity> findAllIncomesByUserId(
+            Long userId,
             GlobalPage page,
             Integer year
     ) {
-        User user = userService.getUserById(userId);
+        UserEntity user = userService.getUserById(userId);
 
         Sort sort = Sort.by(page.getSortDirection(), page.getSortBy());
         Pageable pageable = PageRequest.of(page.getPageNumber(), page.getPageSize(), sort);
 
-        return earningRepository.findAllEarningsByUserIdAndYear(user.getId(), year, pageable);
+        return incomeRepository.findAllIncomesByUserIdAndYear(user.getId(), year, pageable);
     }
 }
