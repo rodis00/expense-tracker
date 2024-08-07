@@ -1,6 +1,7 @@
 package com.github.rodis00.backend.auth;
 
 import com.github.rodis00.backend.config.JwtService;
+import com.github.rodis00.backend.entity.Role;
 import com.github.rodis00.backend.entity.UserEntity;
 import com.github.rodis00.backend.exception.InvalidPasswordException;
 import com.github.rodis00.backend.exception.InvalidUsernameException;
@@ -14,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthenticateService {
+public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -22,7 +23,7 @@ public class AuthenticateService {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
 
-    public AuthenticateService(
+    public AuthService(
             UserRepository userRepository,
             PasswordEncoder passwordEncoder,
             JwtService jwtService,
@@ -46,6 +47,7 @@ public class AuthenticateService {
         UserEntity user = new UserEntity();
         user.setEmail(request.getEmail());
         user.setUsername(request.getUsername());
+        user.setRole(Role.USER);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         userRepository.save(user);

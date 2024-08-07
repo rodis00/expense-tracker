@@ -1,14 +1,15 @@
 package com.github.rodis00.backend.auth;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class AuthRequest {
+
     @NotBlank(message = "Username can not be blank.")
     private String username;
 
