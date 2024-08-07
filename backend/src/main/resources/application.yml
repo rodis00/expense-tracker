@@ -1,9 +1,0 @@
-spring:
-  config:
-    import: application-secrets.yml
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
