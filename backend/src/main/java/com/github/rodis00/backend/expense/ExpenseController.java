@@ -17,6 +17,7 @@ import java.util.List;
 @RequestMapping("expense-tracker/api/v1/expenses")
 @Tag(name = "Expense")
 public class ExpenseController {
+
     private final ExpenseService expenseService;
 
     public ExpenseController(ExpenseService expenseService) {
@@ -41,7 +42,9 @@ public class ExpenseController {
             summary = "Get expense by id"
     )
     @GetMapping("/{id}")
-    public ResponseEntity<ExpenseDto> getExpense(@PathVariable Integer id) {
+    public ResponseEntity<ExpenseDto> getExpense(
+            @PathVariable Long id
+    ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ExpenseDto.from(expenseService.getExpenseById(id)));
@@ -51,7 +54,9 @@ public class ExpenseController {
             summary = "Get expense by userId"
     )
     @GetMapping("/users/{userId}")
-    public ResponseEntity<List<ExpenseDto>> getUserExpenses(@PathVariable Integer userId) {
+    public ResponseEntity<List<ExpenseDto>> getUserExpenses(
+            @PathVariable Long userId
+    ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(expenseService
@@ -66,7 +71,7 @@ public class ExpenseController {
     )
     @GetMapping("/pages/users/{userId}")
     public ResponseEntity<Page<ExpenseDto>> getPageOfUserExpenses(
-            @PathVariable Integer userId,
+            @PathVariable Long userId,
             @RequestParam(defaultValue = "0") @Min(0) Integer pageNumber,
             @RequestParam(defaultValue = "10") @Min(1) Integer pageSize,
             @RequestParam(defaultValue = "DESC") Sort.Direction sortDirection,
@@ -92,7 +97,7 @@ public class ExpenseController {
     @PostMapping("/users/{userId}")
     public ResponseEntity<ExpenseDto> addExpense(
             @RequestBody @Valid Expense expense,
-            @PathVariable Integer userId
+            @PathVariable Long userId
     ) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -104,7 +109,7 @@ public class ExpenseController {
     )
     @PutMapping("/{id}")
     public ResponseEntity<ExpenseDto> updateExpense(
-            @PathVariable Integer id,
+            @PathVariable Long id,
             @RequestBody @Valid Expense expense
     ) {
         return ResponseEntity
@@ -116,7 +121,9 @@ public class ExpenseController {
             summary = "Delete expense by id"
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteExpense(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteExpense(
+            @PathVariable Long id
+    ) {
         expenseService.deleteExpenseById(id);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
