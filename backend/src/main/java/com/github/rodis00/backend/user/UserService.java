@@ -1,5 +1,6 @@
 package com.github.rodis00.backend.user;
 
+import com.github.rodis00.backend.entity.UserEntity;
 import com.github.rodis00.backend.exception.UserAlreadyExistsException;
 import com.github.rodis00.backend.exception.UserNotFoundException;
 import com.github.rodis00.backend.exception.UsernameIsTakenException;
@@ -23,15 +24,15 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User getUserById(Integer id) {
+    public UserEntity getUserById(Long id) {
         return userRepository
                 .findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found."));
     }
 
     public UserDto updateUser(
-            Integer id,
-            UserRequest user
+            Long id,
+            User user
     ) {
         if (existsByEmail(user.getEmail()))
             throw new UserAlreadyExistsException("User with this email already exists.");
@@ -39,7 +40,8 @@ public class UserService {
         if (existsByUsername(user.getUsername()))
             throw new UsernameIsTakenException("This username is taken.");
 
-        User existingUser = getUserById(id);
+        UserEntity existingUser = getUserById(id);
+
         if (Objects.nonNull(user.getEmail()))
             existingUser.setEmail(user.getEmail());
 
@@ -54,12 +56,12 @@ public class UserService {
         return UserDto.from(existingUser);
     }
 
-    public List<User> getAllUsers() {
+    public List<UserEntity> getAllUsers() {
         return userRepository.findAll();
     }
 
-    public void deleteUserById(Integer id) {
-        User user = getUserById(id);
+    public void deleteUserById(Long id) {
+        UserEntity user = getUserById(id);
         userRepository.delete(user);
     }
 
