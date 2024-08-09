@@ -55,6 +55,7 @@ class IncomeServiceTest {
         income.setAmount(new BigDecimal("100.00"));
         income.setTitle("income");
         income.setDate(LocalDateTime.of(2024, 5, 24, 14, 54));
+        income.setDescription("income");
 
         page = new GlobalPage();
         page.setPageNumber(0);

@@ -18,10 +18,11 @@ class IncomeDtoTest {
     void setUp() {
         income = new IncomeEntity();
         income.setId(1L);
-        income.setTitle("earning");
+        income.setTitle("income");
         income.setAmount(new BigDecimal("100.00"));
         income.setDate(LocalDateTime.of(2024, 5, 24, 18, 4));
         income.setUser(null);
+        income.setDescription("income");
     }
 
     @Test
@@ -30,7 +31,8 @@ class IncomeDtoTest {
                 income.getId(),
                 income.getTitle(),
                 income.getAmount(),
-                income.getDate()
+                income.getDate(),
+                income.getDescription()
         );
 
         IncomeDto incomeDto = IncomeDto.from(income);
