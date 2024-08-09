@@ -24,6 +24,7 @@ class ExpenseDtoTest {
         expense.setTitle("expense");
         expense.setPrice(new BigDecimal("100.00"));
         expense.setDate(LocalDateTime.of(2024, 5, 25, 20, 32));
+        expense.setDescription("expense");
         expense.setUser(null);
     }
 
@@ -33,7 +34,8 @@ class ExpenseDtoTest {
                 expense.getId(),
                 expense.getTitle(),
                 expense.getPrice(),
-                expense.getDate()
+                expense.getDate(),
+                expense.getDescription()
         );
 
         ExpenseDto expenseDto = ExpenseDto.from(expense);

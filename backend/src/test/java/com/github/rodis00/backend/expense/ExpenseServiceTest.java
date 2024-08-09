@@ -48,6 +48,7 @@ class ExpenseServiceTest {
         expense.setDate(LocalDateTime.of(2024, 5, 25, 18, 8));
         expense.setPrice(new BigDecimal("100.00"));
         expense.setUser(user);
+        expense.setDescription("expense");
     }
 
     @Test
