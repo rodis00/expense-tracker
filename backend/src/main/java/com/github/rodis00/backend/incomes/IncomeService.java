@@ -39,6 +39,7 @@ public class IncomeService {
                         .amount(income.getAmount())
                         .date(income.getDate())
                         .user(user)
+                        .description(income.getDescription())
                         .build()
         );
     }

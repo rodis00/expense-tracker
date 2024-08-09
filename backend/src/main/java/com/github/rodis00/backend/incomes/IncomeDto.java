@@ -14,13 +14,15 @@ public class IncomeDto {
     private String title;
     private BigDecimal amount;
     private LocalDateTime date;
+    private String description;
 
     public static IncomeDto from(IncomeEntity income) {
         return new IncomeDto(
                 income.getId(),
                 income.getTitle(),
                 income.getAmount(),
-                income.getDate()
+                income.getDate(),
+                income.getDescription()
         );
     }
 }
