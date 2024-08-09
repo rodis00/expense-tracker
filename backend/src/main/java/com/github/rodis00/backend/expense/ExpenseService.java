@@ -40,6 +40,7 @@ public class ExpenseService {
                         .date(expense.getDate())
                         .price(expense.getPrice())
                         .user(user)
+                        .description(expense.getDescription())
                         .build()
         );
     }

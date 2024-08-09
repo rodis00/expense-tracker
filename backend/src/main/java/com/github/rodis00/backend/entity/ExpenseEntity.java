@@ -27,4 +27,6 @@ public class ExpenseEntity extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
+
+    private String description;
 }

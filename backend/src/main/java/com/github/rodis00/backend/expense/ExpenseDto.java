@@ -14,13 +14,15 @@ public class ExpenseDto {
     private String title;
     private BigDecimal price;
     private LocalDateTime date;
+    private String description;
 
     public static ExpenseDto from(ExpenseEntity expense) {
         return new ExpenseDto(
                 expense.getId(),
                 expense.getTitle(),
                 expense.getPrice(),
-                expense.getDate()
+                expense.getDate(),
+                expense.getDescription()
         );
     }
 }
