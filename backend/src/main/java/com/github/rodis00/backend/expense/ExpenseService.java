@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ExpenseService {
@@ -88,5 +89,15 @@ public class ExpenseService {
         Pageable pageable = PageRequest.of(page.getPageNumber(), page.getPageSize(), sort);
 
         return expenseRepository.findAllExpensesByUserIdAndYear(user.getId(), year, pageable);
+    }
+
+    public List<Integer> getYears() {
+        return expenseRepository
+                .findAll()
+                .stream()
+                .map(expense -> expense.getDate().getYear())
+                .distinct()
+                .sorted()
+                .toList();
     }
 }

@@ -129,4 +129,12 @@ public class ExpenseController {
                 .status(HttpStatus.NO_CONTENT)
                 .build();
     }
+
+    @Operation(
+            summary = "Get years of expenses"
+    )
+    @GetMapping("/years")
+    public ResponseEntity<List<Integer>> getYears() {
+        return ResponseEntity.ok(expenseService.getYears());
+    }
 }
