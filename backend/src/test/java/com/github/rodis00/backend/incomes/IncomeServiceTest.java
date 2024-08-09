@@ -367,4 +367,42 @@ class IncomeServiceTest {
         verify(incomeRepository, times(1))
                 .findAllIncomesByUserIdAndYear(1L, year, pageable);
     }
+
+    @Test
+    void shouldReturnAllSortedIncomeYears() {
+        IncomeEntity income1 = new IncomeEntity();
+        income1.setDate(LocalDateTime.of(2000, 6, 4, 12, 12));
+
+        IncomeEntity income2 = new IncomeEntity();
+        income2.setDate(LocalDateTime.of(2024, 6, 4, 12, 12));
+
+        IncomeEntity income3 = new IncomeEntity();
+        income3.setDate(LocalDateTime.of(2010, 6, 4, 12, 12));
+
+        IncomeEntity income4 = new IncomeEntity();
+        income4.setDate(LocalDateTime.of(2010, 6, 4, 12, 12));
+
+        List<IncomeEntity> incomes = List.of(
+                income1,
+                income2,
+                income3,
+                income4
+        );
+
+        List<Integer> expectedYears = List.of(
+                2000,
+                2010,
+                2024
+        );
+
+        when(incomeRepository.findAll()).thenReturn(incomes);
+
+        List<Integer> incomeYears = incomeService.getYears();
+
+        assertNotNull(incomeYears);
+        assertEquals(expectedYears.size(), incomeYears.size());
+        assertEquals(expectedYears, incomeYears);
+
+        verify(incomeRepository, times(1)).findAll();
+    }
 }

@@ -344,4 +344,42 @@ class ExpenseServiceTest {
         verify(expenseRepository, times(1))
                 .findAllExpensesByUserIdAndYear(1L, year, pageable);
     }
+
+    @Test
+    void shouldReturnAllSortedExpenseYears() {
+        ExpenseEntity expense1 = new ExpenseEntity();
+        expense1.setDate(LocalDateTime.of(2024, 5, 25, 19, 50));
+
+        ExpenseEntity expense2 = new ExpenseEntity();
+        expense2.setDate(LocalDateTime.of(2024, 5, 25, 19, 50));
+
+        ExpenseEntity expense3 = new ExpenseEntity();
+        expense3.setDate(LocalDateTime.of(2000, 5, 25, 19, 50));
+
+        ExpenseEntity expense4 = new ExpenseEntity();
+        expense4.setDate(LocalDateTime.of(2010, 5, 25, 19, 50));
+
+        List<ExpenseEntity> expenses = List.of(
+                expense1,
+                expense2,
+                expense3,
+                expense4
+        );
+
+        List<Integer> expectedYears = List.of(
+                2000,
+                2010,
+                2024
+        );
+
+        when(expenseRepository.findAll()).thenReturn(expenses);
+
+        List<Integer> expenseYears = expenseService.getYears();
+
+        assertNotNull(expenseYears);
+        assertEquals(expectedYears.size(), expenseYears.size());
+        assertEquals(expectedYears, expenseYears);
+
+        verify(expenseRepository, times(1)).findAll();
+    }
 }
