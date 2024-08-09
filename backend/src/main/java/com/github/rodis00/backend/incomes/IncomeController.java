@@ -127,4 +127,12 @@ public class IncomeController {
                 .status(HttpStatus.NO_CONTENT)
                 .build();
     }
+
+    @Operation(
+            summary = "Get years of incomes"
+    )
+    @GetMapping("/years")
+    public ResponseEntity<List<Integer>> getYears() {
+        return ResponseEntity.ok(incomeService.getYears());
+    }
 }
