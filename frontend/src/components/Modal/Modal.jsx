@@ -1,16 +1,17 @@
 import React, { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import classes from "./Modal.module.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../../store/modal-slice";
+import './Modal.css'
 
-function Modal({ children, open, className = "" }) {
+function Modal({ children, open }) {
   const dialog = useRef();
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const version = useSelector((state) => state.modal.modalVersion);
 
-  function handleCloseModal(){
-    dispatch(modalActions.closeModal())
+  function handleCloseModal() {
+    dispatch(modalActions.closeModal());
   }
 
   useEffect(() => {
@@ -26,7 +27,8 @@ function Modal({ children, open, className = "" }) {
     <dialog
       ref={dialog}
       onClose={handleCloseModal}
-      className={`${classes.modal} ${className}`}
+      className={`w-[95%] md:w-3/4 lg:w-1/2 xlg:w-1/3 min-h-20 bg-fourthColor flex justify-center rounded-3xl backdrop:bg-black/50 ${version!==''? 'block': 'hidden'}`}
+      id="modalAnimation"
     >
       {children}
     </dialog>,
