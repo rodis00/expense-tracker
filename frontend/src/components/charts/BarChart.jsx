@@ -8,7 +8,7 @@ import {
 } from "./ChartDataPoints";
 import { DUMMY_DATA_EARNINGS } from "../../DummyData";
 
-const BarChart = ({ selectedPoints, name }) => {
+const BarChart = ({ selectedPoints, name, home }) => {
   let labels;
   let dataValues;
 
@@ -79,13 +79,17 @@ const BarChart = ({ selectedPoints, name }) => {
   }
 
   return (
-    <div className="h-96 w-full md:w-10/12 lg:w-3/4 p-4 mt-8 rounded-3xl">
+    <div
+      className={`h-96 w-full md:w-10/12 ${
+        home ? "lg:w-full" : "lg:w-3/4"
+      } p-4 mt-8 rounded-3xl`}
+    >
       <Bar
         data={{
           labels: labels,
           datasets: [
             {
-              label: name === "incomes" ?"incomes":'epxenses',
+              label: name === "incomes" ? "incomes" : "epxenses",
               barThickness: 15,
               backgroundColor: name === "incomes" ? "#28bf8a" : "#EF4444",
               borderRadius: "20",
