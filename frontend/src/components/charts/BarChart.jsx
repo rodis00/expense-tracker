@@ -80,7 +80,7 @@ const BarChart = ({ selectedPoints, name, home }) => {
 
   return (
     <div
-      className={`h-96 w-full md:w-10/12 ${
+      className={`h-[55vh] w-full md:w-10/12 ${
         home ? "lg:w-full" : "lg:w-3/4"
       } p-4 mt-8 rounded-3xl`}
     >
