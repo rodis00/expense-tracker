@@ -47,7 +47,7 @@ const LineChart = ({ name }) => {
 
   return (
     <div
-      className={`h-[26rem] w-full lg:w-[80%] pt-12 pb-4 px-2 lg:py-12 md:px-4 mt-8 md:rounded-2xl lg:rounded-3xl ${
+      className={`h-[60vh] w-full lg:w-[80%] pt-12 pb-4 px-2 lg:py-12 md:px-4 mt-8 md:rounded-2xl lg:rounded-3xl ${
         name === "summaries" ? "" : "bg-thirdColor"
       } relative`}
     >

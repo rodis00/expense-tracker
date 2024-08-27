@@ -22,7 +22,7 @@ const Dashboard = () => {
         <h1 className="text-2xl text-neutral-600">Welcome back</h1>
         <span className="text-3xl font-semibold">User</span>
       </div>
-      <div className="flex flex-col items-center lg:items-start lg:flex-row lg:ml-12">
+      <div className="flex flex-col items-center flex-grow mt-12 lg:items-start lg:flex-row lg:ml-12">
         <section className="w-full md:w-3/4 lg:w-[70%] h-full flex flex-col items-center justify-center">
           <ul className="w-full lg:w-[85%] flex flex-col xsm:flex-row justify-center items-center md:gap-8 ">
             <li className="w-[90%] xsm:w-1/3 lg:w-1/3 xsm:h-36 h-20 xlg:h-24 bg-thirdColor shadow-lg shadow-neutral-0 lg:shadow-neutral-800 mt-4 xsm:mt-0">
@@ -68,20 +68,20 @@ const Dashboard = () => {
               </div>
             </li>
           </ul>
-          <div className="w-full flex justify-center">
+          <div className="w-full mt-8 flex justify-center">
             <LineChart />
           </div>
         </section>
 
         <aside className="w-full md:w-3/4 flex flex-col items-center lg:w-[30%] h-full">
-          <h2 className="text-center text-2xl -mt-2 font-semibold">
+          <h2 className="text-center text-2xl mt-8 lg:-mt-2 font-semibold">
             Recently Added
           </h2>
-          <ul className="w-[95%] mt-8">
+          <ul className="w-[95%] h-[40vh] flex flex-col mt-8 gap-8">
             {testArray.map((item) => (
               <li
                 key={item.id}
-                className="w-full h-20 rounded-full bg-thirdColor flex justify-between items-center mb-4"
+                className="w-full h-1/3 rounded-full bg-thirdColor flex justify-between items-center"
               >
                 <div className="h-14 w-14 sm:h-16 sm:w-16 border-2 border-secondColor rounded-full ml-2 sm:ml-4 flex justify-center items-center">
                   <FontAwesomeIcon icon={faBriefcase} className="text-2xl" />
@@ -92,21 +92,21 @@ const Dashboard = () => {
               </li>
             ))}
           </ul>
-          <div className="flex justify-between mt-4 w-[95%]">
+          <div className="flex justify-between mt-12 w-[95%]">
             <p className="text-neutral-600 pl-4">min</p>
             <h2 className="text-xl">Salary</h2>
             <p className="text-neutral-600 pr-4">max</p>
           </div>
-          <div className="flex w-[95%] h-12 mt-2 items-center justify-between rounded-3xl bg-thirdColor">
+          <div className="flex w-[95%] h-16 mt-2 items-center justify-between rounded-3xl bg-thirdColor">
             <p className="pl-4 text-secondColor">200$</p>
             <p className="pr-4 text-secondColor">10000$</p>
           </div>
-          <div className="flex justify-between mt-4 w-[95%]">
+          <div className="flex justify-between mt-8 w-[95%]">
             <p className="text-neutral-600 pl-4">min</p>
             <h2 className="text-xl">Expense</h2>
             <p className="text-neutral-600 pr-4">max</p>
           </div>
-          <div className="flex w-[95%] h-12 mt-2 items-center justify-between rounded-3xl bg-thirdColor mb-4">
+          <div className="flex w-[95%] h-16 mt-2 items-center justify-between rounded-3xl bg-thirdColor mb-4">
             <p className="pl-4 text-red-500">100$</p>
             <p className="pr-4 text-red-500">5000$</p>
           </div>
