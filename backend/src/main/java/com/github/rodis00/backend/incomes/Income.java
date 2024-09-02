@@ -1,4 +1,4 @@
-package com.github.rodis00.backend.expense;
+package com.github.rodis00.backend.incomes;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -13,14 +13,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Expense {
+public class Income {
 
     @NotBlank(message = "Title shouldn't be blank.")
     private String title;
 
-    @NotNull(message = "Price shouldn't be empty.")
-    @Min(value = 1, message = "Price can't be lower than 1.")
-    private BigDecimal price;
+    @NotNull(message = "Amount shouldn't be empty.")
+    @Min(value = 1, message = "Amount can't be lower than 1.")
+    private BigDecimal amount;
 
     @NotNull(message = "Invalid date.")
     private LocalDateTime date;

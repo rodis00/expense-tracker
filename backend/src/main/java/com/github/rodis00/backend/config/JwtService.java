@@ -1,6 +1,6 @@
 package com.github.rodis00.backend.config;
 
-import com.github.rodis00.backend.user.User;
+import com.github.rodis00.backend.entity.UserEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -19,7 +19,7 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    @Value("${secret-key}")
+    @Value("${application.security.jwt.secret-key}")
     private String SECRET_KEY;
 
     public String generateToken(
@@ -30,7 +30,7 @@ public class JwtService {
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
-                .claim("userId", ((User) userDetails).getId())
+                .claim("userId", ((UserEntity) userDetails).getId())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)

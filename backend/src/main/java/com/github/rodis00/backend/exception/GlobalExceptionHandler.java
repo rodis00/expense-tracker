@@ -15,8 +15,8 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(EarningNotFoundException.class)
-    public ApiResponse handleEarningNotFoundException(EarningNotFoundException e) {
+    @ExceptionHandler(IncomeNotFoundException.class)
+    public ApiResponse handleIncomeNotFoundException(IncomeNotFoundException e) {
         return new ApiResponse(
                 HttpStatus.NOT_FOUND,
                 HttpStatus.NOT_FOUND.value(),
