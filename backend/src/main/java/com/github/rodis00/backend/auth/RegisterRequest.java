@@ -4,14 +4,15 @@ import com.github.rodis00.backend.utils.customValidator.Password;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class RegisterRequest {
+
     @NotBlank(message = "Email shouldn't be empty.")
     @Email(message = "Invalid email address.")
     private String email;

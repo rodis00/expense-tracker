@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("expense-tracker/api/v1/auth")
 @Tag(name = "Auth")
-public class AuthenticateController {
+public class AuthController {
 
-    private final AuthenticateService authService;
+    private final AuthService authService;
 
-    public AuthenticateController(AuthenticateService authService) {
+    public AuthController(AuthService authService) {
         this.authService = authService;
     }
 
@@ -25,7 +25,9 @@ public class AuthenticateController {
             summary = "Register user and get jwt token"
     )
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody @Valid RegisterRequest request) {
+    public ResponseEntity<AuthResponse> register(
+            @RequestBody @Valid RegisterRequest request
+    ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(authService.register(request));
@@ -35,7 +37,9 @@ public class AuthenticateController {
             summary = "Authenticate user and get jwt token"
     )
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthResponse> authenticate(@RequestBody @Valid AuthRequest request) {
+    public ResponseEntity<AuthResponse> authenticate(
+            @RequestBody @Valid AuthRequest request
+    ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(authService.authenticate(request));

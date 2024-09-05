@@ -1,4 +1,4 @@
-package com.github.rodis00.backend.expense;
+package com.github.rodis00.backend.incomes;
 
 import com.github.rodis00.backend.page.GlobalPage;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,63 +14,63 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("expense-tracker/api/v1/expenses")
-@Tag(name = "Expense")
-public class ExpenseController {
+@RequestMapping("expense-tracker/api/v1/incomes")
+@Tag(name = "Income")
+public class IncomeController {
 
-    private final ExpenseService expenseService;
+    private final IncomeService incomeService;
 
-    public ExpenseController(ExpenseService expenseService) {
-        this.expenseService = expenseService;
+    public IncomeController(IncomeService incomeService) {
+        this.incomeService = incomeService;
     }
 
     @Operation(
-            summary = "Get all expenses"
+            summary = "Get all incomes"
     )
     @GetMapping("/")
-    public ResponseEntity<List<ExpenseDto>> getExpenses() {
+    public ResponseEntity<List<IncomeDto>> getIncomes() {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(expenseService
-                        .getAllExpenses()
+                .body(incomeService
+                        .getAllIncomes()
                         .stream()
-                        .map(ExpenseDto::from)
+                        .map(IncomeDto::from)
                         .toList());
     }
 
     @Operation(
-            summary = "Get expense by id"
+            summary = "Get income by id"
     )
     @GetMapping("/{id}")
-    public ResponseEntity<ExpenseDto> getExpense(
+    public ResponseEntity<IncomeDto> getIncome(
             @PathVariable Long id
     ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(ExpenseDto.from(expenseService.getExpenseById(id)));
+                .body(IncomeDto.from(incomeService.getIncomeById(id)));
     }
 
     @Operation(
-            summary = "Get expense by userId"
+            summary = "Get income by userId"
     )
     @GetMapping("/users/{userId}")
-    public ResponseEntity<List<ExpenseDto>> getUserExpenses(
+    public ResponseEntity<List<IncomeDto>> getUserIncomes(
             @PathVariable Long userId
     ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(expenseService
-                        .getAllUserExpenses(userId)
+                .body(incomeService
+                        .getAllUserIncomes(userId)
                         .stream()
-                        .map(ExpenseDto::from)
+                        .map(IncomeDto::from)
                         .toList());
     }
 
     @Operation(
-            summary = "Get page of user expenses."
+            summary = "Get page of user incomes"
     )
     @GetMapping("/pages/users/{userId}")
-    public ResponseEntity<Page<ExpenseDto>> getPageOfUserExpenses(
+    public ResponseEntity<Page<IncomeDto>> getPageOfUserIncomes(
             @PathVariable Long userId,
             @RequestParam(defaultValue = "0") @Min(0) Integer pageNumber,
             @RequestParam(defaultValue = "10") @Min(1) Integer pageSize,
@@ -78,63 +78,61 @@ public class ExpenseController {
             @RequestParam(defaultValue = "date") String sortBy,
             @RequestParam(defaultValue = "") Integer year
     ) {
-        GlobalPage expensePage = new GlobalPage();
-        expensePage.setPageNumber(pageNumber);
-        expensePage.setPageSize(pageSize);
-        expensePage.setSortDirection(sortDirection);
-        expensePage.setSortBy(sortBy);
+        GlobalPage incomesPage = new GlobalPage();
+        incomesPage.setPageNumber(pageNumber);
+        incomesPage.setPageSize(pageSize);
+        incomesPage.setSortDirection(sortDirection);
+        incomesPage.setSortBy(sortBy);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(expenseService
-                        .findAllExpensesByUserId(userId, expensePage, year)
-                        .map(ExpenseDto::from));
+                .body(incomeService
+                        .findAllIncomesByUserId(userId, incomesPage, year)
+                        .map(IncomeDto::from));
     }
 
     @Operation(
-            summary = "Add new expense to the user"
+            summary = "Add new income to the user"
     )
     @PostMapping("/users/{userId}")
-    public ResponseEntity<ExpenseDto> addExpense(
-            @RequestBody @Valid Expense expense,
+    public ResponseEntity<IncomeDto> addIncome(
+            @RequestBody @Valid Income income,
             @PathVariable Long userId
     ) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(ExpenseDto.from(expenseService.saveExpense(expense, userId)));
+                .body(IncomeDto.from(incomeService.saveIncome(income, userId)));
     }
 
     @Operation(
-            summary = "Update expense by id"
+            summary = "Update income by id"
     )
     @PutMapping("/{id}")
-    public ResponseEntity<ExpenseDto> updateExpense(
+    public ResponseEntity<IncomeDto> updateIncome(
             @PathVariable Long id,
-            @RequestBody @Valid Expense expense
+            @RequestBody @Valid Income income
     ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(ExpenseDto.from(expenseService.updateExpense(id, expense)));
+                .body(IncomeDto.from(incomeService.updateIncome(id, income)));
     }
 
     @Operation(
-            summary = "Delete expense by id"
+            summary = "Delete income by id"
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteExpense(
-            @PathVariable Long id
-    ) {
-        expenseService.deleteExpenseById(id);
+    public ResponseEntity<Void> deleteIncome(@PathVariable Long id) {
+        incomeService.deleteIncomeById(id);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();
     }
 
     @Operation(
-            summary = "Get years of expenses"
+            summary = "Get years of incomes"
     )
     @GetMapping("/years")
     public ResponseEntity<List<Integer>> getYears() {
-        return ResponseEntity.ok(expenseService.getYears());
+        return ResponseEntity.ok(incomeService.getYears());
     }
 }

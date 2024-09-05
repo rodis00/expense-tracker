@@ -2,6 +2,8 @@ package com.github.rodis00.backend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -29,7 +31,7 @@ public class SecurityConfig {
             "/swagger-ui/**",
             "/webjars/**",
             "/swagger-ui.html",
-            "expense-tracker/api/v1/auth/**"
+            "/expense-tracker/api/v1/auth/**"
     };
     private final JwtAuthFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
@@ -63,14 +65,42 @@ public class SecurityConfig {
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.setAllowedOrigins(List.of("http://localhost:3000"));
+        corsConfig.setAllowedOrigins(
+                List.of(
+                        "http://localhost:5173"
+                )
+        );
         corsConfig.setAllowCredentials(true);
-        corsConfig.setAllowedHeaders(List.of("Origin", "Access-Control-Allow-Origin", "Content-Type",
-                "Accept", "Authorization", "Origin, Accept", "X-Requested-With", "Access-Control-Request-Method",
-                "Access-Control-Request-Headers"));
-        corsConfig.setExposedHeaders(List.of("Origin", "Content-Type", "Accept", "Authorization",
-                "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"));
-        corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        corsConfig.setAllowedHeaders(
+                List.of(
+                        HttpHeaders.ORIGIN,
+                        HttpHeaders.CONTENT_TYPE,
+                        HttpHeaders.ACCEPT,
+                        HttpHeaders.AUTHORIZATION,
+                        HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN,
+                        HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS,
+                        HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD
+                )
+        );
+        corsConfig.setExposedHeaders(
+                List.of(
+                        HttpHeaders.ORIGIN,
+                        HttpHeaders.CONTENT_TYPE,
+                        HttpHeaders.ACCEPT,
+                        HttpHeaders.AUTHORIZATION,
+                        HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN,
+                        HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS
+                )
+        );
+        corsConfig.setAllowedMethods(
+                List.of(
+                        HttpMethod.GET.name(),
+                        HttpMethod.POST.name(),
+                        HttpMethod.PUT.name(),
+                        HttpMethod.DELETE.name(),
+                        HttpMethod.OPTIONS.name()
+                )
+        );
 
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfig);

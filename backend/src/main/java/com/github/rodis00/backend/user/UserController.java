@@ -13,6 +13,7 @@ import java.util.List;
 @RequestMapping("expense-tracker/api/v1/users")
 @Tag(name = "User")
 public class UserController {
+
     private final UserService userService;
 
     public UserController(UserService userService) {
@@ -37,7 +38,9 @@ public class UserController {
             summary = "Get user by id"
     )
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getUser(@PathVariable Integer id) {
+    public ResponseEntity<UserDto> getUser(
+            @PathVariable Long id
+    ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(UserDto.from(userService.getUserById(id)));
@@ -48,8 +51,8 @@ public class UserController {
     )
     @PatchMapping("/{id}")
     public ResponseEntity<UserDto> updateUser(
-            @PathVariable Integer id,
-            @RequestBody @Valid UserRequest user
+            @PathVariable Long id,
+            @RequestBody @Valid User user
     ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -60,7 +63,9 @@ public class UserController {
             summary = "Delete user by id"
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteUser(
+            @PathVariable Long id
+    ) {
         userService.deleteUserById(id);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)

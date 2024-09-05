@@ -1,8 +1,9 @@
 package com.github.rodis00.backend.expense;
 
+import com.github.rodis00.backend.entity.ExpenseEntity;
+import com.github.rodis00.backend.entity.UserEntity;
 import com.github.rodis00.backend.exception.ExpenseNotFoundException;
 import com.github.rodis00.backend.page.GlobalPage;
-import com.github.rodis00.backend.user.User;
 import com.github.rodis00.backend.user.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,9 +12,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
-public class ExpenseService implements ExpenseServiceInterface {
+public class ExpenseService {
 
     private final ExpenseRepository expenseRepository;
     private final UserService userService;
@@ -26,30 +28,34 @@ public class ExpenseService implements ExpenseServiceInterface {
         this.userService = userService;
     }
 
-    @Override
-    public Expense saveExpense(
+    public ExpenseEntity saveExpense(
             Expense expense,
-            Integer userId
+            Long userId
     ) {
-        User user = userService.getUserById(userId);
-        expense.setUser(user);
-        expenseRepository.save(expense);
-        return expense;
+        UserEntity user = userService.getUserById(userId);
+
+        return expenseRepository.save(
+                ExpenseEntity.builder()
+                        .title(expense.getTitle())
+                        .date(expense.getDate())
+                        .price(expense.getPrice())
+                        .user(user)
+                        .description(expense.getDescription())
+                        .build()
+        );
     }
 
-    @Override
-    public Expense getExpenseById(Integer id) {
+    public ExpenseEntity getExpenseById(Long id) {
         return expenseRepository
                 .findById(id)
                 .orElseThrow(() -> new ExpenseNotFoundException("Expense not found."));
     }
 
-    @Override
-    public Expense updateExpense(
-            Integer id,
+    public ExpenseEntity updateExpense(
+            Long id,
             Expense expense
     ) {
-        Expense actualExpense = getExpenseById(id);
+        ExpenseEntity actualExpense = getExpenseById(id);
 
         actualExpense.setTitle(expense.getTitle());
         actualExpense.setPrice(expense.getPrice());
@@ -59,34 +65,40 @@ public class ExpenseService implements ExpenseServiceInterface {
         return actualExpense;
     }
 
-    @Override
-    public List<Expense> getAllExpenses() {
+    public List<ExpenseEntity> getAllExpenses() {
         return expenseRepository.findAll();
     }
 
-    @Override
-    public List<Expense> getAllUserExpenses(Integer userId) {
-        User user = userService.getUserById(userId);
+    public List<ExpenseEntity> getAllUserExpenses(Long userId) {
+        UserEntity user = userService.getUserById(userId);
         return expenseRepository.findAllByUserId(user.getId());
     }
 
-    @Override
-    public void deleteExpenseById(Integer id) {
-        Expense expense = getExpenseById(id);
+    public void deleteExpenseById(Long id) {
+        ExpenseEntity expense = getExpenseById(id);
         expenseRepository.delete(expense);
     }
 
-    @Override
-    public Page<Expense> findAllExpensesByUserId(
-            Integer userId,
+    public Page<ExpenseEntity> findAllExpensesByUserId(
+            Long userId,
             GlobalPage page,
             Integer year
     ) {
-        User user = userService.getUserById(userId);
+        UserEntity user = userService.getUserById(userId);
 
         Sort sort = Sort.by(page.getSortDirection(), page.getSortBy());
         Pageable pageable = PageRequest.of(page.getPageNumber(), page.getPageSize(), sort);
 
-        return expenseRepository.findAllExpensesByUserIdAndYear(userId, year, pageable);
+        return expenseRepository.findAllExpensesByUserIdAndYear(user.getId(), year, pageable);
+    }
+
+    public List<Integer> getYears() {
+        return expenseRepository
+                .findAll()
+                .stream()
+                .map(expense -> expense.getDate().getYear())
+                .distinct()
+                .sorted()
+                .toList();
     }
 }
