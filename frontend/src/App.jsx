@@ -1,4 +1,7 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
 import RootElement from "./components/root-element/RootElement";
 import Home from "./components/home/Home";
 import Dashboard from "./components/dashboard/Dashboard";
@@ -9,6 +12,10 @@ import Login from "./components/login/Login";
 import "./App.css";
 import Signup from "./components/signup/Signup";
 import ErrorBoundary from "./components/error/ErrorBoundary";
+import { jwtDecode } from "jwt-decode";
+import { useDispatch } from "react-redux";
+import { authActions } from "./store/auth-slice";
+import { useEffect } from "react";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +36,32 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const handleTokenExpiration = () => {
+      const token = localStorage.getItem("token");
+      const currentDate = new Date();
+      if (token) {
+        const userId = jwtDecode(token).userId;
+        const exp = jwtDecode(token).exp;
+        const tokenDate = new Date(exp * 1000);
+        if (currentDate > tokenDate) {
+          localStorage.removeItem("token");
+          dispatch(authActions.logout());
+          window.location.href = "/login";
+        } else {
+          dispatch(authActions.login(userId));
+        }
+      }
+    };
+
+    handleTokenExpiration();
+
+    const interval = setInterval(handleTokenExpiration, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return <RouterProvider router={router} />;
 }
 
