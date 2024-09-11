@@ -8,9 +8,24 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import googleIcon from "../../assets/google-color-icon.png";
 import Input from "../../util/Input";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { login } from "../../util/http/auth";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const [formErrors, setFormErrors] = useState({});
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: login,
+    onSuccess: () => {
+      navigate("/dashboard");
+    },
+    onError: (error) => {
+      setFormErrors(error);
+    },
+  });
+
   const [typePassword, setTypePassword] = useState("password");
 
   function handleShowPassword() {
@@ -21,13 +36,23 @@ const Login = () => {
     }
   }
 
+  function handleSubmit(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const values = Object.fromEntries(formData);
+    setFormErrors({});
+    mutate(values);
+  }
+
   return (
     <div className="w-full h-screen flex items-center justify-center">
       <form
-        action=""
+        onSubmit={handleSubmit}
         className="bg-main sm:bg-fourthColor w-full sm:w-2/3 md:w-1/2 lg:w-1/3 min-h-[35rem] flex flex-col rounded-3xl"
       >
-        <h1 className="text-center text-3xl text-white my-8 h-[10%] lg:text-2xl">Login</h1>
+        <h1 className="text-center text-3xl text-white my-8 h-[10%] lg:text-2xl">
+          Login
+        </h1>
         <div className="w-[80%] mx-auto">
           <Input
             labelText="Username"
@@ -36,6 +61,8 @@ const Login = () => {
             type="text"
             inputId="username"
           />
+
+          {formErrors && <p className="text-red-500">{formErrors.username}</p>}
 
           <Input
             labelText="Password"
@@ -58,25 +85,29 @@ const Login = () => {
           <button className="text-neutral-500 -mt-3 transition-all duration-300 hover:text-red-500 relative float-right lg:text-sm">
             Forgot your password?
           </button>
+
+          {formErrors && <p className="text-red-500">{formErrors.password}</p>}
         </div>
 
         <div className="flex flex-col items-center gap-4 mt-12">
           <button
-            type="button"
-            className="h-10 lg:h-9 w-40 text-white text-lg lg:text-base bg-secondColor rounded-3xl border-none transition-all duration-300 hover:bg-[#28bf8a]"
+            type="submit"
+            className="h-10 lg:h-9 w-40 text-white text-lg lg:text-base bg-secondColor rounded-3xl border-none transition-all duration-300 hover:bg-[#28bf8a] disabled:cursor-not-allowed disabled:bg-[#014029]"
+            disabled={isPending}
           >
-            Login
+            {isPending ? "Logging in..." : "Login"}
           </button>
           <div>
             <span className="text-white pr-2">Don't have an account?</span>
             <Link
-              to={'/signup'}
+              to={"/signup"}
               className="text-secondColor transition-all duration-300 hover:text-red-600"
             >
               Sign up
             </Link>
           </div>
         </div>
+
         <div className="flex items-center justify-between mt-6">
           <div className="h-[3px] w-[45%] bg-neutral-500"></div>
           <p className="text-neutral-500 text-xl">or</p>
