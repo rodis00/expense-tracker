@@ -1,7 +1,4 @@
-import {
-  RouterProvider,
-  createBrowserRouter,
-} from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import RootElement from "./components/root-element/RootElement";
 import Home from "./components/home/Home";
 import Dashboard from "./components/dashboard/Dashboard";
@@ -16,6 +13,7 @@ import { jwtDecode } from "jwt-decode";
 import { useDispatch } from "react-redux";
 import { authActions } from "./store/auth-slice";
 import { useEffect } from "react";
+import TransactionElement from "./util/transactionElement/TransactionElement";
 
 const router = createBrowserRouter([
   {
@@ -26,8 +24,13 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: "dashboard", element: <Dashboard /> },
-      { path: "incomes", element: <Incomes /> },
+      {
+        path: "incomes",
+        element: <Incomes />,
+      },
+      { path: "incomes/:id", element: <TransactionElement /> },
       { path: "expenses", element: <Expenses /> },
+      { path: "expenses/:id", element: <TransactionElement /> },
       { path: "summaries", element: <Summaries /> },
       { path: "login", element: <Login /> },
       { path: "signup", element: <Signup /> },
