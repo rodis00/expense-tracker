@@ -16,6 +16,7 @@ const Input = ({ labelText, icon, placeholder, type, inputId, children, classNam
         </span>
         <input
           id={inputId}
+          name={inputId}
           type={type}
           placeholder={placeholder}
           className={`w-full border-none h-12 lg:h-10 bg-neutral-800 sm:bg-main rounded-3xl pl-12 text-lg lg:text-base lg:focus:text-sm transition-all duration-200 focus:ring-1 focus:ring-white focus:text-base ${className}`}
