@@ -47,3 +47,47 @@ export async function fetchExpenses({
 
   return result;
 }
+
+export async function fetchExpenseById({ id, token }) {
+  const response = await fetch(
+    `http://localhost:8080/expense-tracker/api/v1/expenses/${id}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw error.message;
+  }
+
+  const result = await response.json();
+
+  return result;
+}
+
+export async function updateExpenseById({ id, values, token }) {
+  const response = await fetch(
+    `http://localhost:8080/expense-tracker/api/v1/expenses/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+      body: JSON.stringify(values),
+    }
+  );
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw error.message;
+  }
+
+  const result = await response.json();
+
+  return result;
+}
