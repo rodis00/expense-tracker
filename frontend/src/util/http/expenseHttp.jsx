@@ -91,3 +91,21 @@ export async function updateExpenseById({ id, values, token }) {
 
   return result;
 }
+
+export async function deleteExpenseById({ id, token }) {
+  const response = await fetch(
+    `http://localhost:8080/expense-tracker/api/v1/expenses/${id}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw error.message;
+  }
+}
