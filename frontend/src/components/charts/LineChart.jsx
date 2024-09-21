@@ -5,44 +5,18 @@ import { ChartDataPoints } from "./ChartDataPoints";
 import { DUMMY_DATA_EXPENSES, DUMMY_DATA_EARNINGS } from "../../DummyData";
 
 const LineChart = ({ name }) => {
-  const ChartDataPointsEarnings = [
-    { label: "Jan", value: 0 },
-    { label: "Feb", value: 0 },
-    { label: "Mar", value: 0 },
-    { label: "Apr", value: 0 },
-    { label: "May", value: 0 },
-    { label: "Jun", value: 0 },
-    { label: "Jul", value: 0 },
-    { label: "Aug", value: 0 },
-    { label: "Sep", value: 0 },
-    { label: "Oct", value: 0 },
-    { label: "Nov", value: 0 },
-    { label: "Dec", value: 0 },
-  ];
+  const ChartDataPointsEarnings = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-  const ChartDataPointsExpenses = [
-    { label: "Jan", value: 0 },
-    { label: "Feb", value: 0 },
-    { label: "Mar", value: 0 },
-    { label: "Apr", value: 0 },
-    { label: "May", value: 0 },
-    { label: "Jun", value: 0 },
-    { label: "Jul", value: 0 },
-    { label: "Aug", value: 0 },
-    { label: "Sep", value: 0 },
-    { label: "Oct", value: 0 },
-    { label: "Nov", value: 0 },
-    { label: "Dec", value: 0 },
-  ];
+  const ChartDataPointsExpenses = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
   for (const elem of DUMMY_DATA_EARNINGS) {
     const elemMonth = elem.date.getMonth();
-    ChartDataPointsEarnings[elemMonth].value += elem.amount;
+    ChartDataPointsEarnings[elemMonth] += elem.amount;
   }
 
   for (const elem of DUMMY_DATA_EXPENSES) {
     const elemMonth = elem.date.getMonth();
-    ChartDataPointsExpenses[elemMonth].value += elem.amount;
+    ChartDataPointsExpenses[elemMonth] += elem.amount;
   }
 
   return (
@@ -60,13 +34,13 @@ const LineChart = ({ name }) => {
           datasets: [
             {
               label: "expenses",
-              data: ChartDataPointsExpenses.map((data) => data.value),
+              data: ChartDataPointsExpenses.map((data) => data),
               backgroundColor: "#D74949",
               borderColor: "#D74949",
             },
             {
               label: "earnings",
-              data: ChartDataPointsEarnings.map((data) => data.value),
+              data: ChartDataPointsEarnings.map((data) => data),
               backgroundColor: "#28bf8a",
               borderColor: "#28bf8a",
             },
