@@ -1,54 +1,53 @@
 import React from "react";
 import { Chart as ChartJS } from "chart.js/auto";
 import { Bar } from "react-chartjs-2";
-import {
-  ChartDataPoints,
-  ChartDataPointsDaily,
-  ChartDataPointsYearly,
-} from "./ChartDataPoints";
-import { DUMMY_DATA_EARNINGS } from "../../DummyData";
+import { ChartDataPoints, ChartDataPointsDaily } from "./ChartDataPoints";
+import { useQuery } from "@tanstack/react-query";
+import { fetchIncomeYears } from "../../util/http/incomeHttp";
+import { fetchExpenseYears } from "../../util/http/expenseHttp";
 
-const BarChart = ({ selectedPoints, name, home }) => {
+const BarChart = ({ selectedPoints, name, home, data }) => {
   let labels;
   let dataValues;
+  let updatedData;
+  let minYear;
+  let YearlyDataPoints = [];
+  const ChartDataPointsYearly = [];
+  const MonthlyDataPoints = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  const WeeklyDataPoints = [0, 0, 0, 0, 0, 0, 0];
+  const token = localStorage.getItem("token");
 
-  const MonthlyDataPoints = [
-    { label: "Jan", value: 0 },
-    { label: "Feb", value: 0 },
-    { label: "Mar", value: 0 },
-    { label: "Apr", value: 0 },
-    { label: "May", value: 0 },
-    { label: "Jun", value: 0 },
-    { label: "Jul", value: 0 },
-    { label: "Aug", value: 0 },
-    { label: "Sep", value: 0 },
-    { label: "Oct", value: 0 },
-    { label: "Nov", value: 0 },
-    { label: "Dec", value: 0 },
-  ];
+  const { data: dataYears } = useQuery({
+    queryKey: name === "incomes" ? ["incomes", token] : ["expenses", token],
+    queryFn:
+      name === "incomes"
+        ? () => fetchIncomeYears({ token })
+        : () => fetchExpenseYears({ token }),
+  });
 
-  const WeeklyDataPoints = [
-    { label: "Mon", value: 0 },
-    { label: "Tue", value: 0 },
-    { label: "Wed", value: 0 },
-    { label: "Thu", value: 0 },
-    { label: "Fri", value: 0 },
-    { label: "Sat", value: 0 },
-    { label: "Sun", value: 0 },
-  ];
+  if (dataYears) {
+    dataYears.forEach((item) => {
+      ChartDataPointsYearly.push(item);
+      YearlyDataPoints.push(0);
+    });
+    minYear = dataYears[0];
+  } else {
+    YearlyDataPoints = [];
+  }
 
-  const YearlyDataPoints = [
-    { label: 2021, value: 0 },
-    { label: 2022, value: 0 },
-    { label: 2023, value: 0 },
-    { label: 2024, value: 0 },
-    { label: 2025, value: 0 },
-    { label: 2026, value: 0 },
-    { label: 2027, value: 0 },
-    { label: 2028, value: 0 },
-  ];
+  if (data) {
+    updatedData = data.content?.map((item) => ({
+      ...item,
+      value: name === "incomes" ? item.amount : item.price,
+      date: new Date(item.date),
+    }));
+  } else {
+    updatedData = [];
+  }
 
-  const minYear = 2021;
+  function changeDayIndex(dayIndex) {
+    return dayIndex === 0 ? 6 : dayIndex - 1;
+  }
 
   if (selectedPoints === "Monthly") {
     labels = ChartDataPoints;
@@ -61,21 +60,22 @@ const BarChart = ({ selectedPoints, name, home }) => {
     dataValues = YearlyDataPoints;
   }
 
-  for (const elem of DUMMY_DATA_EARNINGS) {
+  for (const elem of updatedData) {
     const elemMonth = elem.date.getMonth();
-    MonthlyDataPoints[elemMonth].value += elem.amount;
+    MonthlyDataPoints[elemMonth] += elem.value;
   }
 
-  for (const elem of DUMMY_DATA_EARNINGS) {
+  for (const elem of updatedData) {
     const elemDay = elem.date.getDay();
-    WeeklyDataPoints[elemDay].value += elem.amount;
+    const updatedDayIndex = changeDayIndex(elemDay);
+    WeeklyDataPoints[updatedDayIndex] += elem.value;
   }
 
-  for (const elem of DUMMY_DATA_EARNINGS) {
+  for (const elem of updatedData) {
     const elemYear = elem.date.getFullYear();
     const index = elemYear - minYear;
     if (index >= 0 && index < ChartDataPointsYearly.length)
-      YearlyDataPoints[index].value += elem.amount;
+      YearlyDataPoints[index] += elem.value;
   }
 
   return (
@@ -93,7 +93,7 @@ const BarChart = ({ selectedPoints, name, home }) => {
               barThickness: 15,
               backgroundColor: name === "incomes" ? "#28bf8a" : "#EF4444",
               borderRadius: "20",
-              data: dataValues.map((data) => data.value),
+              data: dataValues.map((data) => data),
             },
           ],
         }}

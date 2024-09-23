@@ -41,11 +41,13 @@ const TransactionElement = () => {
   }
 
   return (
-    <div className="w-full h-screen flex justify-center items-center">
-      <div className="w-1/3 min-h-[40rem] bg-fourthColor flex flex-col rounded-3xl">
+    <div className="w-full min-h-screen flex justify-center items-center">
+      <div className="w-full md:w-1/2 lg:w-1/3 min-h-full md:min-h-[40rem] bg-fourthColor flex flex-col rounded-3xl">
         {data && (
           <TransactionElementLayoutForm
+            id={id}
             data={data}
+            token={token}
             name={resourceType}
             isEditting={isEditting}
             startEditting={handleEditting}

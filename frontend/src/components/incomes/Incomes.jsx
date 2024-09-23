@@ -60,7 +60,11 @@ const Incomes = () => {
           handleSelection={handleDataPointsSelection}
           selectedPoints={chartPoints}
         />
-        <BarChart selectedPoints={chartPoints} name={"incomes"} />
+        <BarChart
+          selectedPoints={chartPoints}
+          name={"incomes"}
+          data={data}
+        />
         <div className="w-[95%] sm:w-3/4 md:w-1/2 lg:w-1/3 h-20 lg:h-16 mt-4 bg-thirdColor rounded-full flex items-center justify-around text-lg shadow-lg shadow-neutral-800">
           <span className="text-secondColor w-28 pl-4 text-xl">
             <FontAwesomeIcon icon={faArrowUp} /> 45%
