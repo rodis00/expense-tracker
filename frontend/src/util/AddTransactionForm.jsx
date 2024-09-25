@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPencil,
@@ -7,13 +7,39 @@ import {
   faList,
 } from "@fortawesome/free-solid-svg-icons";
 import Input from "./Input";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../store/modal-slice";
 import "./AddTransactionForm.css";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { newIncome } from "./http/incomeHttp";
+import { newExpense } from "./http/expenseHttp";
 
-const AddTransactionForm = () => {
+const AddTransactionForm = ({ value, upperValue }) => {
+  const [formErrors, setFormErrors] = useState({});
   const dateInputRef = useRef();
   const dispatch = useDispatch();
+  const token = localStorage.getItem("token");
+  const userId = useSelector((state) => state.auth.user);
+  const buttonText = value === "amount" ? "Add income" : "Add expense";
+  const pending = value === "amount" ? "Adding income..." : "Adding expense...";
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: value === "amount" ? newIncome : newExpense,
+    onSuccess: () => {
+      value === "amount"
+        ? queryClient.invalidateQueries({
+            queryKey: ["incomes", { userId, token }],
+          })
+        : queryClient.invalidateQueries({
+            queryKey: ["expenses", { userId, token }],
+          });
+      dispatch(modalActions.closeModal());
+    },
+    onError: (error) => {
+      setFormErrors(error);
+    },
+  });
 
   const handleCloseForm = () => {
     dispatch(modalActions.closeModal());
@@ -23,10 +49,22 @@ const AddTransactionForm = () => {
     dateInputRef.current.showPicker();
   };
 
+  function handleSubmit(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const formValues = Object.fromEntries(formData);
+    const values = {
+      ...formValues,
+      date: new Date(formValues.date),
+    };
+    setFormErrors({});
+    mutate({ userId, values, token });
+  }
+
   return (
-    <form action="" className="w-[95%] sm:w-3/4 flex flex-col">
+    <form onSubmit={handleSubmit} className="w-[95%] sm:w-3/4 flex flex-col">
       <h2 className="text-center text-white my-8 xsm:my-4 text-2xl font-semibold">
-        Add your income
+        Add your {value === "amount" ? "income" : "expense"}
       </h2>
       <div>
         <Input
@@ -36,15 +74,20 @@ const AddTransactionForm = () => {
           type="text"
           inputId="title"
         />
+        {formErrors && <p className="text-red-500">{formErrors.title}</p>}
         <Input
-          labelText="Amount"
+          labelText={upperValue}
           icon={faDollar}
-          placeholder="Enter your amount"
+          placeholder={`Enter your ${value}`}
           type="number"
-          inputId="amount"
+          inputId={value}
           className="pr-2"
         />
-
+        {formErrors && (
+          <p className="text-red-500">
+            {value === "amount" ? formErrors.amount : formErrors.price}
+          </p>
+        )}
         <div className="w-full flex flex-col xsm:flex-row items-center justify-between">
           <div className="w-full xsm:w-1/2">
             <label
@@ -60,10 +103,12 @@ const AddTransactionForm = () => {
               <input
                 type="date"
                 id="date"
+                name="date"
                 ref={dateInputRef}
                 onFocus={handleShowPicker}
                 className={`w-full border-none h-12 lg:h-10 bg-neutral-800 appearance-none sm:bg-main rounded-3xl pl-12 pr-2 text-lg lg:text-base lg:focus:text-sm transition-all duration-200 focus:ring-white focus:text-base`}
               />
+              {formErrors && <p className="text-red-500">{formErrors.date}</p>}
             </div>
           </div>
           <div className="mt-4 xsm:mt-0 w-full xsm:w-5/12">
@@ -100,6 +145,7 @@ const AddTransactionForm = () => {
           </label>
           <textarea
             id="description"
+            name="description"
             placeholder="Enter your description"
             className="text-white mt-2 bg-main mb-8 min-h-28 max-h-28 px-4 py-2 border-none focus:ring-white"
           />
@@ -112,8 +158,12 @@ const AddTransactionForm = () => {
           >
             Close
           </button>
-          <button className="bg-secondColor w-40 h-12 rounded-full transition-all duration-300 hover:bg-[#28bf8a] text-white font-semibold">
-            Add income
+          <button
+            type="submit"
+            className="bg-secondColor w-40 h-12 rounded-full transition-all duration-300 hover:bg-[#28bf8a] text-white font-semibold disabled:cursor-not-allowed disabled:bg-[#014029]"
+            disabled={isPending}
+          >
+            {isPending ? pending : buttonText}
           </button>
         </div>
       </div>
