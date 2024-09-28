@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class IncomeService {
@@ -29,9 +30,9 @@ public class IncomeService {
 
     public IncomeEntity saveIncome(
             Income income,
-            Long userId
+            String username
     ) {
-        UserEntity user = userService.getUserById(userId);
+        UserEntity user = userService.getUserByUsername(username);
 
         return incomeRepository.save(
                 IncomeEntity.builder()
@@ -40,20 +41,25 @@ public class IncomeService {
                         .date(income.getDate())
                         .user(user)
                         .description(income.getDescription())
+                        .slug(generateSlug())
                         .build()
         );
     }
 
-    public IncomeEntity getIncomeById(Long id) {
-        return incomeRepository.findById(id)
+    private String generateSlug() {
+        return UUID.randomUUID().toString();
+    }
+
+    public IncomeEntity getIncomeBySlug(String slug) {
+        return incomeRepository.findBySlug(slug)
                 .orElseThrow(() -> new IncomeNotFoundException("Income not found."));
     }
 
     public IncomeEntity updateIncome(
-            Long id,
+            String slug,
             Income income
     ) {
-        IncomeEntity actualIncome = getIncomeById(id);
+        IncomeEntity actualIncome = getIncomeBySlug(slug);
 
         actualIncome.setTitle(income.getTitle());
         actualIncome.setAmount(income.getAmount());
@@ -67,27 +73,27 @@ public class IncomeService {
         return incomeRepository.findAll();
     }
 
-    public List<IncomeEntity> getAllUserIncomes(Long userId) {
-        UserEntity user = userService.getUserById(userId);
-        return incomeRepository.findAllByUserId(user.getId());
+    public List<IncomeEntity> getAllUserIncomes(String username) {
+        UserEntity user = userService.getUserByUsername(username);
+        return incomeRepository.findAllByUser_Username(user.getUsername());
     }
 
-    public void deleteIncomeById(Long id) {
-        IncomeEntity income = getIncomeById(id);
+    public void deleteIncomeBySlug(String slug) {
+        IncomeEntity income = getIncomeBySlug(slug);
         incomeRepository.delete(income);
     }
 
     public Page<IncomeEntity> findAllIncomesByUserId(
-            Long userId,
+            String username,
             GlobalPage page,
             Integer year
     ) {
-        UserEntity user = userService.getUserById(userId);
+        UserEntity user = userService.getUserByUsername(username);
 
         Sort sort = Sort.by(page.getSortDirection(), page.getSortBy());
         Pageable pageable = PageRequest.of(page.getPageNumber(), page.getPageSize(), sort);
 
-        return incomeRepository.findAllIncomesByUserIdAndYear(user.getId(), year, pageable);
+        return incomeRepository.findAllIncomesByUser_UsernameAndYear(user.getUsername(), year, pageable);
     }
 
     public List<Integer> getYears() {

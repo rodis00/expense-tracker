@@ -12,7 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
+import java.util.UUID;
 
 @Service
 public class ExpenseService {
@@ -30,9 +30,9 @@ public class ExpenseService {
 
     public ExpenseEntity saveExpense(
             Expense expense,
-            Long userId
+            String username
     ) {
-        UserEntity user = userService.getUserById(userId);
+        UserEntity user = userService.getUserByUsername(username);
 
         return expenseRepository.save(
                 ExpenseEntity.builder()
@@ -41,21 +41,26 @@ public class ExpenseService {
                         .price(expense.getPrice())
                         .user(user)
                         .description(expense.getDescription())
+                        .slug(generateSlug())
                         .build()
         );
     }
 
-    public ExpenseEntity getExpenseById(Long id) {
+    private String generateSlug() {
+        return UUID.randomUUID().toString();
+    }
+
+    public ExpenseEntity getExpenseBySlug(String slug) {
         return expenseRepository
-                .findById(id)
+                .findBySlug(slug)
                 .orElseThrow(() -> new ExpenseNotFoundException("Expense not found."));
     }
 
     public ExpenseEntity updateExpense(
-            Long id,
+            String slug,
             Expense expense
     ) {
-        ExpenseEntity actualExpense = getExpenseById(id);
+        ExpenseEntity actualExpense = getExpenseBySlug(slug);
 
         actualExpense.setTitle(expense.getTitle());
         actualExpense.setPrice(expense.getPrice());
@@ -69,27 +74,27 @@ public class ExpenseService {
         return expenseRepository.findAll();
     }
 
-    public List<ExpenseEntity> getAllUserExpenses(Long userId) {
-        UserEntity user = userService.getUserById(userId);
-        return expenseRepository.findAllByUserId(user.getId());
+    public List<ExpenseEntity> getAllUserExpenses(String username) {
+        UserEntity user = userService.getUserByUsername(username);
+        return expenseRepository.findAllByUser_Username(user.getUsername());
     }
 
-    public void deleteExpenseById(Long id) {
-        ExpenseEntity expense = getExpenseById(id);
+    public void deleteExpenseBySlug(String slug) {
+        ExpenseEntity expense = getExpenseBySlug(slug);
         expenseRepository.delete(expense);
     }
 
-    public Page<ExpenseEntity> findAllExpensesByUserId(
-            Long userId,
+    public Page<ExpenseEntity> findAllExpensesByUsername(
+            String username,
             GlobalPage page,
             Integer year
     ) {
-        UserEntity user = userService.getUserById(userId);
+        UserEntity user = userService.getUserByUsername(username);
 
         Sort sort = Sort.by(page.getSortDirection(), page.getSortBy());
         Pageable pageable = PageRequest.of(page.getPageNumber(), page.getPageSize(), sort);
 
-        return expenseRepository.findAllExpensesByUserIdAndYear(user.getId(), year, pageable);
+        return expenseRepository.findAllExpensesByUser_UsernameAndYear(user.getUsername(), year, pageable);
     }
 
     public List<Integer> getYears() {
