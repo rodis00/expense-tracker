@@ -25,7 +25,7 @@ public class ExpenseController {
     }
 
     @Operation(
-            summary = "Get all expenses"
+            summary = "Retrieve a list of expenses"
     )
     @GetMapping("/")
     public ResponseEntity<List<ExpenseDto>> getExpenses() {
@@ -39,39 +39,39 @@ public class ExpenseController {
     }
 
     @Operation(
-            summary = "Get expense by id"
+            summary = "Retrieve a single expense by its unique slug field"
     )
-    @GetMapping("/{id}")
+    @GetMapping("/{slug}")
     public ResponseEntity<ExpenseDto> getExpense(
-            @PathVariable Long id
+            @PathVariable String slug
     ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(ExpenseDto.from(expenseService.getExpenseById(id)));
+                .body(ExpenseDto.from(expenseService.getExpenseBySlug(slug)));
     }
 
     @Operation(
-            summary = "Get expense by userId"
+            summary = "Retrieve a list of user expenses by username"
     )
-    @GetMapping("/users/{userId}")
+    @GetMapping("/users/{username}")
     public ResponseEntity<List<ExpenseDto>> getUserExpenses(
-            @PathVariable Long userId
+            @PathVariable String username
     ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(expenseService
-                        .getAllUserExpenses(userId)
+                        .getAllUserExpenses(username)
                         .stream()
                         .map(ExpenseDto::from)
                         .toList());
     }
 
     @Operation(
-            summary = "Get page of user expenses."
+            summary = "Retrieve a list of user expenses with pagination and sorting"
     )
-    @GetMapping("/pages/users/{userId}")
+    @GetMapping("/pages/users/{username}")
     public ResponseEntity<Page<ExpenseDto>> getPageOfUserExpenses(
-            @PathVariable Long userId,
+            @PathVariable String username,
             @RequestParam(defaultValue = "0") @Min(0) Integer pageNumber,
             @RequestParam(defaultValue = "10") @Min(1) Integer pageSize,
             @RequestParam(defaultValue = "DESC") Sort.Direction sortDirection,
@@ -87,51 +87,51 @@ public class ExpenseController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(expenseService
-                        .findAllExpensesByUserId(userId, expensePage, year)
+                        .findAllExpensesByUsername(username, expensePage, year)
                         .map(ExpenseDto::from));
     }
 
     @Operation(
-            summary = "Add new expense to the user"
+            summary = "Create a new expense"
     )
-    @PostMapping("/users/{userId}")
+    @PostMapping("/users/{username}")
     public ResponseEntity<ExpenseDto> addExpense(
             @RequestBody @Valid Expense expense,
-            @PathVariable Long userId
+            @PathVariable String username
     ) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(ExpenseDto.from(expenseService.saveExpense(expense, userId)));
+                .body(ExpenseDto.from(expenseService.saveExpense(expense, username)));
     }
 
     @Operation(
-            summary = "Update expense by id"
+            summary = "Update existing expense by its unique slug field"
     )
-    @PutMapping("/{id}")
+    @PutMapping("/{slug}")
     public ResponseEntity<ExpenseDto> updateExpense(
-            @PathVariable Long id,
+            @PathVariable String slug,
             @RequestBody @Valid Expense expense
     ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(ExpenseDto.from(expenseService.updateExpense(id, expense)));
+                .body(ExpenseDto.from(expenseService.updateExpense(slug, expense)));
     }
 
     @Operation(
-            summary = "Delete expense by id"
+            summary = "Delete expense by unique slug field"
     )
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{slug}")
     public ResponseEntity<Void> deleteExpense(
-            @PathVariable Long id
+            @PathVariable String slug
     ) {
-        expenseService.deleteExpenseById(id);
+        expenseService.deleteExpenseBySlug(slug);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();
     }
 
     @Operation(
-            summary = "Get years of expenses"
+            summary = "Retrieve a list of expense years"
     )
     @GetMapping("/years")
     public ResponseEntity<List<Integer>> getYears() {

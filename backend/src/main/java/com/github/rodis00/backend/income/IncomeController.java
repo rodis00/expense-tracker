@@ -25,7 +25,7 @@ public class IncomeController {
     }
 
     @Operation(
-            summary = "Get all incomes"
+            summary = "Retrieve a list of all incomes"
     )
     @GetMapping("/")
     public ResponseEntity<List<IncomeDto>> getIncomes() {
@@ -39,39 +39,39 @@ public class IncomeController {
     }
 
     @Operation(
-            summary = "Get income by id"
+            summary = "Retrieve a single income by its unique slug field"
     )
-    @GetMapping("/{id}")
+    @GetMapping("/{slug}")
     public ResponseEntity<IncomeDto> getIncome(
-            @PathVariable Long id
+            @PathVariable String slug
     ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(IncomeDto.from(incomeService.getIncomeById(id)));
+                .body(IncomeDto.from(incomeService.getIncomeBySlug(slug)));
     }
 
     @Operation(
-            summary = "Get income by userId"
+            summary = "Retrieve a list of user incomes by username"
     )
-    @GetMapping("/users/{userId}")
+    @GetMapping("/users/{username}")
     public ResponseEntity<List<IncomeDto>> getUserIncomes(
-            @PathVariable Long userId
+            @PathVariable String username
     ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(incomeService
-                        .getAllUserIncomes(userId)
+                        .getAllUserIncomes(username)
                         .stream()
                         .map(IncomeDto::from)
                         .toList());
     }
 
     @Operation(
-            summary = "Get page of user incomes"
+            summary = "Retrieve a list of user incomes with pagination and sorting by username"
     )
-    @GetMapping("/pages/users/{userId}")
+    @GetMapping("/pages/users/{username}")
     public ResponseEntity<Page<IncomeDto>> getPageOfUserIncomes(
-            @PathVariable Long userId,
+            @PathVariable String username,
             @RequestParam(defaultValue = "0") @Min(0) Integer pageNumber,
             @RequestParam(defaultValue = "10") @Min(1) Integer pageSize,
             @RequestParam(defaultValue = "DESC") Sort.Direction sortDirection,
@@ -87,49 +87,49 @@ public class IncomeController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(incomeService
-                        .findAllIncomesByUserId(userId, incomesPage, year)
+                        .findAllIncomesByUserId(username, incomesPage, year)
                         .map(IncomeDto::from));
     }
 
     @Operation(
-            summary = "Add new income to the user"
+            summary = "Create a new income"
     )
-    @PostMapping("/users/{userId}")
+    @PostMapping("/users/{username}")
     public ResponseEntity<IncomeDto> addIncome(
             @RequestBody @Valid Income income,
-            @PathVariable Long userId
+            @PathVariable String username
     ) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(IncomeDto.from(incomeService.saveIncome(income, userId)));
+                .body(IncomeDto.from(incomeService.saveIncome(income, username)));
     }
 
     @Operation(
-            summary = "Update income by id"
+            summary = "Update existing income by its unique slug field"
     )
-    @PutMapping("/{id}")
+    @PutMapping("/{slug}")
     public ResponseEntity<IncomeDto> updateIncome(
-            @PathVariable Long id,
+            @PathVariable String slug,
             @RequestBody @Valid Income income
     ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(IncomeDto.from(incomeService.updateIncome(id, income)));
+                .body(IncomeDto.from(incomeService.updateIncome(slug, income)));
     }
 
     @Operation(
-            summary = "Delete income by id"
+            summary = "Delete income by its unique slug field"
     )
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteIncome(@PathVariable Long id) {
-        incomeService.deleteIncomeById(id);
+    @DeleteMapping("/{slug}")
+    public ResponseEntity<Void> deleteIncome(@PathVariable String slug) {
+        incomeService.deleteIncomeBySlug(slug);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();
     }
 
     @Operation(
-            summary = "Get years of incomes"
+            summary = "Retrieve a list of income years"
     )
     @GetMapping("/years")
     public ResponseEntity<List<Integer>> getYears() {
