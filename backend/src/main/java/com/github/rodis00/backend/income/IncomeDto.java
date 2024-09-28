@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 public class IncomeDto {
-    private Long id;
+    private String slug;
     private String title;
     private BigDecimal amount;
     private LocalDateTime date;
@@ -18,7 +18,7 @@ public class IncomeDto {
 
     public static IncomeDto from(IncomeEntity income) {
         return new IncomeDto(
-                income.getId(),
+                income.getSlug(),
                 income.getTitle(),
                 income.getAmount(),
                 income.getDate(),

@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 public class ExpenseDto {
-    private Long id;
+    private String slug;
     private String title;
     private BigDecimal price;
     private LocalDateTime date;
@@ -18,7 +18,7 @@ public class ExpenseDto {
 
     public static ExpenseDto from(ExpenseEntity expense) {
         return new ExpenseDto(
-                expense.getId(),
+                expense.getSlug(),
                 expense.getTitle(),
                 expense.getPrice(),
                 expense.getDate(),

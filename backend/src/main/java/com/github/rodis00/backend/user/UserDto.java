@@ -7,13 +7,11 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class UserDto {
-    private Long id;
     private String username;
     private String email;
 
     public static UserDto from(UserEntity user) {
         return new UserDto(
-                user.getId(),
                 user.getUsername(),
                 user.getEmail()
         );
