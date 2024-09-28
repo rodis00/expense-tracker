@@ -1,4 +1,4 @@
-package com.github.rodis00.backend.incomes;
+package com.github.rodis00.backend.income;
 
 import com.github.rodis00.backend.page.GlobalPage;
 import io.swagger.v3.oas.annotations.Operation;

@@ -1,4 +1,4 @@
-package com.github.rodis00.backend.incomes;
+package com.github.rodis00.backend.income;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

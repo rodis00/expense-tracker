@@ -1,4 +1,4 @@
-package com.github.rodis00.backend.incomes;
+package com.github.rodis00.backend.income;
 
 import com.github.rodis00.backend.entity.IncomeEntity;
 import org.junit.jupiter.api.BeforeEach;
