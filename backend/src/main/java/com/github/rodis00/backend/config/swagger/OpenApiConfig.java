@@ -1,4 +1,4 @@
-package com.github.rodis00.backend.config;
+package com.github.rodis00.backend.config.swagger;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
@@ -11,7 +11,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
 @OpenAPIDefinition(
         info = @Info(
                 title = "Expense Tracker API Documentation",
-                version = "2.0"
+                version = "2.0.0"
         ),
         servers = {
                 @Server(
