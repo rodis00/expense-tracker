@@ -18,13 +18,17 @@ const Incomes = () => {
   const userId = useSelector((state) => state.auth.user);
   const token = localStorage.getItem("token");
   const pageSize = 5;
-  const year = new Date().getFullYear();
+  let incomesAmount = 0;
 
   const { data, isPending, error, isError } = useQuery({
     queryKey: ["incomes", { userId, token, pageNumber }],
-    queryFn: () => fetchIncomes({ userId, token, pageSize, year, pageNumber }),
+    queryFn: () => fetchIncomes({ userId, token, pageSize, pageNumber }),
     enabled: !!userId,
   });
+
+  if (data) {
+    data.content.forEach((item) => (incomesAmount += item.amount));
+  }
 
   const handleDataPointsSelection = (selectedPoints) => {
     setChartPoints(selectedPoints);
@@ -54,17 +58,13 @@ const Incomes = () => {
       <main className="w-full min-h-screen flex flex-col items-center text-white ">
         <div className="text-center">
           <h1 className="text-xl mt-4 text-neutral-600">Total Incomes</h1>
-          <span className="text-3xl text-secondColor">$40000</span>
+          <span className="text-3xl text-secondColor">{incomesAmount}$</span>
         </div>
         <DataPointsSelection
           handleSelection={handleDataPointsSelection}
           selectedPoints={chartPoints}
         />
-        <BarChart
-          selectedPoints={chartPoints}
-          name={"incomes"}
-          data={data}
-        />
+        <BarChart selectedPoints={chartPoints} name={"incomes"} data={data} />
         <div className="w-[95%] sm:w-3/4 md:w-1/2 lg:w-1/3 h-20 lg:h-16 mt-4 bg-thirdColor rounded-full flex items-center justify-around text-lg shadow-lg shadow-neutral-800">
           <span className="text-secondColor w-28 pl-4 text-xl">
             <FontAwesomeIcon icon={faArrowUp} /> 45%
