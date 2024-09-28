@@ -8,16 +8,19 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface IncomeRepository extends JpaRepository<IncomeEntity, Long> {
-    List<IncomeEntity> findAllByUserId(Long userId);
+    List<IncomeEntity> findAllByUser_Username(String username);
 
-    Page<IncomeEntity> findAllIncomesByUserId(Long userId, Pageable pageable);
+    Page<IncomeEntity> findAllIncomesByUser_Username(String username, Pageable pageable);
 
     @Query("select e from IncomeEntity e " +
-            "where e.user.id = :userId " +
+            "where e.user.username = :username " +
             "and (:year is null or extract(year from e.date) = :year) "
     )
-    Page<IncomeEntity> findAllIncomesByUserIdAndYear(Long userId, Integer year, Pageable pageable);
+    Page<IncomeEntity> findAllIncomesByUser_UsernameAndYear(String username, Integer year, Pageable pageable);
+
+    Optional<IncomeEntity> findBySlug(String slug);
 }

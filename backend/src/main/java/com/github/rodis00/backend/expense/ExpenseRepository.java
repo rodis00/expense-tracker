@@ -8,16 +8,19 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ExpenseRepository extends JpaRepository<ExpenseEntity, Long> {
-    List<ExpenseEntity> findAllByUserId(Long userId);
+    List<ExpenseEntity> findAllByUser_Username(String username);
 
-    Page<ExpenseEntity> findAllExpensesByUserId(Long userId, Pageable pageable);
+    Page<ExpenseEntity> findAllExpensesByUser_Username(String username, Pageable pageable);
 
     @Query("select e from ExpenseEntity e " +
-            "where e.user.id = :userId " +
+            "where e.user.username = :username " +
             "and (:year is null or extract(year from e.date) = :year) "
     )
-    Page<ExpenseEntity> findAllExpensesByUserIdAndYear(Long userId, Integer year, Pageable pageable);
+    Page<ExpenseEntity> findAllExpensesByUser_UsernameAndYear(String username, Integer year, Pageable pageable);
+
+    Optional<ExpenseEntity> findBySlug(String slug);
 }
