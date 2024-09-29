@@ -130,3 +130,24 @@ export async function fetchExpenseYears({ token }) {
 
   return result;
 }
+
+export async function fetchAllExpenses({ userId, token }) {
+  const response = await fetch(
+    `http://localhost:8080/expense-tracker/api/v1/expenses/users/${userId}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw error.message;
+  }
+
+  const result = await response.json();
+
+  return result;
+}
