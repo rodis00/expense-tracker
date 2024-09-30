@@ -1,7 +1,16 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Input = ({ labelText, icon, placeholder, type, inputId, children, className='' }) => {
+const Input = ({
+  labelText,
+  icon,
+  placeholder,
+  type,
+  inputId,
+  children,
+  className = "",
+  ...props
+}) => {
   return (
     <>
       <label
@@ -19,7 +28,8 @@ const Input = ({ labelText, icon, placeholder, type, inputId, children, classNam
           name={inputId}
           type={type}
           placeholder={placeholder}
-          className={`w-full border-none h-12 lg:h-10 bg-neutral-800 sm:bg-main rounded-3xl pl-12 text-lg lg:text-base lg:focus:text-sm transition-all duration-200 focus:ring-1 focus:ring-white focus:text-base ${className}`}
+          {...props}
+          className={`w-full border-none h-12 bg-neutral-800 sm:bg-main rounded-3xl pl-12 text-lg lg:text-base lg:focus:text-sm transition-all duration-200 focus:ring-1 focus:ring-white focus:text-base ${className}`}
         />
         {children}
       </div>
