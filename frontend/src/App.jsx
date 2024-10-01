@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { authActions } from "./store/auth-slice";
 import { useEffect } from "react";
 import TransactionElement from "./util/transactionElement/TransactionElement";
+import AllTransactions from "./util/AllTransactions";
 
 const router = createBrowserRouter([
   {
@@ -29,8 +30,10 @@ const router = createBrowserRouter([
         element: <Incomes />,
       },
       { path: "incomes/:id", element: <TransactionElement /> },
+      { path: "incomes/all-transactions", element: <AllTransactions /> },
       { path: "expenses", element: <Expenses /> },
       { path: "expenses/:id", element: <TransactionElement /> },
+      { path: "expenses/all-transactions", element: <AllTransactions /> },
       { path: "summaries", element: <Summaries /> },
       { path: "login", element: <Login /> },
       { path: "signup", element: <Signup /> },
