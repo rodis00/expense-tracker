@@ -15,6 +15,13 @@ import "./Home.css";
 import BarChart from "../charts/BarChart";
 
 const Home = () => {
+  const handleScroll = () => {
+    window.scrollBy({
+      top: window.innerHeight,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <>
       <header className="w-full h-screen overflow-x-hidden">
@@ -44,7 +51,10 @@ const Home = () => {
         <p className="text-white text-base sm:text-lg mx-7 text-center relative">
           Gain control of your money and track your expenses and incomes
         </p>
-        <button className="border-0 flex justify-center items-center bg-secondColor w-12 h-12  sm:w-14 sm:h-14 rounded-full absolute top-[calc(100%-90px)] left-[calc(50%-1.75rem)]">
+        <button
+          onClick={handleScroll}
+          className="border-0 flex justify-center items-center bg-secondColor w-12 h-12  sm:w-14 sm:h-14 rounded-full absolute top-[calc(100%-90px)] left-[calc(50%-1.75rem)]"
+        >
           <FontAwesomeIcon
             icon={faArrowDown}
             className="text-white text-2xl sm:text-3x1"
@@ -163,9 +173,7 @@ const Home = () => {
               <div className="min-h-24 pb-2 xlg:pb-0 w-40 bg-fourthColor rounded-3xl">
                 <h3 className="text-neutral-600 pl-4 pt-2">Rent</h3>
                 <p className="pl-4 text-xl font-semibold">200$</p>
-                <p className="pl-4 text-sm text-amber-300">
-                  Once - 28.09.2024
-                </p>
+                <p className="pl-4 text-sm text-amber-300">Once - 28.09.2024</p>
               </div>
               <div className="min-h-24 pb-2 xlg:pb-0 w-40 bg-fourthColor rounded-3xl">
                 <h3 className="text-neutral-600 pl-4 pt-2">Netflix</h3>
@@ -211,7 +219,14 @@ const Home = () => {
       </main>
 
       <footer className="bg-thirdColor h-16 flex justify-center items-center text-xl text-neutral-500">
-        <span className="px-2 font-semibold text-white transition-all duration-300 cursor-pointer hover:text-secondColor">Login</span> or <span className="px-2 font-semibold text-white transition-all duration-300 cursor-pointer hover:text-secondColor">Signup</span> now!
+        <span className="px-2 font-semibold text-white transition-all duration-300 cursor-pointer hover:text-secondColor">
+          Login
+        </span>{" "}
+        or{" "}
+        <span className="px-2 font-semibold text-white transition-all duration-300 cursor-pointer hover:text-secondColor">
+          Signup
+        </span>{" "}
+        now!
       </footer>
     </>
   );

@@ -19,6 +19,10 @@ import { deleteExpenseById, updateExpenseById } from "../http/expenseHttp";
 import Modal from "../../components/modal/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../../store/modal-slice";
+import Input from "../Input";
+import TransactionDeleteModal from "./TransactionDeleteModal";
+import TransactionUpdateInfoModal from "./TransactionUpdateInfoModal";
+import TransactionActions from "./TransactionActions";
 
 const TransactionElementLayoutForm = ({
   id,
@@ -119,55 +123,20 @@ const TransactionElementLayoutForm = ({
 
   return (
     <>
-      <Modal open={version === "updateInfo"}>
-        <div className="w-full h-60 flex flex-col justify-center items-center gap-8 text-white rounded-3xl border-2 border-white">
-          <FontAwesomeIcon
-            icon={faCircleCheck}
-            className="text-[50px] text-secondColor"
-          />
-          <p className="text-lg px-2">
-            Your {name === "incomes" ? "income" : "expense"} has been updated
-            successfully
-          </p>
-          <button
-            className="bg-secondColor w-28 h-12 rounded-full transition-all duration-300 hover:bg-[#28bf8a]"
-            onClick={closeModal}
-          >
-            Close
-          </button>
-        </div>
-      </Modal>
+      <TransactionUpdateInfoModal
+        version={version}
+        icon={faCircleCheck}
+        name={name}
+        closeModal={closeModal}
+      />
 
-      <Modal open={version === "delete"}>
-        <div className="w-full h-60 flex flex-col justify-center items-center gap-8 text-white rounded-3xl border-2 border-white">
-          <FontAwesomeIcon
-            icon={faTrash}
-            className="text-[50px] text-red-500"
-          />
-          <p className="text-lg px-2">
-            Are you sure you want to remove this{" "}
-            {name === "incomes" ? "income" : "expense"} ?
-          </p>
-          {deletePending ? (
-            <p>Deleting...</p>
-          ) : (
-            <div className="flex gap-8">
-              <button
-                className="bg-red-500 w-28 h-12 rounded-full transition-all duration-300 hover:bg-red-700"
-                onClick={handleDelete}
-              >
-                Yes
-              </button>
-              <button
-                className="bg-secondColor w-28 h-12 rounded-full transition-all duration-300 hover:bg-[#28bf8a]"
-                onClick={closeModal}
-              >
-                Close
-              </button>
-            </div>
-          )}
-        </div>
-      </Modal>
+      <TransactionDeleteModal
+        version={version}
+        icon={faTrash}
+        deletePending={deletePending}
+        handleDelete={handleDelete}
+        closeModal={closeModal}
+      />
 
       {deleteError && (
         <Modal open={version === "deleteInfo"}>
@@ -188,106 +157,56 @@ const TransactionElementLayoutForm = ({
       )}
 
       <form className="w-[85%] mt-20 md:mt-8 mx-auto flex flex-col text-white">
-        {isEditting ? (
-          <div className="text-white flex justify-end gap-8 mt-4 mr-4">
-            <button
-              type="button"
-              onClick={handleSubmit}
-              className="bg-main rounded-xl w-28 h-12 flex items-center justify-center gap-4 text-lg text-yellow-500 font-semibold "
-            >
-              <FontAwesomeIcon icon={faFloppyDisk} />
-              <span>{isPending ? "Saving..." : "Save"}</span>
-            </button>
-            <button
-              type="button"
-              onClick={closeEdditingWithoutSave}
-              className="bg-main rounded-xl w-28 h-12 flex items-center justify-center gap-4 text-lg text-red-500 font-semibold "
-            >
-              <FontAwesomeIcon icon={faBan} />
-              <span>Cancel</span>
-            </button>
-          </div>
-        ) : (
-          <div className="text-white flex justify-end gap-8 mt-4 mr-4">
-            <button
-              type="button"
-              onClick={startEditting}
-              className="bg-main rounded-xl w-28 h-12 flex items-center justify-center gap-4 text-lg text-yellow-500 font-semibold "
-            >
-              <FontAwesomeIcon icon={faPencil} />
-              <span>Edit</span>
-            </button>
-            <button
-              type="button"
-              onClick={handleDeleteModal}
-              className="bg-main rounded-xl w-28 h-12 flex items-center justify-center gap-4 text-lg text-red-500 font-semibold "
-            >
-              <FontAwesomeIcon icon={faTrash} />
-              <span>Delete</span>
-            </button>
-          </div>
-        )}
+        <TransactionActions
+          isEditting={isEditting}
+          isPending={isPending}
+          handleSubmit={handleSubmit}
+          closeEdditingWithoutSave={closeEdditingWithoutSave}
+          startEditting={startEditting}
+          handleDeleteModal={handleDeleteModal}
+          saveIcon={faFloppyDisk}
+          closeIcon={faBan}
+          deleteIcon={faTrash}
+          editIcon={faPencil}
+        />
+        
 
-        <h2 className="text-center text-white mt-12 mb-8 text-2xl font-semibold">
+        <h2 className="text-center text-white mt-12 text-2xl font-semibold">
           {name} - {data.title}
         </h2>
-
-        <label
-          htmlFor="title"
-          className="text-white text-nowrap font-semibold text-xl lg:text-base"
-        >
-          Title
-        </label>
-        <div className={`w-full h-12 mt-2 relative flex items-center`}>
-          <span className="absolute pl-4">
-            <FontAwesomeIcon icon={faPencil} />
-          </span>
-          <input
-            disabled={!isEditting}
+        <div>
+          <Input
+            labelText="Title"
+            icon={faPencil}
+            placeholder="Enter yout title"
             type="text"
-            id="title"
-            name="title"
+            inputId="title"
             onChange={handleChange}
             value={formData.title}
-            placeholder="Enter yout title"
-            className="w-full h-full bg-main rounded-full flex items-center pl-12"
-          />
-        </div>
-        {formErrors ? (
-          <p className="h-6 text-red-500 mb-4">{formErrors.title}</p>
-        ) : (
-          <p className="h-6 mb-4"></p>
-        )}
-
-        <label
-          htmlFor="value"
-          className="text-white text-nowrap font-semibold text-xl lg:text-base"
-        >
-          {name === "incomes" ? "Amount" : "Price"}
-        </label>
-        <div className={`w-full h-12 mt-2 relative flex items-center`}>
-          <span className="absolute pl-4">
-            <FontAwesomeIcon icon={faDollar} />
-          </span>
-          <input
             disabled={!isEditting}
+          />
+
+          {formErrors && (
+            <p className="h-6 text-red-500 ">{formErrors.title}</p>
+          )}
+
+          <Input
+            labelText={name === "incomes" ? "Amount" : "Price"}
+            icon={faDollar}
+            placeholder={`Enter yout ${value}`}
             type="number"
-            id={value}
-            name={value}
+            inputId={value}
+            disabled={!isEditting}
             onChange={handleChange}
             value={name === "incomes" ? formData.amount : formData.price}
-            placeholder={`Enter yout ${value}`}
-            className="w-full h-full bg-main rounded-full flex items-center pl-12"
           />
-        </div>
-        {formErrors ? (
-          <p className="h-6 text-red-500 mb-4">
-            {name === "incomes" ? formErrors.amount : formErrors.price}
-          </p>
-        ) : (
-          <p className="h-6 mb-4"></p>
-        )}
 
+          {formErrors && (
+            <p className="h-6 text-red-500 ">
+              {name === "incomes" ? formErrors.amount : formErrors.price}
+            </p>
+          )}
+        </div>
         <div className="flex justify-between mb-4">
           <div className="flex flex-col w-1/2">
             <label
