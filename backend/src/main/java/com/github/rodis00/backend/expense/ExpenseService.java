@@ -65,6 +65,7 @@ public class ExpenseService {
         actualExpense.setTitle(expense.getTitle());
         actualExpense.setPrice(expense.getPrice());
         actualExpense.setDate(expense.getDate());
+        actualExpense.setDescription(expense.getDescription());
         expenseRepository.save(actualExpense);
 
         return actualExpense;

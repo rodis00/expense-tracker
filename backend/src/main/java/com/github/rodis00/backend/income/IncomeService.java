@@ -64,6 +64,7 @@ public class IncomeService {
         actualIncome.setTitle(income.getTitle());
         actualIncome.setAmount(income.getAmount());
         actualIncome.setDate(income.getDate());
+        actualIncome.setDescription(income.getDescription());
         incomeRepository.save(actualIncome);
 
         return actualIncome;
