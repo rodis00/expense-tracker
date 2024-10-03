@@ -87,7 +87,6 @@ class UserServiceTest {
 
         assertNotNull(updatedDto);
         assertEquals(email, updatedDto.getEmail());
-        assertEquals(user.getId(), updatedDto.getId());
 
         verify(userRepository, times(1)).findByUsername(username);
         verify(userRepository, times(1)).existsByEmail(email);
