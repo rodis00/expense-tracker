@@ -13,11 +13,16 @@ import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import { fetchAllIncomes } from "../../util/http/incomeHttp";
 import { fetchAllExpenses } from "../../util/http/expenseHttp";
+import DateTransaction from "../../util/DateTransaction";
 
 const Dashboard = () => {
   const testArray = DUMMY_DATA_EXPENSES.slice(0, 3);
   const token = localStorage.getItem("token");
   const userId = useSelector((state) => state.auth.user);
+  let incomesLatestAdded;
+  let expenseLatestAdded;
+  let combinedArray;
+  let recentlyAdded;
   let incomes = 0;
   let expenses = 0;
   let balance = 0;
@@ -46,6 +51,8 @@ const Dashboard = () => {
     maxIncome = incomesData.reduce((item, current) => {
       return current.amount > item ? current.amount : item;
     }, incomesData[0].amount);
+
+    incomesLatestAdded = incomesData?.slice(-3);
   }
 
   if (expensesData) {
@@ -56,11 +63,21 @@ const Dashboard = () => {
     maxExpense = expensesData.reduce((item, current) => {
       return current.price > item ? current.price : item;
     }, expensesData[0].price);
+
+    expenseLatestAdded = expensesData?.slice(-3);
   }
 
   if (expensesData && incomesData) {
     balance = incomes - expenses;
+
+    combinedArray = [...incomesLatestAdded, ...expenseLatestAdded];
+
+    recentlyAdded = combinedArray.sort(
+      (a, b) => new Date(b.date) - new Date(a.date)
+    );
   }
+
+  console.log(recentlyAdded);
 
   return (
     <main className="w-full min-h-screen flex flex-col text-white">
@@ -108,17 +125,32 @@ const Dashboard = () => {
             Recently Added
           </h2>
           <ul className="w-[95%] h-[40vh] flex flex-col mt-8 gap-8">
-            {testArray.map((item) => (
+            {recentlyAdded?.slice(0, 3).map((item) => (
               <li
                 key={item.id}
-                className="w-full h-1/3 rounded-full bg-thirdColor flex justify-between items-center"
+                className="w-full h-1/3 rounded-full bg-thirdColor flex justify-between items-center mb-4"
               >
                 <div className="h-14 w-14 sm:h-16 sm:w-16 border-2 border-secondColor rounded-full ml-2 sm:ml-4 flex justify-center items-center">
                   <FontAwesomeIcon icon={faBriefcase} className="text-2xl" />
                 </div>
-
-                <h3 className="text-xl text-left pl-4 grow">{item.title}</h3>
-                <p className="pr-4 text-center text-red-500">{item.amount}$</p>
+                <div className="pl-4 flex flex-col gap-4 grow">
+                  <h3 className="text-2xl">{item.title}</h3>
+                  <div className="flex">
+                    <p>
+                      {item.amount && (
+                        <span className="text-secondColor font-bold text-[17px]">
+                          {item.amount}$
+                        </span>
+                      )}
+                      {item.price && (
+                        <span className="text-red-500 font-bold text-[17px]">
+                          {item.price}$
+                        </span>
+                      )}{" "}
+                      - <DateTransaction date={item.date} />
+                    </p>
+                  </div>
+                </div>
               </li>
             ))}
           </ul>
