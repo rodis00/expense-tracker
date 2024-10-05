@@ -19,13 +19,16 @@ public class IncomeService {
 
     private final IncomeRepository incomeRepository;
     private final UserService userService;
+    private final IncomeSearchDao incomeSearchDao;
 
     public IncomeService(
             IncomeRepository incomeRepository,
-            UserService userService
+            UserService userService,
+            IncomeSearchDao incomeSearchDao
     ) {
         this.incomeRepository = incomeRepository;
         this.userService = userService;
+        this.incomeSearchDao = incomeSearchDao;
     }
 
     public IncomeEntity saveIncome(
@@ -74,9 +77,13 @@ public class IncomeService {
         return incomeRepository.findAll();
     }
 
-    public List<IncomeEntity> getAllUserIncomes(String username) {
+    public List<IncomeEntity> getAllUserIncomes(
+            String username,
+            Integer year,
+            Integer month
+    ) {
         UserEntity user = userService.getUserByUsername(username);
-        return incomeRepository.findAllByUser_Username(user.getUsername());
+        return incomeSearchDao.findAllByUsernameYearAndMonth(username, year, month);
     }
 
     public void deleteIncomeBySlug(String slug) {

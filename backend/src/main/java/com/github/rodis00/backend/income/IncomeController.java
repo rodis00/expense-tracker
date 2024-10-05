@@ -51,16 +51,18 @@ public class IncomeController {
     }
 
     @Operation(
-            summary = "Retrieve a list of user incomes by username"
+            summary = "Retrieve a list of user incomes by username and optional year and month"
     )
     @GetMapping("/users/{username}")
     public ResponseEntity<List<IncomeDto>> getUserIncomes(
-            @PathVariable String username
+            @PathVariable String username,
+            @RequestParam(required = false) Integer year,
+            @RequestParam(required = false) Integer month
     ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(incomeService
-                        .getAllUserIncomes(username)
+                        .getAllUserIncomes(username, year, month)
                         .stream()
                         .map(IncomeDto::from)
                         .toList());
