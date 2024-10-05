@@ -82,7 +82,7 @@ public class IncomeService {
             Integer year,
             Integer month
     ) {
-        UserEntity user = userService.getUserByUsername(username);
+        userService.checkIfUserExists(username);
         return incomeSearchDao.findAllByUsernameYearAndMonth(username, year, month);
     }
 
@@ -96,12 +96,12 @@ public class IncomeService {
             GlobalPage page,
             Integer year
     ) {
-        UserEntity user = userService.getUserByUsername(username);
+        userService.checkIfUserExists(username);
 
         Sort sort = Sort.by(page.getSortDirection(), page.getSortBy());
         Pageable pageable = PageRequest.of(page.getPageNumber(), page.getPageSize(), sort);
 
-        return incomeRepository.findAllIncomesByUser_UsernameAndYear(user.getUsername(), year, pageable);
+        return incomeRepository.findAllIncomesByUser_UsernameAndYear(username, year, pageable);
     }
 
     public List<Integer> getYears() {

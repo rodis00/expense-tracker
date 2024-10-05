@@ -72,4 +72,9 @@ public class UserService {
     public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
     }
+
+    public void checkIfUserExists(String username) {
+        if (!userRepository.existsByUsername(username))
+            throw new UserNotFoundException("User not found.");
+    }
 }

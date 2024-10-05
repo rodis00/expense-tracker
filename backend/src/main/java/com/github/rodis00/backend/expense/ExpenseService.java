@@ -83,7 +83,7 @@ public class ExpenseService {
             Integer year,
             Integer month
     ) {
-        UserEntity user = userService.getUserByUsername(username);
+        userService.checkIfUserExists(username);
         return expenseSearchDao.findAllByUsernameYearAndMonth(username, year, month);
     }
 
@@ -97,12 +97,12 @@ public class ExpenseService {
             GlobalPage page,
             Integer year
     ) {
-        UserEntity user = userService.getUserByUsername(username);
+        userService.checkIfUserExists(username);
 
         Sort sort = Sort.by(page.getSortDirection(), page.getSortBy());
         Pageable pageable = PageRequest.of(page.getPageNumber(), page.getPageSize(), sort);
 
-        return expenseRepository.findAllExpensesByUser_UsernameAndYear(user.getUsername(), year, pageable);
+        return expenseRepository.findAllExpensesByUser_UsernameAndYear(username, year, pageable);
     }
 
     public List<Integer> getYears() {
