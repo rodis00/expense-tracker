@@ -7,14 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface ExpenseRepository extends JpaRepository<ExpenseEntity, Long> {
-    List<ExpenseEntity> findAllByUser_Username(String username);
-
-    Page<ExpenseEntity> findAllExpensesByUser_Username(String username, Pageable pageable);
 
     @Query("select e from ExpenseEntity e " +
             "where e.user.username = :username " +

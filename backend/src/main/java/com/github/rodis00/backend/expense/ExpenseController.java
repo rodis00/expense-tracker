@@ -51,16 +51,18 @@ public class ExpenseController {
     }
 
     @Operation(
-            summary = "Retrieve a list of user expenses by username"
+            summary = "Retrieve a list of user expenses by username and optional year and month"
     )
     @GetMapping("/users/{username}")
     public ResponseEntity<List<ExpenseDto>> getUserExpenses(
-            @PathVariable String username
+            @PathVariable String username,
+            @RequestParam(required = false) Integer year,
+            @RequestParam(required = false) Integer month
     ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(expenseService
-                        .getAllUserExpenses(username)
+                        .getAllUserExpenses(username, year, month)
                         .stream()
                         .map(ExpenseDto::from)
                         .toList());

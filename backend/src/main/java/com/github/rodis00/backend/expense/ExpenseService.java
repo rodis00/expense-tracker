@@ -19,13 +19,16 @@ public class ExpenseService {
 
     private final ExpenseRepository expenseRepository;
     private final UserService userService;
+    private final ExpenseSearchDao expenseSearchDao;
 
     public ExpenseService(
             ExpenseRepository expenseRepository,
-            UserService userService
+            UserService userService,
+            ExpenseSearchDao expenseSearchDao
     ) {
         this.expenseRepository = expenseRepository;
         this.userService = userService;
+        this.expenseSearchDao = expenseSearchDao;
     }
 
     public ExpenseEntity saveExpense(
@@ -75,9 +78,13 @@ public class ExpenseService {
         return expenseRepository.findAll();
     }
 
-    public List<ExpenseEntity> getAllUserExpenses(String username) {
+    public List<ExpenseEntity> getAllUserExpenses(
+            String username,
+            Integer year,
+            Integer month
+    ) {
         UserEntity user = userService.getUserByUsername(username);
-        return expenseRepository.findAllByUser_Username(user.getUsername());
+        return expenseSearchDao.findAllByUsernameYearAndMonth(username, year, month);
     }
 
     public void deleteExpenseBySlug(String slug) {
