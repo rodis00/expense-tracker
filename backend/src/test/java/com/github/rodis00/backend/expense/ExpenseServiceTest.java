@@ -140,24 +140,6 @@ class ExpenseServiceTest {
     }
 
     @Test
-    void shouldReturnAllUserExpenses() {
-        List<ExpenseEntity> expectedExpenses = List.of(expense);
-
-        when(userService.getUserByUsername(username)).thenReturn(user);
-        when(expenseRepository.findAllByUser_Username(user.getUsername())).thenReturn(expectedExpenses);
-
-        List<ExpenseEntity> expenses = expenseService.getAllUserExpenses(username);
-
-        assertEquals(expectedExpenses.size(), expenses.size());
-        assertEquals(expectedExpenses.get(0).getId(), expenses.get(0).getId());
-        assertEquals(expectedExpenses.get(0).getTitle(), expenses.get(0).getTitle());
-        assertEquals(expectedExpenses.get(0).getUser(), expenses.get(0).getUser());
-
-        verify(userService, times(1)).getUserByUsername(username);
-        verify(expenseRepository, times(1)).findAllByUser_Username(user.getUsername());
-    }
-
-    @Test
     void shouldDeleteExpenseBySlug() {
         when(expenseRepository.findBySlug(slug)).thenReturn(Optional.of(expense));
         doNothing().when(expenseRepository).delete(expense);

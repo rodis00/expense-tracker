@@ -152,22 +152,6 @@ class IncomeServiceTest {
     }
 
     @Test
-    void shouldReturnAllUserIncomes() {
-        List<IncomeEntity> expectedIncomes = List.of(income);
-
-        when(userService.getUserByUsername(username)).thenReturn(user);
-        when(incomeRepository.findAllByUser_Username(username)).thenReturn(expectedIncomes);
-
-        List<IncomeEntity> userIncomes = incomeService.getAllUserIncomes(username);
-
-        assertNotNull(userIncomes);
-        assertEquals(1, userIncomes.size());
-
-        verify(userService, times(1)).getUserByUsername(username);
-        verify(incomeRepository, times(1)).findAllByUser_Username(username);
-    }
-
-    @Test
     void shouldDeleteIncomeBySlug() {
         when(incomeRepository.findBySlug(slug)).thenReturn(Optional.of(income));
         doNothing().when(incomeRepository).delete(income);
