@@ -11,6 +11,7 @@ import TransactionList from "../../util/TransactionList";
 import { fetchIncomes } from "../../util/http/incomeHttp";
 import { useQuery } from "@tanstack/react-query";
 import PageNumber from "../../util/PageNumber";
+import { Link } from "react-router-dom";
 
 const Incomes = () => {
   const [pageNumber, setPageNumber] = useState(0);
@@ -92,6 +93,13 @@ const Incomes = () => {
           error={error}
           isError={isError}
         />
+
+        <Link
+          to={"all-transactions"}
+          className="bg-secondColor flex items-center justify-center my-4 w-40 h-12 rounded-full transition-all duration-300 hover:bg-[#28bf8a]"
+        >
+          Show all incomes
+        </Link>
 
         {data && (
           <PageNumber
