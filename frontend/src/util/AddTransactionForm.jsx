@@ -59,6 +59,7 @@ const AddTransactionForm = ({ value, upperValue }) => {
     };
     setFormErrors({});
     mutate({ userId, values, token });
+    event.target.reset();
   }
 
   return (

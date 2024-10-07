@@ -11,6 +11,7 @@ import TransactionList from "../../util/TransactionList";
 import { useQuery } from "@tanstack/react-query";
 import { fetchExpenses } from "../../util/http/expenseHttp";
 import PageNumber from "../../util/PageNumber";
+import { Link } from "react-router-dom";
 
 const Expenses = () => {
   const [pageNumber, setPageNumber] = useState(0);
@@ -19,12 +20,17 @@ const Expenses = () => {
   const token = localStorage.getItem("token");
   const pageSize = 5;
   const year = new Date().getFullYear();
+  let expensesPrice = 0;
 
   const { data, isPending, error, isError } = useQuery({
     queryKey: ["expenses", { userId, token, pageNumber }],
     queryFn: () => fetchExpenses({ userId, token, pageSize, year, pageNumber }),
     enabled: !!userId,
   });
+
+  if (data) {
+    data.content.forEach((item) => (expensesPrice += item.price));
+  }
 
   const handleDataPointsSelection = (selectedPoints) => {
     setChartPoints(selectedPoints);
@@ -53,7 +59,7 @@ const Expenses = () => {
       <main className="w-full min-h-screen flex flex-col items-center text-white">
         <div className="text-center">
           <h1 className="text-xl mt-4 text-neutral-600">Total Expenses</h1>
-          <span className="text-3xl text-red-500">$30000</span>
+          <span className="text-3xl text-red-500">{expensesPrice}$</span>
         </div>
         <DataPointsSelection
           handleSelection={handleDataPointsSelection}
@@ -86,6 +92,14 @@ const Expenses = () => {
           error={error}
           isError={isError}
         />
+
+        <Link
+          to={"all-transactions"}
+          className="bg-secondColor flex items-center justify-center my-4 w-40 h-12 rounded-full transition-all duration-300 hover:bg-[#28bf8a]"
+        >
+          Show all expenses
+        </Link>
+
         {data && (
           <PageNumber
             maxPage={data.totalPages}

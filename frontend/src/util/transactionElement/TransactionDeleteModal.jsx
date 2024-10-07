@@ -32,7 +32,7 @@ const TransactionDeleteModal = ({
               className="bg-secondColor w-28 h-12 rounded-full transition-all duration-300 hover:bg-[#28bf8a]"
               onClick={closeModal}
             >
-              Close
+              Cancel
             </button>
           </div>
         )}
