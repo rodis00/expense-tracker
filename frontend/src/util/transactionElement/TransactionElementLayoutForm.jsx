@@ -32,6 +32,7 @@ const TransactionElementLayoutForm = ({
   startEditting,
   closeEditting,
   isEditting,
+  url,
 }) => {
   const dateWithoutHours = data.date.split("T")[0];
   const value = name === "incomes" ? "amount" : "price";
@@ -169,12 +170,8 @@ const TransactionElementLayoutForm = ({
           deleteIcon={faTrash}
           editIcon={faPencil}
         />
-        
 
-        <h2 className="text-center text-white mt-12 text-2xl font-semibold">
-          {name} - {data.title}
-        </h2>
-        <div>
+        <div className="mt-8">
           <Input
             labelText="Title"
             icon={faPencil}
@@ -290,7 +287,11 @@ const TransactionElementLayoutForm = ({
         )}
 
         <Link
-          to={name === "incomes" ? "/incomes" : "/expenses"}
+          to={
+            url === "all-transactions"
+              ? `/${name}/all-transactions`
+              : `/${name}`
+          }
           className="mx-auto w-28 h-12 font-semibold rounded-full flex items-center justify-center mb-8 bg-secondColor transition-all duration-300 hover:bg-[#28bf8a]"
         >
           Go back
