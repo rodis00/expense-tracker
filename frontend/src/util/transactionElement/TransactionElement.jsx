@@ -10,7 +10,8 @@ const TransactionElement = () => {
   const location = useLocation();
   const pathParts = location.pathname.split("/");
   const resourceType = pathParts[1];
-  const id = pathParts[2];
+  const additionalResource = pathParts[2];
+  const id = pathParts[pathParts.length - 1];
   const token = localStorage.getItem("token");
 
   const { data, isLoading, isError, error } = useQuery({
@@ -52,6 +53,7 @@ const TransactionElement = () => {
             isEditting={isEditting}
             startEditting={handleEditting}
             closeEditting={handleCloseEditting}
+            url={additionalResource}
           />
         )}
       </div>
