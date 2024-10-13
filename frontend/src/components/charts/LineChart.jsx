@@ -4,19 +4,37 @@ import { Line } from "react-chartjs-2";
 import { ChartDataPoints } from "./ChartDataPoints";
 import { DUMMY_DATA_EXPENSES, DUMMY_DATA_EARNINGS } from "../../DummyData";
 
-const LineChart = ({ name }) => {
+const LineChart = ({
+  name,
+  incomesData,
+  expensesData,
+  incomesPending,
+  expensePending,
+}) => {
   const ChartDataPointsEarnings = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
   const ChartDataPointsExpenses = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-  for (const elem of DUMMY_DATA_EARNINGS) {
-    const elemMonth = elem.date.getMonth();
+  if (incomesPending || expensePending) {
+    return <div>Loading...</div>;
+  }
+
+  if (!incomesData) {
+    return [];
+  }
+
+  if (!expensesData) {
+    return [];
+  }
+
+  for (const elem of incomesData) {
+    const elemMonth = new Date(elem.date).getMonth();
     ChartDataPointsEarnings[elemMonth] += elem.amount;
   }
 
-  for (const elem of DUMMY_DATA_EXPENSES) {
-    const elemMonth = elem.date.getMonth();
-    ChartDataPointsExpenses[elemMonth] += elem.amount;
+  for (const elem of expensesData) {
+    const elemMonth = new Date(elem.date).getMonth();
+    ChartDataPointsExpenses[elemMonth] += elem.price;
   }
 
   return (
