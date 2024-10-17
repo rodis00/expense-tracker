@@ -95,14 +95,15 @@ public class ExpenseService {
     public Page<ExpenseEntity> findAllExpensesByUsername(
             String username,
             GlobalPage page,
-            Integer year
+            Integer year,
+            Integer month
     ) {
         userService.checkIfUserExists(username);
 
         Sort sort = Sort.by(page.getSortDirection(), page.getSortBy());
         Pageable pageable = PageRequest.of(page.getPageNumber(), page.getPageSize(), sort);
 
-        return expenseRepository.findAllExpensesByUser_UsernameAndYear(username, year, pageable);
+        return expenseRepository.findAllExpensesByUser_UsernameAndYear(username, year, month, pageable);
     }
 
     public List<Integer> getYears() {

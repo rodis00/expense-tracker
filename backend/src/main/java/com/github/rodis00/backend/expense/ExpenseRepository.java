@@ -14,9 +14,15 @@ public interface ExpenseRepository extends JpaRepository<ExpenseEntity, Long> {
 
     @Query("select e from ExpenseEntity e " +
             "where e.user.username = :username " +
-            "and (:year is null or extract(year from e.date) = :year) "
+            "and (:year is null or extract(year from e.date) = :year) " +
+            "and (:month is null or extract(month from e.date) = :month) "
     )
-    Page<ExpenseEntity> findAllExpensesByUser_UsernameAndYear(String username, Integer year, Pageable pageable);
+    Page<ExpenseEntity> findAllExpensesByUser_UsernameAndYear(
+            String username,
+            Integer year,
+            Integer month,
+            Pageable pageable
+    );
 
     Optional<ExpenseEntity> findBySlug(String slug);
 }
