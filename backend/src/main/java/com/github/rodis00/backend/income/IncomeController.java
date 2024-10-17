@@ -78,7 +78,8 @@ public class IncomeController {
             @RequestParam(defaultValue = "10") @Min(1) Integer pageSize,
             @RequestParam(defaultValue = "DESC") Sort.Direction sortDirection,
             @RequestParam(defaultValue = "date") String sortBy,
-            @RequestParam(defaultValue = "") Integer year
+            @RequestParam(required = false) Integer year,
+            @RequestParam(required = false) Integer month
     ) {
         GlobalPage incomesPage = new GlobalPage();
         incomesPage.setPageNumber(pageNumber);
@@ -89,7 +90,7 @@ public class IncomeController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(incomeService
-                        .findAllIncomesByUserId(username, incomesPage, year)
+                        .findAllIncomesByUserId(username, incomesPage, year, month)
                         .map(IncomeDto::from));
     }
 

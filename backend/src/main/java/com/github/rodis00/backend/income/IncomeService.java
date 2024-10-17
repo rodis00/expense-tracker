@@ -94,14 +94,15 @@ public class IncomeService {
     public Page<IncomeEntity> findAllIncomesByUserId(
             String username,
             GlobalPage page,
-            Integer year
+            Integer year,
+            Integer month
     ) {
         userService.checkIfUserExists(username);
 
         Sort sort = Sort.by(page.getSortDirection(), page.getSortBy());
         Pageable pageable = PageRequest.of(page.getPageNumber(), page.getPageSize(), sort);
 
-        return incomeRepository.findAllIncomesByUser_UsernameAndYear(username, year, pageable);
+        return incomeRepository.findAllIncomesByUser_UsernameAndYear(username, year, month, pageable);
     }
 
     public List<Integer> getYears() {

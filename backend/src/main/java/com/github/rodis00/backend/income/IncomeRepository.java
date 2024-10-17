@@ -14,9 +14,15 @@ public interface IncomeRepository extends JpaRepository<IncomeEntity, Long> {
 
     @Query("select e from IncomeEntity e " +
             "where e.user.username = :username " +
-            "and (:year is null or extract(year from e.date) = :year) "
+            "and (:year is null or extract(year from e.date) = :year) " +
+            "and (:month is null or extract(month from e.date) = :month) "
     )
-    Page<IncomeEntity> findAllIncomesByUser_UsernameAndYear(String username, Integer year, Pageable pageable);
+    Page<IncomeEntity> findAllIncomesByUser_UsernameAndYear(
+            String username,
+            Integer year,
+            Integer month,
+            Pageable pageable
+    );
 
     Optional<IncomeEntity> findBySlug(String slug);
 }
