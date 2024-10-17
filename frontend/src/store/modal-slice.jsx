@@ -13,8 +13,8 @@ const modalSlice = createSlice({
     showDeleteModal(state) {
       state.modalVersion = "delete";
     },
-    showUpdateForm(state) {
-      state.modalVersion = "updateForm";
+    showDeleteInfo(state) {
+      state.modalVersion = "deleteInfo";
     },
     showUpdateInfo(state) {
       state.modalVersion = "updateInfo";
