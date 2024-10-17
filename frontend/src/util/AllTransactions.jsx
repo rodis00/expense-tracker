@@ -8,13 +8,20 @@ import DateTransaction from "./DateTransaction";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowUp,
+  faEye,
   faMagnifyingGlass,
   faShirt,
 } from "@fortawesome/free-solid-svg-icons";
 import Input from "./Input";
+import TruncateText from "./TruncateText";
+import "./AllTransactions.css";
 
 const AllTransactions = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [isExpanded, setIsExpanded] = useState({
+    id: null,
+    expanded: false,
+  });
   const token = localStorage.getItem("token");
   const userId = useSelector((state) => state.auth.user);
   const location = useLocation();
@@ -106,34 +113,78 @@ const AllTransactions = () => {
             </h3>
             <ul className="w-full flex flex-col mt-4">
               {groupedData[date].map((item) => (
-                <li
-                  key={item.id}
-                  className="w-full h-20 rounded-full bg-thirdColor flex justify-between items-center mb-4"
-                >
-                  <div className="h-14 w-14 sm:h-16 sm:w-16 border-2 border-secondColor rounded-full ml-2 sm:ml-4 flex justify-center items-center">
-                    <FontAwesomeIcon icon={faShirt} className="text-2xl" />
-                  </div>
-                  <div className="pl-4 flex flex-col gap-4 grow">
-                    <h3 className="text-2xl">{item.title}</h3>
-                    <div className="flex">
-                      <p>
-                        <span
-                          className={`${
-                            resourceType === "incomes"
-                              ? "text-secondColor"
-                              : "text-red-500"
-                          } font-bold text-[17px]`}
-                        >
-                          {resourceType === "incomes"
-                            ? item.amount
-                            : item.price}
-                          $
-                        </span>{" "}
-                        - <DateTransaction date={item.date} />
-                      </p>
+                <React.Fragment key={item.id}>
+                  <li className="w-full h-20 rounded-full bg-thirdColor flex justify-between items-center relative z-10 mb-4">
+                    <div className="h-14 w-14 sm:h-16 sm:w-16 border-2 border-secondColor rounded-full ml-2 sm:ml-4 flex justify-center items-center">
+                      <FontAwesomeIcon icon={faShirt} className="text-2xl" />
                     </div>
+                    <div className="pl-4 flex flex-col gap-4 grow">
+                      <h3 className="text-2xl">
+                        <TruncateText text={item.title} />
+                      </h3>
+                      <div className="flex">
+                        <p>
+                          <span
+                            className={`${
+                              resourceType === "incomes"
+                                ? "text-secondColor"
+                                : "text-red-500"
+                            } font-bold text-[17px]`}
+                          >
+                            {resourceType === "incomes"
+                              ? item.amount
+                              : item.price}
+                            $
+                          </span>{" "}
+                          - <DateTransaction date={item.date} />
+                        </p>
+                        {isExpanded.id !== item.id && (
+                          <button
+                            onClick={() =>
+                              setIsExpanded(() => ({
+                                id: item.id,
+                                expanded: true,
+                              }))
+                            }
+                            className="absolute left-[calc(50%-4rem)] bottom-1 w-32 text-neutral-500"
+                          >
+                            show details
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                    <Link
+                      to={`/${resourceType}/all-transactions/${item.id}`}
+                      className="w-12 h-12 xsm:w-14 lg:w-16 xsm:h-14 lg:h-16 mr-2 sm:mr-4 bg-secondColor rounded-full flex items-center justify-center transition-all duration-300 hover:bg-[#28bf8a]"
+                    >
+                      <FontAwesomeIcon
+                        icon={faEye}
+                        className="text-lg xsm:text-xl lg:text-2xl"
+                      />
+                    </Link>
+                  </li>
+                  <div
+                    className={`w-[calc(100%-12rem)] bg-thirdColor ${
+                      isExpanded.id === item.id && isExpanded.expanded
+                        ? "block"
+                        : "hidden"
+                    } mx-auto relative -top-4 pt-2 px-8 rounded-b-3xl pb-8`}
+                    id="expandedElement"
+                  >
+                    <p className="bg-main p-4">{item.description}</p>
+                    <button
+                      onClick={() =>
+                        setIsExpanded(() => ({
+                          id: null,
+                          expanded: false,
+                        }))
+                      }
+                      className="absolute left-[calc(50%-4rem)] bottom-1 w-32 text-neutral-500"
+                    >
+                      hide details
+                    </button>
                   </div>
-                </li>
+                </React.Fragment>
               ))}
             </ul>
           </div>

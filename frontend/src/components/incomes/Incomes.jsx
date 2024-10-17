@@ -12,6 +12,7 @@ import { fetchIncomes } from "../../util/http/incomeHttp";
 import { useQuery } from "@tanstack/react-query";
 import PageNumber from "../../util/PageNumber";
 import { Link } from "react-router-dom";
+import AddInfoModal from "../../util/AddInfoModal";
 
 const Incomes = () => {
   const [pageNumber, setPageNumber] = useState(0);
@@ -55,6 +56,8 @@ const Incomes = () => {
       <Modal open={version === "form"}>
         <AddTransactionForm upperValue={"Amount"} value={"amount"} />
       </Modal>
+
+      <AddInfoModal version={version} name="incomes" />
 
       <main className="w-full min-h-screen flex flex-col items-center text-white ">
         <div className="text-center">

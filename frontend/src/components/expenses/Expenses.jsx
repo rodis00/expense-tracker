@@ -12,6 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchExpenses } from "../../util/http/expenseHttp";
 import PageNumber from "../../util/PageNumber";
 import { Link } from "react-router-dom";
+import AddInfoModal from "../../util/AddInfoModal";
 
 const Expenses = () => {
   const [pageNumber, setPageNumber] = useState(0);
@@ -56,6 +57,9 @@ const Expenses = () => {
       <Modal open={version === "form"}>
         <AddTransactionForm upperValue={"Price"} value={"price"} />
       </Modal>
+
+      <AddInfoModal version={version} name="expenses" />
+
       <main className="w-full min-h-screen flex flex-col items-center text-white">
         <div className="text-center">
           <h1 className="text-xl mt-4 text-neutral-600">Total Expenses</h1>

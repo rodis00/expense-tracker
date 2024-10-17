@@ -184,7 +184,7 @@ const TransactionElementLayoutForm = ({
           />
 
           {formErrors && (
-            <p className="h-6 text-red-500 ">{formErrors.title}</p>
+            <p className="h-4 -mt-4 mb-4 text-red-500 ">{formErrors.title}</p>
           )}
 
           <Input
@@ -199,7 +199,7 @@ const TransactionElementLayoutForm = ({
           />
 
           {formErrors && (
-            <p className="h-6 text-red-500 ">
+            <p className="h-4 -mt-4 mb-4 text-red-500 ">
               {name === "incomes" ? formErrors.amount : formErrors.price}
             </p>
           )}
@@ -228,11 +228,7 @@ const TransactionElementLayoutForm = ({
                 className="w-full h-full bg-main rounded-full flex items-center pl-12"
               />
             </div>
-            {formErrors ? (
-              <p className="h-6 text-red-500">{formErrors.date}</p>
-            ) : (
-              <p className="h-6 mb-4"></p>
-            )}
+            {formErrors && <p className="h-4 mb-4 text-red-500">{formErrors.date}</p>}
           </div>
 
           <div className="flex flex-col w-5/12">
