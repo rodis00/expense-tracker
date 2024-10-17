@@ -7,7 +7,6 @@ import {
   faDollar,
   faBriefcase,
 } from "@fortawesome/free-solid-svg-icons";
-import { DUMMY_DATA_EXPENSES } from "../../DummyData";
 import DashboardValueListElement from "./DashboardValueListElement";
 import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
@@ -16,7 +15,6 @@ import { fetchAllExpenses } from "../../util/http/expenseHttp";
 import DateTransaction from "../../util/DateTransaction";
 
 const Dashboard = () => {
-  const testArray = DUMMY_DATA_EXPENSES.slice(0, 3);
   const token = localStorage.getItem("token");
   const userId = useSelector((state) => state.auth.user);
   let incomesLatestAdded;
@@ -43,7 +41,7 @@ const Dashboard = () => {
     enabled: !!userId,
   });
 
-  if (incomesData) {
+  if (incomesData && incomesData.length > 0) {
     incomesData.forEach((item) => (incomes += item.amount));
     minIncome = incomesData.reduce((item, current) => {
       return current.amount < item ? current.amount : item;
@@ -55,7 +53,7 @@ const Dashboard = () => {
     incomesLatestAdded = incomesData?.slice(-3);
   }
 
-  if (expensesData) {
+  if (expensesData && expensesData.length > 0) {
     expensesData.forEach((item) => (expenses += item.price));
     minExpense = expensesData.reduce((item, current) => {
       return current.price < item ? current.price : item;
@@ -70,14 +68,20 @@ const Dashboard = () => {
   if (expensesData && incomesData) {
     balance = incomes - expenses;
 
+    if (incomesLatestAdded === undefined) {
+      incomesLatestAdded = [];
+    }
+
+    if (expenseLatestAdded === undefined) {
+      expenseLatestAdded = [];
+    }
+
     combinedArray = [...incomesLatestAdded, ...expenseLatestAdded];
 
     recentlyAdded = combinedArray.sort(
       (a, b) => new Date(b.date) - new Date(a.date)
     );
   }
-
-  console.log(recentlyAdded);
 
   return (
     <main className="w-full min-h-screen flex flex-col text-white">
@@ -125,6 +129,11 @@ const Dashboard = () => {
             Recently Added
           </h2>
           <ul className="w-[95%] h-[40vh] flex flex-col mt-8 gap-8">
+            {incomesData <= 0 && expensesData <= 0 && (
+              <p className="text-neutral-400 text-center text-xl">
+                You haven't added any transactions yet.
+              </p>
+            )}
             {recentlyAdded?.slice(0, 3).map((item) => (
               <li
                 key={item.id}
