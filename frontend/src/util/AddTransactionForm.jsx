@@ -75,7 +75,9 @@ const AddTransactionForm = ({ value, upperValue }) => {
           type="text"
           inputId="title"
         />
-        {formErrors && <p className="text-red-500">{formErrors.title}</p>}
+        {formErrors && (
+          <p className="h-4 text-red-500 -mt-4 mb-4">{formErrors.title}</p>
+        )}
         <Input
           labelText={upperValue}
           icon={faDollar}
@@ -85,11 +87,11 @@ const AddTransactionForm = ({ value, upperValue }) => {
           className="pr-2"
         />
         {formErrors && (
-          <p className="text-red-500">
+          <p className="h-4 text-red-500 -mt-4 mb-4">
             {value === "amount" ? formErrors.amount : formErrors.price}
           </p>
         )}
-        <div className="w-full flex flex-col xsm:flex-row items-center justify-between">
+        <div className="flex justify-between mb-4">
           <div className="w-full xsm:w-1/2">
             <label
               htmlFor="date"
@@ -109,8 +111,8 @@ const AddTransactionForm = ({ value, upperValue }) => {
                 onFocus={handleShowPicker}
                 className={`w-full border-none h-12 lg:h-10 bg-neutral-800 appearance-none sm:bg-main rounded-3xl pl-12 pr-2 text-lg lg:text-base lg:focus:text-sm transition-all duration-200 focus:ring-white focus:text-base`}
               />
-              {formErrors && <p className="text-red-500">{formErrors.date}</p>}
             </div>
+            {formErrors && <p className="h-4 mb-4 text-red-500">{formErrors.date}</p>}
           </div>
           <div className="mt-4 xsm:mt-0 w-full xsm:w-5/12">
             <label
@@ -140,7 +142,7 @@ const AddTransactionForm = ({ value, upperValue }) => {
         <div className="flex flex-col">
           <label
             htmlFor="description"
-            className="text-white text-nowrap font-semibold text-xl lg:text-base mt-8"
+            className="text-white text-nowrap font-semibold text-xl lg:text-base"
           >
             Description
           </label>
