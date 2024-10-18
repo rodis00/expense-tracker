@@ -1,7 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const DashboardValueListElement = ({ border,color, title, value, icon }) => {
+const DashboardValueListElement = ({ border, color, title, value, icon }) => {
   return (
     <li className="w-[90%] xsm:w-1/3 lg:w-1/3 xsm:h-36 h-20 xlg:h-24 bg-thirdColor shadow-lg shadow-neutral-0 lg:shadow-neutral-800 mt-4 xsm:mt-0">
       <div className="w-full h-full flex xsm:flex-col xlg:flex-row items-center">

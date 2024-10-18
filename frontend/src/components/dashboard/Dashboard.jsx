@@ -17,6 +17,8 @@ import DateTransaction from "../../util/DateTransaction";
 const Dashboard = () => {
   const token = localStorage.getItem("token");
   const userId = useSelector((state) => state.auth.user);
+  const year = new Date().getFullYear();
+  const month = "";
   let incomesLatestAdded;
   let expenseLatestAdded;
   let combinedArray;
@@ -30,14 +32,14 @@ const Dashboard = () => {
   let maxExpense = 0;
 
   const { data: incomesData, isPending: incomesPending } = useQuery({
-    queryKey: ["incomes", { userId, token }],
-    queryFn: () => fetchAllIncomes({ userId, token }),
+    queryKey: ["incomes", { userId, token, year, month }],
+    queryFn: () => fetchAllIncomes({ userId, token, year, month }),
     enabled: !!userId,
   });
 
   const { data: expensesData, isPending: expensePending } = useQuery({
-    queryKey: ["expenses", { userId, token }],
-    queryFn: () => fetchAllExpenses({ userId, token }),
+    queryKey: ["expenses", { userId, token, year, month }],
+    queryFn: () => fetchAllExpenses({ userId, token, year, month }),
     enabled: !!userId,
   });
 
