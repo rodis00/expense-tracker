@@ -176,11 +176,11 @@ const AllTransactions = () => {
                         </span>{" "}
                         - <DateTransaction date={item.date} />
                       </p>
-                      {isExpanded.id !== item.id && (
+                      {isExpanded.id !== item.slug && (
                         <button
                           onClick={() =>
                             setIsExpanded(() => ({
-                              id: item.id,
+                              id: item.slug,
                               expanded: true,
                             }))
                           }
@@ -203,7 +203,7 @@ const AllTransactions = () => {
                 </li>
                 <div
                   className={`w-[calc(100%-12rem)] bg-thirdColor ${
-                    isExpanded.id === item.id && isExpanded.expanded
+                    isExpanded.id === item.slug && isExpanded.expanded
                       ? "block"
                       : "hidden"
                   } mx-auto relative -top-4 pt-2 px-8 rounded-b-3xl pb-8`}
