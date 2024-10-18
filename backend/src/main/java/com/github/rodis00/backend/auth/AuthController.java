@@ -22,7 +22,7 @@ public class AuthController {
     }
 
     @Operation(
-            summary = "Register user and get jwt token"
+            summary = "Create a new user and retrieve JWT Token"
     )
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(
@@ -34,7 +34,7 @@ public class AuthController {
     }
 
     @Operation(
-            summary = "Authenticate user and get jwt token"
+            summary = "Authenticate existing user and retrieve JWT Token"
     )
     @PostMapping("/authenticate")
     public ResponseEntity<AuthResponse> authenticate(

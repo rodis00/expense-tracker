@@ -32,11 +32,13 @@ class UserServiceTest {
 
     private UserEntity user;
 
+    private final String username = "username";
+
     @BeforeEach
     void setUp() {
         user = new UserEntity();
         user.setId(1L);
-        user.setUsername("test");
+        user.setUsername(username);
         user.setPassword("password");
         user.setEmail("test@example.com");
         user.setExpenses(null);
@@ -44,10 +46,10 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldGetUserById() {
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+    void shouldGetUserByUsername() {
+        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
 
-        UserEntity existedUser = userService.getUserById(1L);
+        UserEntity existedUser = userService.getUserByUsername(username);
 
         assertNotNull(existedUser);
         assertEquals(user.getId(), existedUser.getId());
@@ -57,18 +59,18 @@ class UserServiceTest {
         assertEquals(user.getExpenses(), existedUser.getExpenses());
         assertEquals(user.getIncomes(), existedUser.getIncomes());
 
-        verify(userRepository, times(1)).findById(1L);
+        verify(userRepository, times(1)).findByUsername(username);
     }
 
     @Test
     void shouldThrowExceptionWhenUserNotFound() {
-        when(userRepository.findById(1L)).thenReturn(Optional.empty());
+        when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class, () -> {
-            userService.getUserById(1L);
+            userService.getUserByUsername(username);
         });
 
-        verify(userRepository, times(1)).findById(1L);
+        verify(userRepository, times(1)).findByUsername(username);
     }
 
     @Test
@@ -78,16 +80,15 @@ class UserServiceTest {
         User expectedUser = new User();
         expectedUser.setEmail(email);
 
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
         when(userRepository.existsByEmail(email)).thenReturn(false);
 
-        UserDto updatedDto = userService.updateUser(1L, expectedUser);
+        UserDto updatedDto = userService.updateUser(username, expectedUser);
 
         assertNotNull(updatedDto);
         assertEquals(email, updatedDto.getEmail());
-        assertEquals(user.getId(), updatedDto.getId());
 
-        verify(userRepository, times(1)).findById(1L);
+        verify(userRepository, times(1)).findByUsername(username);
         verify(userRepository, times(1)).existsByEmail(email);
     }
 
@@ -100,7 +101,7 @@ class UserServiceTest {
         when(userRepository.existsByEmail(email)).thenReturn(true);
 
         assertThrows(UserAlreadyExistsException.class, () -> {
-            userService.updateUser(1L, expectedUser);
+            userService.updateUser(username, expectedUser);
         });
 
         verify(userRepository, times(1)).existsByEmail(email);
@@ -116,7 +117,7 @@ class UserServiceTest {
         when(userRepository.existsByUsername(username)).thenReturn(true);
 
         assertThrows(UsernameIsTakenException.class, () -> {
-            userService.updateUser(1L, expectedUser);
+            userService.updateUser(username, expectedUser);
         });
 
         verify(userRepository, times(1)).existsByUsername(username);
@@ -129,15 +130,15 @@ class UserServiceTest {
         User expectedUser = new User();
         expectedUser.setUsername(username);
 
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
         when(userRepository.existsByUsername(username)).thenReturn(false);
 
-        UserDto updatedDto = userService.updateUser(1L, expectedUser);
+        UserDto updatedDto = userService.updateUser(username, expectedUser);
 
         assertNotNull(updatedDto);
         assertEquals(username, updatedDto.getUsername());
 
-        verify(userRepository, times(1)).findById(1L);
+        verify(userRepository, times(1)).findByUsername(username);
         verify(userRepository, times(1)).existsByUsername(username);
     }
 
@@ -147,15 +148,15 @@ class UserServiceTest {
         User expectedUser = new User();
         expectedUser.setPassword(password);
 
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
         when(passwordEncoder.encode(password)).thenReturn("password");
 
-        UserDto updatedDto = userService.updateUser(1L, expectedUser);
+        UserDto updatedDto = userService.updateUser(username, expectedUser);
 
         assertNotNull(updatedDto);
         assertEquals(password, user.getPassword());
 
-        verify(userRepository, times(1)).findById(1L);
+        verify(userRepository, times(1)).findByUsername(username);
     }
 
     @Test
@@ -174,15 +175,15 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldDeleteUserById() {
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+    void shouldDeleteUserByUsername() {
+        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
         doNothing()
                 .when(userRepository)
                 .delete(user);
 
-        userService.deleteUserById(1L);
+        userService.deleteUserByUsername(username);
 
-        verify(userRepository, times(1)).findById(1L);
+        verify(userRepository, times(1)).findByUsername(username);
         verify(userRepository, times(1)).delete(user);
     }
 }

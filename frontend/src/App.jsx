@@ -55,7 +55,7 @@ function App() {
       const token = localStorage.getItem("token");
       const currentDate = new Date();
       if (token) {
-        const userId = jwtDecode(token).userId;
+        const userId = jwtDecode(token).sub;
         const exp = jwtDecode(token).exp;
         const tokenDate = new Date(exp * 1000);
         if (currentDate > tokenDate) {

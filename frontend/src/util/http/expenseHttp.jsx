@@ -26,17 +26,25 @@ export async function fetchExpenses({
   token,
   pageSize,
   year,
+  month,
   pageNumber,
 }) {
-  const response = await fetch(
-    `http://localhost:8080/expense-tracker/api/v1/expenses/pages/users/${userId}?pageSize=${pageSize}&year=${year}&pageNumber=${pageNumber}`,
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    }
-  );
+  let url = "";
+
+  if (year === "" && month === "") {
+    url = `http://localhost:8080/expense-tracker/api/v1/expenses/pages/users/${userId}?pageSize=${pageSize}&pageNumber=${pageNumber}`;
+  } else if (year && month === "") {
+    url = `http://localhost:8080/expense-tracker/api/v1/expenses/pages/users/${userId}?pageSize=${pageSize}&year=${year}&pageNumber=${pageNumber}`;
+  } else if (year && month) {
+    url = `http://localhost:8080/expense-tracker/api/v1/expenses/pages/users/${userId}?pageSize=${pageSize}&year=${year}&month=${month}&pageNumber=${pageNumber}`;
+  }
+
+  const response = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
 
   if (!response.ok) {
     const error = await response.json();
@@ -131,16 +139,23 @@ export async function fetchExpenseYears({ token }) {
   return result;
 }
 
-export async function fetchAllExpenses({ userId, token }) {
-  const response = await fetch(
-    `http://localhost:8080/expense-tracker/api/v1/expenses/users/${userId}`,
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    }
-  );
+export async function fetchAllExpenses({ userId, token, year, month }) {
+  let url = "";
+
+  if (year === "" && month === "") {
+    url = `http://localhost:8080/expense-tracker/api/v1/expenses/users/${userId}`;
+  } else if (year && month === "") {
+    url = `http://localhost:8080/expense-tracker/api/v1/expenses/users/${userId}?year=${year}`;
+  } else if (year && month) {
+    url = `http://localhost:8080/expense-tracker/api/v1/expenses/users/${userId}?year=${year}&month=${month}`;
+  }
+
+  const response = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
 
   if (!response.ok) {
     const error = await response.json();

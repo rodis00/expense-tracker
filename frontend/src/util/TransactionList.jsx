@@ -16,7 +16,7 @@ const TransactionList = ({ name, data, isPending, error, isError }) => {
       {data &&
         data.content?.map((item) => (
           <li
-            key={item.id}
+            key={item.slug}
             className="w-full h-20 rounded-full bg-thirdColor flex justify-between items-center mb-4"
           >
             <div className="h-14 w-14 sm:h-16 sm:w-16 border-2 border-secondColor rounded-full ml-2 sm:ml-4 flex justify-center items-center">
@@ -38,7 +38,7 @@ const TransactionList = ({ name, data, isPending, error, isError }) => {
               </div>
             </div>
             <Link
-              to={`/${name}/${item.id}`}
+              to={`/${name}/${item.slug}`}
               className="w-12 h-12 xsm:w-14 lg:w-16 xsm:h-14 lg:h-16 mr-2 sm:mr-4 bg-secondColor rounded-full flex items-center justify-center transition-all duration-300 hover:bg-[#28bf8a]"
             >
               <FontAwesomeIcon

@@ -136,7 +136,7 @@ const Dashboard = () => {
             )}
             {recentlyAdded?.slice(0, 3).map((item) => (
               <li
-                key={item.id}
+                key={item.slug}
                 className="w-full h-1/3 rounded-full bg-thirdColor flex justify-between items-center mb-4"
               >
                 <div className="h-14 w-14 sm:h-16 sm:w-16 border-2 border-secondColor rounded-full ml-2 sm:ml-4 flex justify-center items-center">

@@ -24,14 +24,14 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UserEntity getUserById(Long id) {
+    public UserEntity getUserByUsername(String username) {
         return userRepository
-                .findById(id)
+                .findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("User not found."));
     }
 
     public UserDto updateUser(
-            Long id,
+            String username,
             User user
     ) {
         if (existsByEmail(user.getEmail()))
@@ -40,7 +40,7 @@ public class UserService {
         if (existsByUsername(user.getUsername()))
             throw new UsernameIsTakenException("This username is taken.");
 
-        UserEntity existingUser = getUserById(id);
+        UserEntity existingUser = getUserByUsername(username);
 
         if (Objects.nonNull(user.getEmail()))
             existingUser.setEmail(user.getEmail());
@@ -60,8 +60,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void deleteUserById(Long id) {
-        UserEntity user = getUserById(id);
+    public void deleteUserByUsername(String username) {
+        UserEntity user = getUserByUsername(username);
         userRepository.delete(user);
     }
 
@@ -71,5 +71,10 @@ public class UserService {
 
     public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
+    }
+
+    public void checkIfUserExists(String username) {
+        if (!userRepository.existsByUsername(username))
+            throw new UserNotFoundException("User not found.");
     }
 }

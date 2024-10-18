@@ -1,6 +1,6 @@
-package com.github.rodis00.backend.expense;
+package com.github.rodis00.backend.income;
 
-import com.github.rodis00.backend.entity.ExpenseEntity;
+import com.github.rodis00.backend.entity.IncomeEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,19 +10,19 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface ExpenseRepository extends JpaRepository<ExpenseEntity, Long> {
+public interface IncomeRepository extends JpaRepository<IncomeEntity, Long> {
 
-    @Query("select e from ExpenseEntity e " +
+    @Query("select e from IncomeEntity e " +
             "where e.user.username = :username " +
             "and (:year is null or extract(year from e.date) = :year) " +
             "and (:month is null or extract(month from e.date) = :month) "
     )
-    Page<ExpenseEntity> findAllExpensesByUser_UsernameAndYear(
+    Page<IncomeEntity> findAllIncomesByUser_UsernameAndYear(
             String username,
             Integer year,
             Integer month,
             Pageable pageable
     );
 
-    Optional<ExpenseEntity> findBySlug(String slug);
+    Optional<IncomeEntity> findBySlug(String slug);
 }
