@@ -2,7 +2,6 @@ import React from "react";
 import { Chart as ChartJS } from "chart.js/auto";
 import { Line } from "react-chartjs-2";
 import { ChartDataPoints } from "./ChartDataPoints";
-import { DUMMY_DATA_EXPENSES, DUMMY_DATA_EARNINGS } from "../../DummyData";
 
 const LineChart = ({
   name,
