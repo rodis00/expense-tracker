@@ -43,9 +43,6 @@ const Dashboard = () => {
     enabled: !!userId,
   });
 
-  console.log(incomesData);
-  console.log(expensesData);
-
   if (incomesData && incomesData.length > 0) {
     incomesData.forEach((item) => (incomes += item.amount));
     minIncome = incomesData.reduce((item, current) => {

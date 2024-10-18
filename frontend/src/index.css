@@ -3,15 +3,15 @@
 @tailwind utilities;
 
 input:-webkit-autofill {
-    background-color: #0f1111 !important; 
-    -webkit-box-shadow: 0 0 0px 1000px #0f1111 inset !important; 
-    -webkit-text-fill-color: #fff !important;
-    outline: 2px solid #0f1111;
-    outline-offset: -1px;
-    border-radius: 1.5rem !important;
-    caret-color: #ffffff !important;
-  }
+  background-color: #0f1111 !important;
+  -webkit-box-shadow: 0 0 0px 1000px #0f1111 inset !important;
+  -webkit-text-fill-color: #fff !important;
+  outline: 2px solid #0f1111;
+  outline-offset: -1px;
+  border-radius: 1.5rem !important;
+  caret-color: #ffffff !important;
+}
 
-  input:-webkit-autofill:focus{
-    outline: 1px solid white;
-  }
+input:-webkit-autofill:focus {
+  outline: 1px solid white;
+}

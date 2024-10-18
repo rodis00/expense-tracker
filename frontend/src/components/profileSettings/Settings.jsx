@@ -131,7 +131,7 @@ const Settings = () => {
     });
     console.log(values);
     if (Object.keys(values).length === 0) {
-      setPasswordError(`You haven't changed any data`)
+      setPasswordError(`You haven't changed any data`);
       return;
     }
     mutate({ userId, token, values });

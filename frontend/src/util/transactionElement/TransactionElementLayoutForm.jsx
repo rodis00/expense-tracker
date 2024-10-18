@@ -228,7 +228,9 @@ const TransactionElementLayoutForm = ({
                 className="w-full h-full bg-main rounded-full flex items-center pl-12"
               />
             </div>
-            {formErrors && <p className="h-4 mb-4 text-red-500">{formErrors.date}</p>}
+            {formErrors && (
+              <p className="h-4 mb-4 text-red-500">{formErrors.date}</p>
+            )}
           </div>
 
           <div className="flex flex-col w-5/12">
