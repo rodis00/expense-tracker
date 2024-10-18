@@ -9,10 +9,32 @@ import {
   faEye,
 } from "@fortawesome/free-solid-svg-icons";
 import googleIcon from "../../assets/google-color-icon.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { register } from "../../util/http/auth";
 
 const Signup = () => {
   const [typePassword, setTypePassword] = useState("password");
+  const [typeConfirmPassword, setTypeConfirmPassword] = useState("password");
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+  const [confirmPasswordData, setConfirmPasswordData] = useState("");
+  const [formErrors, setFormErrors] = useState({});
+  const [passwordError, setPasswordError] = useState("");
+  const navigate = useNavigate();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: register,
+    onSuccess: () => {
+      navigate("/dashboard");
+    },
+    onError: (error) => {
+      setFormErrors(error);
+    },
+  });
 
   function handleShowPassword() {
     if (typePassword === "password") {
@@ -21,13 +43,46 @@ const Signup = () => {
       setTypePassword("password");
     }
   }
+
+  function handleShowConfirmPassword() {
+    if (typeConfirmPassword === "password") {
+      setTypeConfirmPassword("text");
+    } else {
+      setTypeConfirmPassword("password");
+    }
+  }
+
+  function handleConfirmPassword(event) {
+    setConfirmPasswordData(event.target.value);
+  }
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    setFormErrors({});
+    if (formData.password !== confirmPasswordData) {
+      setPasswordError("Passwords are not the same!");
+      return;
+    }
+    mutate(formData);
+  }
+
   return (
     <div className="w-full h-screen flex items-center justify-center">
       <form
-        action=""
-        className="bg-main sm:bg-fourthColor w-full sm:w-2/3 md:w-1/2 lg:w-1/3 min-h-[36rem] flex flex-col rounded-3xl"
+        onSubmit={handleSubmit}
+        className="bg-main sm:bg-fourthColor w-full sm:w-2/3 md:w-1/2 xlg:w-1/3 min-h-[36rem] flex flex-col rounded-3xl"
       >
-        <h1 className="text-center text-3xl lg:text-2xl text-white my-8 lg:my-4 h-[10%]">Signup</h1>
+        <h1 className="text-center text-3xl lg:text-2xl text-white my-8 lg:my-4 h-[10%]">
+          Signup
+        </h1>
         <div className="w-[80%] mx-auto">
           <Input
             labelText={"Username"}
@@ -35,20 +90,32 @@ const Signup = () => {
             placeholder={"Enter your username"}
             type={"text"}
             inputId={"username"}
+            value={formData.username}
+            onChange={handleChange}
           />
+
+          {formErrors && <p className="text-red-500">{formErrors.username}</p>}
+
           <Input
             labelText={"Email"}
             icon={faEnvelope}
             placeholder={"Enter your email"}
             type={"text"}
             inputId={"email"}
+            value={formData.email}
+            onChange={handleChange}
           />
+
+          {formErrors && <p className="text-red-500">{formErrors.email}</p>}
+
           <Input
             labelText="Password"
             icon={faLock}
             placeholder="Enter your password"
             type={typePassword}
             inputId="password"
+            value={formData.password}
+            onChange={handleChange}
           >
             <button
               type="button"
@@ -64,28 +131,34 @@ const Signup = () => {
             Password must contain 8 charatcters.
           </p>
 
+          {formErrors && <p className="text-red-500">{formErrors.password}</p>}
+
           <Input
             labelText="Confirm password"
             icon={faLock}
             placeholder="Confirm your password"
-            type={typePassword}
+            type={typeConfirmPassword}
             inputId="Confirm password"
+            value={confirmPasswordData}
+            onChange={handleConfirmPassword}
           >
             <button
               type="button"
               className="absolute right-4"
-              onClick={handleShowPassword}
+              onClick={handleShowConfirmPassword}
             >
               <FontAwesomeIcon
-                icon={typePassword === "password" ? faEyeSlash : faEye}
+                icon={typeConfirmPassword === "password" ? faEyeSlash : faEye}
               />
             </button>
           </Input>
+
+          {passwordError && <p className="text-red-500">{passwordError}</p>}
         </div>
 
         <div className="flex flex-col items-center gap-4 mt-4">
           <button
-            type="button"
+            type="submit"
             className="h-10 w-40 text-white text-lg lg:text-base bg-secondColor rounded-3xl border-none transition-all duration-300 hover:bg-[#28bf8a]"
           >
             Signup
