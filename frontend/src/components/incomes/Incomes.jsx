@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { modalActions } from "../../store/modal-slice";
 import AddTransactionForm from "../../util/AddTransactionForm";
 import TransactionList from "../../util/TransactionList";
-import { fetchIncomes } from "../../util/http/incomeHttp";
+import { fetchAllIncomes, fetchIncomes } from "../../util/http/incomeHttp";
 import { useQuery } from "@tanstack/react-query";
 import PageNumber from "../../util/PageNumber";
 import { Link } from "react-router-dom";
@@ -20,16 +20,28 @@ const Incomes = () => {
   const userId = useSelector((state) => state.auth.user);
   const token = localStorage.getItem("token");
   const pageSize = 5;
+  const year =
+    chartPoints === "Monthly" || chartPoints === "Weekly"
+      ? new Date().getFullYear()
+      : "";
+  const month = chartPoints === "Weekly" ? new Date().getMonth() + 1 : "";
   let incomesAmount = 0;
 
   const { data, isPending, error, isError } = useQuery({
-    queryKey: ["incomes", { userId, token, pageNumber }],
-    queryFn: () => fetchIncomes({ userId, token, pageSize, pageNumber }),
+    queryKey: ["incomes", { userId, token, pageSize, pageNumber, year, month }],
+    queryFn: () =>
+      fetchIncomes({ userId, token, pageSize, pageNumber, year, month }),
     enabled: !!userId,
   });
 
-  if (data) {
-    data.content.forEach((item) => (incomesAmount += item.amount));
+  const { data: allIncomesData } = useQuery({
+    queryKey: ["incomes", { userId, token, year, month }],
+    queryFn: () => fetchAllIncomes({ userId, token, year, month }),
+    enabled: !!userId,
+  });
+
+  if (allIncomesData) {
+    allIncomesData.forEach((item) => (incomesAmount += item.amount));
   }
 
   const handleDataPointsSelection = (selectedPoints) => {
@@ -68,7 +80,11 @@ const Incomes = () => {
           handleSelection={handleDataPointsSelection}
           selectedPoints={chartPoints}
         />
-        <BarChart selectedPoints={chartPoints} name={"incomes"} data={data} />
+        <BarChart
+          selectedPoints={chartPoints}
+          name={"incomes"}
+          data={allIncomesData}
+        />
         <div className="w-[95%] sm:w-3/4 md:w-1/2 lg:w-1/3 h-20 lg:h-16 mt-4 bg-thirdColor rounded-full flex items-center justify-around text-lg shadow-lg shadow-neutral-800">
           <span className="text-secondColor w-28 pl-4 text-xl">
             <FontAwesomeIcon icon={faArrowUp} /> 45%

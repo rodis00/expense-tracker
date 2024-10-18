@@ -26,11 +26,18 @@ export async function fetchIncomes({
   token,
   pageSize,
   year,
+  month,
   pageNumber,
 }) {
-  let url = year
-    ? `http://localhost:8080/expense-tracker/api/v1/incomes/pages/users/${userId}?pageSize=${pageSize}&year=${year}&pageNumber=${pageNumber}`
-    : `http://localhost:8080/expense-tracker/api/v1/incomes/pages/users/${userId}?pageSize=${pageSize}&pageNumber=${pageNumber}`;
+  let url = "";
+
+  if (year === "" && month === "") {
+    url = `http://localhost:8080/expense-tracker/api/v1/incomes/pages/users/${userId}?pageSize=${pageSize}&pageNumber=${pageNumber}`;
+  } else if (year && month === "") {
+    url = `http://localhost:8080/expense-tracker/api/v1/incomes/pages/users/${userId}?pageSize=${pageSize}&year=${year}&pageNumber=${pageNumber}`;
+  } else if (year && month) {
+    url = `http://localhost:8080/expense-tracker/api/v1/incomes/pages/users/${userId}?pageSize=${pageSize}&year=${year}&month=${month}&pageNumber=${pageNumber}`;
+  }
 
   const response = await fetch(url, {
     headers: {
@@ -132,16 +139,23 @@ export async function fetchIncomeYears({ token }) {
   return result;
 }
 
-export async function fetchAllIncomes({ userId, token }) {
-  const response = await fetch(
-    `http://localhost:8080/expense-tracker/api/v1/incomes/users/${userId}`,
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    }
-  );
+export async function fetchAllIncomes({ userId, token, year, month }) {
+  let url = "";
+
+  if (year === "" && month === "") {
+    url = `http://localhost:8080/expense-tracker/api/v1/incomes/users/${userId}`;
+  } else if (year && month === "") {
+    url = `http://localhost:8080/expense-tracker/api/v1/incomes/users/${userId}?year=${year}`;
+  } else if (year && month) {
+    url = `http://localhost:8080/expense-tracker/api/v1/incomes/users/${userId}?year=${year}&month=${month}`;
+  }
+
+  const response = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
 
   if (!response.ok) {
     const error = await response.json();
