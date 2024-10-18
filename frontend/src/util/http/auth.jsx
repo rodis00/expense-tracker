@@ -21,3 +21,27 @@ export async function login(values) {
     localStorage.setItem("token", result.token);
   }
 }
+
+export async function register(values) {
+  const response = await fetch(
+    "http://localhost:8080/expense-tracker/api/v1/auth/register",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
+    }
+  );
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw error.message;
+  }
+
+  const result = await response.json();
+
+  if (!result.token) {
+    return null;
+  } else {
+    localStorage.setItem("token", result.token);
+  }
+}
