@@ -36,7 +36,7 @@ const BarChart = ({ selectedPoints, name, home, data }) => {
   }
 
   if (data) {
-    updatedData = data.content?.map((item) => ({
+    updatedData = data?.map((item) => ({
       ...item,
       value: name === "incomes" ? item.amount : item.price,
       date: new Date(item.date),
