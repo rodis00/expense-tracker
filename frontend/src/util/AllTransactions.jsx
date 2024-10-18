@@ -28,6 +28,8 @@ const AllTransactions = () => {
   const location = useLocation();
   const pathParts = location.pathname.split("/");
   const resourceType = pathParts[1];
+  const year = "";
+  const month = "";
 
   const loadAdditionalElements = () => {
     setVisibleItems((prev) => prev + 10);
@@ -52,12 +54,12 @@ const AllTransactions = () => {
   const { data, isPending, isError, error } = useQuery({
     queryKey:
       resourceType === "incomes"
-        ? ["incomes", { userId, token }]
-        : ["expenses", { userId, token }],
+        ? ["incomes", { userId, token, year, month }]
+        : ["expenses", { userId, token, year, month }],
     queryFn:
       resourceType === "incomes"
-        ? () => fetchAllIncomes({ userId, token })
-        : () => fetchAllExpenses({ userId, token }),
+        ? () => fetchAllIncomes({ userId, token, year, month })
+        : () => fetchAllExpenses({ userId, token, year, month }),
     enabled: !!userId,
   });
 
