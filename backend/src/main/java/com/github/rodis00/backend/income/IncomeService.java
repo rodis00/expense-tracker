@@ -1,4 +1,4 @@
-package com.github.rodis00.backend.incomes;
+package com.github.rodis00.backend.income;
 
 import com.github.rodis00.backend.entity.IncomeEntity;
 import com.github.rodis00.backend.entity.UserEntity;
@@ -12,26 +12,30 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class IncomeService {
 
     private final IncomeRepository incomeRepository;
     private final UserService userService;
+    private final IncomeSearchDao incomeSearchDao;
 
     public IncomeService(
             IncomeRepository incomeRepository,
-            UserService userService
+            UserService userService,
+            IncomeSearchDao incomeSearchDao
     ) {
         this.incomeRepository = incomeRepository;
         this.userService = userService;
+        this.incomeSearchDao = incomeSearchDao;
     }
 
     public IncomeEntity saveIncome(
             Income income,
-            Long userId
+            String username
     ) {
-        UserEntity user = userService.getUserById(userId);
+        UserEntity user = userService.getUserByUsername(username);
 
         return incomeRepository.save(
                 IncomeEntity.builder()
@@ -40,24 +44,30 @@ public class IncomeService {
                         .date(income.getDate())
                         .user(user)
                         .description(income.getDescription())
+                        .slug(generateSlug())
                         .build()
         );
     }
 
-    public IncomeEntity getIncomeById(Long id) {
-        return incomeRepository.findById(id)
+    private String generateSlug() {
+        return UUID.randomUUID().toString();
+    }
+
+    public IncomeEntity getIncomeBySlug(String slug) {
+        return incomeRepository.findBySlug(slug)
                 .orElseThrow(() -> new IncomeNotFoundException("Income not found."));
     }
 
     public IncomeEntity updateIncome(
-            Long id,
+            String slug,
             Income income
     ) {
-        IncomeEntity actualIncome = getIncomeById(id);
+        IncomeEntity actualIncome = getIncomeBySlug(slug);
 
         actualIncome.setTitle(income.getTitle());
         actualIncome.setAmount(income.getAmount());
         actualIncome.setDate(income.getDate());
+        actualIncome.setDescription(income.getDescription());
         incomeRepository.save(actualIncome);
 
         return actualIncome;
@@ -67,27 +77,32 @@ public class IncomeService {
         return incomeRepository.findAll();
     }
 
-    public List<IncomeEntity> getAllUserIncomes(Long userId) {
-        UserEntity user = userService.getUserById(userId);
-        return incomeRepository.findAllByUserId(user.getId());
+    public List<IncomeEntity> getAllUserIncomes(
+            String username,
+            Integer year,
+            Integer month
+    ) {
+        userService.checkIfUserExists(username);
+        return incomeSearchDao.findAllByUsernameYearAndMonth(username, year, month);
     }
 
-    public void deleteIncomeById(Long id) {
-        IncomeEntity income = getIncomeById(id);
+    public void deleteIncomeBySlug(String slug) {
+        IncomeEntity income = getIncomeBySlug(slug);
         incomeRepository.delete(income);
     }
 
     public Page<IncomeEntity> findAllIncomesByUserId(
-            Long userId,
+            String username,
             GlobalPage page,
-            Integer year
+            Integer year,
+            Integer month
     ) {
-        UserEntity user = userService.getUserById(userId);
+        userService.checkIfUserExists(username);
 
         Sort sort = Sort.by(page.getSortDirection(), page.getSortBy());
         Pageable pageable = PageRequest.of(page.getPageNumber(), page.getPageSize(), sort);
 
-        return incomeRepository.findAllIncomesByUserIdAndYear(user.getId(), year, pageable);
+        return incomeRepository.findAllIncomesByUser_UsernameAndYear(username, year, month, pageable);
     }
 
     public List<Integer> getYears() {

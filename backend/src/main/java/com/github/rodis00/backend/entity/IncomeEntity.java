@@ -1,9 +1,6 @@
 package com.github.rodis00.backend.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -29,4 +26,10 @@ public class IncomeEntity extends BaseEntity {
     private UserEntity user;
 
     private String description;
+
+    @Column(
+            unique = true,
+            nullable = false
+    )
+    private String slug;
 }

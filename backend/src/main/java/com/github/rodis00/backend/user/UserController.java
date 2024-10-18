@@ -21,7 +21,7 @@ public class UserController {
     }
 
     @Operation(
-            summary = "Get all users"
+            summary = "Retrieve a list of users"
     )
     @GetMapping("/")
     public ResponseEntity<List<UserDto>> getUsers() {
@@ -35,38 +35,38 @@ public class UserController {
     }
 
     @Operation(
-            summary = "Get user by id"
+            summary = "Retrieve a single user by its unique username"
     )
-    @GetMapping("/{id}")
+    @GetMapping("/{username}")
     public ResponseEntity<UserDto> getUser(
-            @PathVariable Long id
+            @PathVariable String username
     ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(UserDto.from(userService.getUserById(id)));
+                .body(UserDto.from(userService.getUserByUsername(username)));
     }
 
     @Operation(
-            summary = "Update user by id"
+            summary = "Update existing user by its unique username"
     )
-    @PatchMapping("/{id}")
+    @PatchMapping("/{username}")
     public ResponseEntity<UserDto> updateUser(
-            @PathVariable Long id,
+            @PathVariable String username,
             @RequestBody @Valid User user
     ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(userService.updateUser(id, user));
+                .body(userService.updateUser(username, user));
     }
 
     @Operation(
-            summary = "Delete user by id"
+            summary = "Delete user by its unique username"
     )
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{username}")
     public ResponseEntity<Void> deleteUser(
-            @PathVariable Long id
+            @PathVariable String username
     ) {
-        userService.deleteUserById(id);
+        userService.deleteUserByUsername(username);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();
