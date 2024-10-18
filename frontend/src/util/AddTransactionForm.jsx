@@ -35,6 +35,9 @@ const AddTransactionForm = ({ value, upperValue }) => {
             queryKey: ["expenses", { userId, token }],
           });
       dispatch(modalActions.closeModal());
+      setTimeout(() => {
+        dispatch(modalActions.showAddInfo());
+      }, 10);
     },
     onError: (error) => {
       setFormErrors(error);
@@ -112,7 +115,9 @@ const AddTransactionForm = ({ value, upperValue }) => {
                 className={`w-full border-none h-12 lg:h-10 bg-neutral-800 appearance-none sm:bg-main rounded-3xl pl-12 pr-2 text-lg lg:text-base lg:focus:text-sm transition-all duration-200 focus:ring-white focus:text-base`}
               />
             </div>
-            {formErrors && <p className="h-4 mb-4 text-red-500">{formErrors.date}</p>}
+            {formErrors && (
+              <p className="h-4 mb-4 text-red-500">{formErrors.date}</p>
+            )}
           </div>
           <div className="mt-4 xsm:mt-0 w-full xsm:w-5/12">
             <label

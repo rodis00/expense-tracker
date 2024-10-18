@@ -15,15 +15,23 @@ import {
 import { useMediaQuery } from "@react-hook/media-query";
 import { NavLink, useLocation } from "react-router-dom";
 import "./Navbar.css";
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../../store/auth-slice";
 
 const Navbar = () => {
   const [activeMenu, setActiveMenu] = useState(false);
-
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const dispatch = useDispatch();
   const indicatorRef = useRef();
   const location = useLocation();
   const pathParts = location.pathname.split("/");
   const id = pathParts[pathParts.length - 1];
   const isSmallScreen = useMediaQuery("(max-width: 767.5px)");
+
+  function handleLogout() {
+    dispatch(authActions.logout());
+    localStorage.removeItem("token");
+  }
 
   function handleActiveMenu() {
     setActiveMenu((prev) => !prev);
@@ -181,13 +189,16 @@ const Navbar = () => {
         <div className="w-full h-12 absolute mt-4 top-[calc(100%-5rem)] hover:bg-gray-700">
           <NavLink
             to={"/login"}
+            onClick={isAuthenticated ? handleLogout : null}
             className="h-full w-full flex items-center relative text-white z-10"
           >
             <FontAwesomeIcon
-              icon={faRightToBracket}
+              icon={isAuthenticated ? faRightFromBracket : faRightToBracket}
               className="w-16 shrink-0 text-2xl"
             />
-            <span className="w-44 block uppercase pl-4">Login</span>
+            <span className="w-44 block uppercase pl-4">
+              {isAuthenticated ? "Logout" : "Login"}
+            </span>
           </NavLink>
         </div>
 

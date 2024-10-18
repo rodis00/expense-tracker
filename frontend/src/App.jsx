@@ -15,6 +15,7 @@ import { authActions } from "./store/auth-slice";
 import { useEffect } from "react";
 import TransactionElement from "./util/transactionElement/TransactionElement";
 import AllTransactions from "./util/AllTransactions";
+import Settings from "./components/profileSettings/Settings";
 
 const router = createBrowserRouter([
   {
@@ -35,8 +36,12 @@ const router = createBrowserRouter([
       { path: "expenses", element: <Expenses /> },
       { path: "expenses/:id", element: <TransactionElement /> },
       { path: "expenses/all-transactions", element: <AllTransactions /> },
-      { path: "expenses/all-transactions/:id", element: <TransactionElement /> },
+      {
+        path: "expenses/all-transactions/:id",
+        element: <TransactionElement />,
+      },
       { path: "summaries", element: <Summaries /> },
+      { path: "settings", element: <Settings /> },
       { path: "login", element: <Login /> },
       { path: "signup", element: <Signup /> },
     ],
