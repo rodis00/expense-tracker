@@ -9,7 +9,7 @@ import { modalActions } from "../../store/modal-slice";
 import AddTransactionForm from "../../util/AddTransactionForm";
 import TransactionList from "../../util/TransactionList";
 import { useQuery } from "@tanstack/react-query";
-import { fetchExpenses } from "../../util/http/expenseHttp";
+import { fetchAllExpenses, fetchExpenses } from "../../util/http/expenseHttp";
 import PageNumber from "../../util/PageNumber";
 import { Link } from "react-router-dom";
 import AddInfoModal from "../../util/AddInfoModal";
@@ -20,17 +20,31 @@ const Expenses = () => {
   const userId = useSelector((state) => state.auth.user);
   const token = localStorage.getItem("token");
   const pageSize = 5;
-  const year = new Date().getFullYear();
+  const year =
+    chartPoints === "Monthly" || chartPoints === "Weekly"
+      ? new Date().getFullYear()
+      : "";
+  const month = chartPoints === "Weekly" ? new Date().getMonth() + 1 : "";
   let expensesPrice = 0;
 
   const { data, isPending, error, isError } = useQuery({
-    queryKey: ["expenses", { userId, token, pageNumber }],
-    queryFn: () => fetchExpenses({ userId, token, pageSize, year, pageNumber }),
+    queryKey: [
+      "expenses",
+      { userId, token, pageNumber, pageSize, month, year },
+    ],
+    queryFn: () =>
+      fetchExpenses({ userId, token, pageSize, year, month, pageNumber }),
     enabled: !!userId,
   });
 
-  if (data) {
-    data.content.forEach((item) => (expensesPrice += item.price));
+  const { data: allExpensesData } = useQuery({
+    queryKey: ["expenses", { userId, token, year, month }],
+    queryFn: () => fetchAllExpenses({ userId, token, year, month }),
+    enabled: !!userId,
+  });
+
+  if (allExpensesData) {
+    allExpensesData.forEach((item) => (expensesPrice += item.price));
   }
 
   const handleDataPointsSelection = (selectedPoints) => {
@@ -69,7 +83,11 @@ const Expenses = () => {
           handleSelection={handleDataPointsSelection}
           selectedPoints={chartPoints}
         />
-        <BarChart selectedPoints={chartPoints} name={"expenses"} data={data} />
+        <BarChart
+          selectedPoints={chartPoints}
+          name={"expenses"}
+          data={allExpensesData}
+        />
         <div className="w-[95%] sm:w-3/4 md:w-1/2 lg:w-1/3 h-20 lg:h-16 mt-4 bg-thirdColor rounded-full flex items-center justify-around text-lg shadow-lg shadow-neutral-800">
           <span className="text-red-500 w-28 pl-4 text-xl">
             <FontAwesomeIcon icon={faArrowUp} /> 45%
