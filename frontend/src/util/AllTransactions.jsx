@@ -192,7 +192,7 @@ const AllTransactions = () => {
                     </div>
                   </div>
                   <Link
-                    to={`/${resourceType}/all-transactions/${item.id}`}
+                    to={`/${resourceType}/all-transactions/${item.slug}`}
                     className="w-12 h-12 xsm:w-14 lg:w-16 xsm:h-14 lg:h-16 mr-2 sm:mr-4 bg-secondColor rounded-full flex items-center justify-center transition-all duration-300 hover:bg-[#28bf8a]"
                   >
                     <FontAwesomeIcon
