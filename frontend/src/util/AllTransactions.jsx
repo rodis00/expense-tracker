@@ -31,25 +31,9 @@ const AllTransactions = () => {
   const year = "";
   const month = "";
 
-  const loadAdditionalElements = () => {
-    setVisibleItems((prev) => prev + 10);
-  };
-
-  const handleScroll = () => {
-    if (
-      window.innerHeight + window.scrollY >=
-      document.body.offsetHeight - 100
-    ) {
-      loadAdditionalElements();
-    }
-  };
-
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [visibleItems]);
+    window.scrollTo(0, 0);
+  }, []);
 
   const { data, isPending, isError, error } = useQuery({
     queryKey:
@@ -62,6 +46,30 @@ const AllTransactions = () => {
         : () => fetchAllExpenses({ userId, token, year, month }),
     enabled: !!userId,
   });
+
+  const loadAdditionalElements = () => {
+    setVisibleItems((prev) => prev + 10);
+  };
+
+  const handleScroll = () => {
+    if (
+      window.innerHeight + window.scrollY >=
+      document.body.offsetHeight - 50
+    ) {
+      if (data?.length < visibleItems) {
+        return;
+      } else {
+        loadAdditionalElements();
+      }
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [visibleItems]);
 
   const filteredItems = data?.filter((item) => {
     return item.title.toLowerCase().includes(searchTerm.trim().toLowerCase());
