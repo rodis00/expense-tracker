@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import React, { useEffect, useState } from "react";
 import BarChart from "../charts/BarChart";
 import DataPointsSelection from "../../util/DataPointsSelection";
 import Modal from "../modal/Modal";
@@ -9,10 +7,11 @@ import { modalActions } from "../../store/modal-slice";
 import AddTransactionForm from "../../util/AddTransactionForm";
 import TransactionList from "../../util/TransactionList";
 import { fetchAllIncomes, fetchIncomes } from "../../util/http/incomeHttp";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import PageNumber from "../../util/PageNumber";
 import { Link } from "react-router-dom";
 import AddInfoModal from "../../util/AddInfoModal";
+import Percentage from "../../util/Percentage";
 
 const Incomes = () => {
   const [pageNumber, setPageNumber] = useState(0);
@@ -27,10 +26,15 @@ const Incomes = () => {
   const month = chartPoints === "Weekly" ? new Date().getMonth() + 1 : "";
   let incomesAmount = 0;
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const { data, isPending, error, isError } = useQuery({
     queryKey: ["incomes", { userId, token, pageSize, pageNumber, year, month }],
     queryFn: () =>
       fetchIncomes({ userId, token, pageSize, pageNumber, year, month }),
+    placeholderData: keepPreviousData,
     enabled: !!userId,
   });
 
@@ -85,14 +89,7 @@ const Incomes = () => {
           name={"incomes"}
           data={allIncomesData}
         />
-        <div className="w-[95%] sm:w-3/4 md:w-1/2 lg:w-1/3 h-20 lg:h-16 mt-4 bg-thirdColor rounded-full flex items-center justify-around text-lg shadow-lg shadow-neutral-800">
-          <span className="text-secondColor w-28 pl-4 text-xl">
-            <FontAwesomeIcon icon={faArrowUp} /> 45%
-          </span>
-          <p className="pl-2 pr-4 sm:pr-8 md:pr-4">
-            This month you are receving more/less than usual
-          </p>
-        </div>
+        <Percentage />
 
         <div className="flex h-16 items-center mt-8">
           <button
