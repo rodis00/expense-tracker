@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import chart from "../../assets/chart.svg";
 import money from "../../assets/money.svg";
 import lines from "../../assets/lines-for-background.svg";
@@ -15,6 +15,10 @@ import "./Home.css";
 import BarChart from "../charts/BarChart";
 
 const Home = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const handleScroll = () => {
     window.scrollBy({
       top: window.innerHeight,

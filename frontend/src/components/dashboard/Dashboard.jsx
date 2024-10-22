@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import LineChart from "../charts/LineChart";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -30,6 +30,10 @@ const Dashboard = () => {
   let maxIncome = 0;
   let minExpense = 0;
   let maxExpense = 0;
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const { data: incomesData, isPending: incomesPending } = useQuery({
     queryKey: ["incomes", { userId, token, year, month }],
@@ -141,7 +145,11 @@ const Dashboard = () => {
                 key={item.slug}
                 className="w-full h-1/3 rounded-full bg-thirdColor flex justify-between items-center mb-4"
               >
-                <div className="h-14 w-14 sm:h-16 sm:w-16 border-2 border-secondColor rounded-full ml-2 sm:ml-4 flex justify-center items-center">
+                <div
+                  className={`h-14 w-14 sm:h-16 sm:w-16 border-2 ${
+                    item.amount ? "border-secondColor" : "border-red-500"
+                  } rounded-full ml-2 sm:ml-4 flex justify-center items-center`}
+                >
                   <FontAwesomeIcon icon={faBriefcase} className="text-2xl" />
                 </div>
                 <div className="pl-4 flex flex-col gap-4 grow">
