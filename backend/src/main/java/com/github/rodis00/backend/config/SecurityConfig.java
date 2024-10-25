@@ -21,8 +21,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
 import java.util.List;
 
@@ -61,6 +59,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(request -> corsConfiguration()))
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(WHITE_LIST).permitAll()
                         .anyRequest().authenticated()
@@ -95,50 +94,30 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 
-    @Bean
-    public CorsFilter corsFilter() {
+    public CorsConfiguration corsConfiguration() {
         CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.setAllowedOrigins(
-                List.of(
-                        "http://localhost:5173"
-                )
-        );
+        corsConfig.setAllowedOrigins(List.of(
+                "http://localhost:5173"
+        ));
         corsConfig.setAllowCredentials(true);
-        corsConfig.setAllowedHeaders(
-                List.of(
-                        HttpHeaders.ORIGIN,
-                        HttpHeaders.CONTENT_TYPE,
-                        HttpHeaders.ACCEPT,
-                        HttpHeaders.AUTHORIZATION,
-                        HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN,
-                        HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS,
-                        HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD
-                )
-        );
-        corsConfig.setExposedHeaders(
-                List.of(
-                        HttpHeaders.ORIGIN,
-                        HttpHeaders.CONTENT_TYPE,
-                        HttpHeaders.ACCEPT,
-                        HttpHeaders.AUTHORIZATION,
-                        HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN,
-                        HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS
-                )
-        );
-        corsConfig.setAllowedMethods(
-                List.of(
-                        HttpMethod.GET.name(),
-                        HttpMethod.POST.name(),
-                        HttpMethod.PUT.name(),
-                        HttpMethod.PATCH.name(),
-                        HttpMethod.DELETE.name(),
-                        HttpMethod.OPTIONS.name()
-                )
-        );
+        corsConfig.setAllowedHeaders(List.of(
+                HttpHeaders.ORIGIN,
+                HttpHeaders.CONTENT_TYPE,
+                HttpHeaders.ACCEPT,
+                HttpHeaders.AUTHORIZATION
+        ));
+        corsConfig.setExposedHeaders(List.of(
+                HttpHeaders.AUTHORIZATION
+        ));
+        corsConfig.setAllowedMethods(List.of(
+                HttpMethod.GET.name(),
+                HttpMethod.POST.name(),
+                HttpMethod.PUT.name(),
+                HttpMethod.PATCH.name(),
+                HttpMethod.DELETE.name(),
+                HttpMethod.OPTIONS.name()
+        ));
 
-        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
-        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfig);
-
-        return new CorsFilter(urlBasedCorsConfigurationSource);
+        return corsConfig;
     }
 }
