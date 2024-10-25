@@ -99,4 +99,14 @@ public class GlobalExceptionHandler {
                 Collections.singletonMap(e.getFieldName(), e.getMessage())
         );
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(InvalidTokenException.class)
+    public ApiResponse handleInvalidTokenException(InvalidTokenException e) {
+        return new ApiResponse(
+                HttpStatus.BAD_REQUEST,
+                HttpStatus.BAD_REQUEST.value(),
+                Collections.singletonMap(e.getFieldName(), e.getMessage())
+        );
+    }
 }
