@@ -44,27 +44,35 @@ public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
     private final LogoutHandler logoutHandler;
     private final CustomUserDetailsService customUserDetailsService;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     public SecurityConfig(
             JwtAuthFilter jwtAuthFilter,
             LogoutHandler logoutHandler,
-            CustomUserDetailsService customUserDetailsService
+            CustomUserDetailsService customUserDetailsService,
+            CustomAuthenticationEntryPoint customAuthenticationEntryPoint
     ) {
         this.jwtAuthFilter = jwtAuthFilter;
         this.logoutHandler = logoutHandler;
         this.customUserDetailsService = customUserDetailsService;
+        this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> cors.configurationSource(request -> corsConfiguration()))
-                .authorizeHttpRequests((authorize) -> authorize
+                .cors(cors -> cors
+                        .configurationSource(request -> corsConfiguration())
+                )
+                .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(WHITE_LIST).permitAll()
                         .anyRequest().authenticated()
                 )
-                .sessionManagement((session) -> session
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)
+                )
+                .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
