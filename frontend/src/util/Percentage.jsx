@@ -11,7 +11,8 @@ const Percentage = () => {
   const location = useLocation();
   const resource = location.pathname.split("/")[1];
   const token = localStorage.getItem("token");
-  const year = new Date().getFullYear();
+  const year = "";
+  const currentYear = new Date().getFullYear();
   const month = "";
   const currentMonth = new Date().getMonth();
   let currentMonthValue = 0;
@@ -35,13 +36,17 @@ const Percentage = () => {
       const newDate = new Date(item.date);
       const itemMonth = newDate.getMonth();
       const itemYear = newDate.getFullYear();
-      if (itemMonth === currentMonth && year === itemYear) {
+      if (itemMonth === currentMonth && currentYear === itemYear) {
         currentMonthValue += resource === "incomes" ? item.amount : item.price;
       }
-      if (itemMonth === currentMonth - 1 && year === itemYear) {
+      if (itemMonth === currentMonth - 1 && currentYear === itemYear) {
+        previousMonthValue += resource === "incomes" ? item.amount : item.price;
+      }
+      if (currentMonth === 0 && itemMonth === 11 && currentYear - 1 === itemYear) {
         previousMonthValue += resource === "incomes" ? item.amount : item.price;
       }
     });
+
     if (previousMonthValue !== 0) {
       percent = (
         ((currentMonthValue - previousMonthValue) / previousMonthValue) *
@@ -55,31 +60,31 @@ const Percentage = () => {
   return (
     <>
       {resource === "incomes" ? (
-        <div className="w-[95%] sm:w-3/4 md:w-1/2 lg:w-1/3 h-20 lg:h-16 mt-4 bg-thirdColor rounded-full flex items-center justify-around text-lg shadow-lg shadow-neutral-800">
+        <div className="w-[95%] sm:w-3/4 md:w-3/5 xlg:w-2/5 h-28 sm:h-20 lg:h-16 mt-4 bg-thirdColor rounded-full flex items-center justify-around text-lg shadow-lg shadow-neutral-800">
           <span
             className={`${
               percent > 0 ? "text-secondColor" : "text-red-500"
-            } w-28 pl-4 text-xl`}
+            } w-44 sm:w-32 xlg:w-28 pl-4 text-xl`}
           >
             <FontAwesomeIcon icon={percent >= 0 ? faArrowUp : faArrowDown} />{" "}
             {Math.abs(percent)}%
           </span>
-          <p className="pl-2 pr-4 sm:pr-8 md:pr-4">
+          <p className="pl-2 xlg:pl-0 pr-4 sm:pr-8 md:pr-4">
             This month you are receving {percent >= 0 ? "more" : "less"}{" "}
             compared to the previous month
           </p>
         </div>
       ) : (
-        <div className="w-[95%] sm:w-3/4 md:w-1/2 lg:w-1/3 h-20 lg:h-16 mt-4 bg-thirdColor rounded-full flex items-center justify-around text-lg shadow-lg shadow-neutral-800">
+        <div className="w-[95%] sm:w-3/4 md:w-3/5 xlg:w-2/5 h-28 sm:h-20 lg:h-16 mt-4 bg-thirdColor rounded-full flex items-center justify-around text-lg shadow-lg shadow-neutral-800">
           <span
             className={`${
               percent > 0 ? "text-red-500" : "text-secondColor"
-            } w-28 pl-4 text-xl`}
+            } w-44 sm:w-32 xlg:w-28 pl-4 text-xl`}
           >
             <FontAwesomeIcon icon={percent >= 0 ? faArrowUp : faArrowDown} />{" "}
             {Math.abs(percent)}%
           </span>
-          <p className="pl-2 pr-4 sm:pr-8 md:pr-4">
+          <p className="pl-2 xlg:pl-0 pr-4 sm:pr-8 md:pr-4">
             This month you are spending {percent >= 0 ? "more" : "less"}{" "}
             compared to the previous month
           </p>
