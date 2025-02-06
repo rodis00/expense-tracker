@@ -19,7 +19,11 @@ const TransactionList = ({ name, data, isPending, error, isError }) => {
             key={item.slug}
             className="w-full h-20 rounded-full bg-thirdColor flex justify-between items-center mb-4"
           >
-            <div className="h-14 w-14 sm:h-16 sm:w-16 border-2 border-secondColor rounded-full ml-2 sm:ml-4 flex justify-center items-center">
+            <div
+              className={`h-14 w-14 sm:h-16 sm:w-16 border-2 ${
+                name === "incomes" ? "border-secondColor" : "border-red-500"
+              } rounded-full ml-2 sm:ml-4 flex justify-center items-center`}
+            >
               <FontAwesomeIcon icon={faShirt} className="text-2xl" />
             </div>
             <div className="pl-4 flex flex-col gap-4 grow">

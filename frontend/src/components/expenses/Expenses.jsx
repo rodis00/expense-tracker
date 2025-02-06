@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import React, { useEffect, useState } from "react";
 import BarChart from "../charts/BarChart";
 import DataPointsSelection from "../../util/DataPointsSelection";
 import Modal from "../modal/Modal";
@@ -8,11 +6,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { modalActions } from "../../store/modal-slice";
 import AddTransactionForm from "../../util/AddTransactionForm";
 import TransactionList from "../../util/TransactionList";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchAllExpenses, fetchExpenses } from "../../util/http/expenseHttp";
 import PageNumber from "../../util/PageNumber";
 import { Link } from "react-router-dom";
 import AddInfoModal from "../../util/AddInfoModal";
+import Percentage from "../../util/Percentage";
 
 const Expenses = () => {
   const [pageNumber, setPageNumber] = useState(0);
@@ -27,6 +26,10 @@ const Expenses = () => {
   const month = chartPoints === "Weekly" ? new Date().getMonth() + 1 : "";
   let expensesPrice = 0;
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const { data, isPending, error, isError } = useQuery({
     queryKey: [
       "expenses",
@@ -34,6 +37,7 @@ const Expenses = () => {
     ],
     queryFn: () =>
       fetchExpenses({ userId, token, pageSize, year, month, pageNumber }),
+    placeholderData: keepPreviousData,
     enabled: !!userId,
   });
 
@@ -88,14 +92,7 @@ const Expenses = () => {
           name={"expenses"}
           data={allExpensesData}
         />
-        <div className="w-[95%] sm:w-3/4 md:w-1/2 lg:w-1/3 h-20 lg:h-16 mt-4 bg-thirdColor rounded-full flex items-center justify-around text-lg shadow-lg shadow-neutral-800">
-          <span className="text-red-500 w-28 pl-4 text-xl">
-            <FontAwesomeIcon icon={faArrowUp} /> 45%
-          </span>
-          <p className="pl-2 pr-4 sm:pr-8 md:pr-4">
-            This month you are spending more/less than usual
-          </p>
-        </div>
+        <Percentage />
 
         <div className="flex h-16 items-center gap-12 mt-8">
           <button
