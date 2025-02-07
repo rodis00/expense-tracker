@@ -16,42 +16,50 @@ const TransactionActions = ({
   return (
     <>
       {isEditting ? (
-        <div className="text-white flex justify-end gap-8 mt-4 mr-4">
-          <button
-            type="button"
-            onClick={handleSubmit}
-            className="bg-main rounded-xl w-28 h-12 flex items-center justify-center gap-4 text-lg text-yellow-500 "
-          >
-            <FontAwesomeIcon icon={saveIcon} />
-            <span>{isPending ? "Saving..." : "Save"}</span>
-          </button>
-          <button
-            type="button"
-            onClick={closeEdditingWithoutSave}
-            className="bg-main rounded-xl w-28 h-12 flex items-center justify-center gap-4 text-lg text-red-500 "
-          >
-            <FontAwesomeIcon icon={closeIcon} />
-            <span>Cancel</span>
-          </button>
+        <div className="text-white flex justify-center gap-8 mt-4 mr-4 mb-8">
+          <div className="flex flex-col items-center">
+            <button
+              type="button"
+              onClick={handleSubmit}
+              className="rounded-full w-16 h-16 flex items-center justify-center gap-4 text-2xl border-2 border-yellow-500 text-yellow-500 shadow-lg shadow-neutral-600 "
+            >
+              <FontAwesomeIcon icon={saveIcon} />
+            </button>
+            <span className="mt-2">{isPending ? "Saving..." : "Save"}</span>
+          </div>
+          <div className="flex flex-col items-center">
+            <button
+              type="button"
+              onClick={closeEdditingWithoutSave}
+              className="rounded-full w-16 h-16 flex items-center justify-center gap-4 text-2xl border-2 border-red-500 text-red-500 shadow-lg shadow-neutral-600 "
+            >
+              <FontAwesomeIcon icon={closeIcon} />
+            </button>
+            <span className="mt-2">Cancel</span>
+          </div>
         </div>
       ) : (
-        <div className="text-white flex justify-end gap-8 mt-4 mr-4">
-          <button
-            type="button"
-            onClick={startEditting}
-            className="bg-main rounded-xl w-28 h-12 flex items-center justify-center gap-4 text-lg text-yellow-500 "
-          >
-            <FontAwesomeIcon icon={editIcon} />
-            <span>Edit</span>
-          </button>
-          <button
-            type="button"
-            onClick={handleDeleteModal}
-            className="bg-main rounded-xl w-28 h-12 flex items-center justify-center gap-4 text-lg text-red-500 "
-          >
-            <FontAwesomeIcon icon={deleteIcon} />
-            <span>Delete</span>
-          </button>
+        <div className="text-white flex justify-center gap-8 mt-4 mr-4 mb-8">
+          <div className="flex flex-col items-center">
+            <button
+              type="button"
+              onClick={startEditting}
+              className="rounded-full w-16 h-16 flex items-center justify-center gap-4 text-2xl border-2 border-yellow-500 text-yellow-500 shadow-lg shadow-neutral-600 "
+            >
+              <FontAwesomeIcon icon={editIcon} />
+            </button>
+            <span className="mt-2">Edit</span>
+          </div>
+          <div className="flex flex-col items-center">
+            <button
+              type="button"
+              onClick={handleDeleteModal}
+              className="rounded-full w-16 h-16 flex items-center justify-center gap-4 text-2xl border-2 border-red-500 text-red-500 shadow-lg shadow-neutral-600 "
+            >
+              <FontAwesomeIcon icon={deleteIcon} />
+            </button>
+            <span className="mt-2">Delete</span>
+          </div>
         </div>
       )}
     </>
