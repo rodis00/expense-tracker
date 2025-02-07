@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Frontend DEV stuff :)
+src/DummyData.jsx
