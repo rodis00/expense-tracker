@@ -13,9 +13,12 @@ import { useSelector } from "react-redux";
 import { fetchAllIncomes } from "../../util/http/incomeHttp";
 import { fetchAllExpenses } from "../../util/http/expenseHttp";
 import DateTransaction from "../../util/DateTransaction";
+import { jwtDecode } from "jwt-decode";
+import CategoryCases from "../../util/CategoryCases";
 
 const Dashboard = () => {
   const token = localStorage.getItem("token");
+  const username = jwtDecode(token).sub;
   const userId = useSelector((state) => state.auth.user);
   const year = new Date().getFullYear();
   const month = "";
@@ -93,10 +96,10 @@ const Dashboard = () => {
     <main className="w-full min-h-screen flex flex-col text-white">
       <div className="text-center my-4">
         <h1 className="text-2xl text-neutral-600">Welcome back</h1>
-        <span className="text-3xl font-semibold">User</span>
+        <span className="text-3xl font-semibold">{username  }</span>
       </div>
-      <div className="flex flex-col items-center flex-grow mt-12 lg:items-start lg:flex-row lg:ml-12">
-        <section className="w-full md:w-3/4 lg:w-[70%] h-full flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center flex-grow mt-4">
+        <section className="w-full md:w-3/4 lg:w-full h-full flex flex-col items-center justify-center">
           <ul className="w-full lg:w-[85%] flex flex-col xsm:flex-row justify-center items-center md:gap-8 ">
             <DashboardValueListElement
               border="border-yellow-500"
@@ -130,11 +133,11 @@ const Dashboard = () => {
           </div>
         </section>
 
-        <aside className="w-full md:w-3/4 flex flex-col items-center lg:w-[30%] h-full">
-          <h2 className="text-center text-2xl mt-8 lg:-mt-2 font-semibold">
+        <aside className="w-full md:w-3/4 flex flex-col items-center lg:w-1/2 h-full">
+          <h2 className="text-center text-2xl lg:text-3xl mt-12 font-semibold">
             Recently Added
           </h2>
-          <ul className="w-[95%] h-[40vh] flex flex-col mt-8 gap-8">
+          <ul className="w-[95%] h-[40vh] flex flex-col mt-12 gap-8">
             {incomesData <= 0 && expensesData <= 0 && (
               <p className="text-neutral-400 text-center text-xl">
                 You haven't added any transactions yet.
@@ -150,7 +153,7 @@ const Dashboard = () => {
                     item.amount ? "border-secondColor" : "border-red-500"
                   } rounded-full ml-2 sm:ml-4 flex justify-center items-center`}
                 >
-                  <FontAwesomeIcon icon={faBriefcase} className="text-2xl" />
+                  <CategoryCases category='clothes'/>
                 </div>
                 <div className="pl-4 flex flex-col gap-4 grow">
                   <h3 className="text-2xl">{item.title}</h3>
@@ -158,12 +161,12 @@ const Dashboard = () => {
                     <p>
                       {item.amount && (
                         <span className="text-secondColor font-bold text-[17px]">
-                          {item.amount}$
+                          {item.amount.toFixed(2)}$
                         </span>
                       )}
                       {item.price && (
                         <span className="text-red-500 font-bold text-[17px]">
-                          {item.price}$
+                          {item.price.toFixed(2)}$
                         </span>
                       )}{" "}
                       - <DateTransaction date={item.date} />

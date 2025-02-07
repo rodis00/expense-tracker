@@ -81,7 +81,7 @@ const Expenses = () => {
       <main className="w-full min-h-screen flex flex-col items-center text-white">
         <div className="text-center">
           <h1 className="text-xl mt-4 text-neutral-600">Total Expenses</h1>
-          <span className="text-3xl text-red-500">{expensesPrice}$</span>
+          <span className="text-3xl text-red-500">{expensesPrice.toFixed(2)}$</span>
         </div>
         <DataPointsSelection
           handleSelection={handleDataPointsSelection}
