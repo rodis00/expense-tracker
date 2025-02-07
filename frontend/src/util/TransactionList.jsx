@@ -1,8 +1,10 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faShirt } from "@fortawesome/free-solid-svg-icons";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
 import DateTransaction from "./DateTransaction";
 import { Link } from "react-router-dom";
+import TruncateText from "./TruncateText";
+import CategoryCases from "./CategoryCases";
 
 const TransactionList = ({ name, data, isPending, error, isError }) => {
   return (
@@ -24,10 +26,13 @@ const TransactionList = ({ name, data, isPending, error, isError }) => {
                 name === "incomes" ? "border-secondColor" : "border-red-500"
               } rounded-full ml-2 sm:ml-4 flex justify-center items-center`}
             >
-              <FontAwesomeIcon icon={faShirt} className="text-2xl" />
+              {/* tutaj ikona kategorii */}
+              <CategoryCases category="other" />
             </div>
             <div className="pl-4 flex flex-col gap-4 grow">
-              <h3 className="text-2xl">{item.title}</h3>
+              <h3 className="text-2xl">
+                <TruncateText text={item.title} />
+              </h3>
               <div className="flex">
                 <p>
                   <span
@@ -35,7 +40,10 @@ const TransactionList = ({ name, data, isPending, error, isError }) => {
                       name === "incomes" ? "text-secondColor" : "text-red-500"
                     } font-bold text-[17px]`}
                   >
-                    {name === "incomes" ? item.amount : item.price}$
+                    {name === "incomes"
+                      ? item.amount.toFixed(2)
+                      : item.price.toFixed(2)}
+                    $
                   </span>{" "}
                   - <DateTransaction date={item.date} />
                 </p>
