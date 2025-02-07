@@ -15,6 +15,7 @@ import {
 import Input from "./Input";
 import TruncateText from "./TruncateText";
 import "./AllTransactions.css";
+import CategoryCases from "./CategoryCases";
 
 const AllTransactions = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -136,7 +137,7 @@ const AllTransactions = () => {
       <h1 className="text-center font-semibold text-3xl mb-12 mt-8">
         All {resourceType}
       </h1>
-      <div className="w-1/2 mb-8 bg-thirdColor p-4 rounded-2xl">
+      <div className="w-[95%] sm:w-3/4 lg:w-1/2 mb-8 bg-thirdColor p-4 rounded-2xl">
         <Input
           labelText="Search"
           icon={faMagnifyingGlass}
@@ -154,15 +155,15 @@ const AllTransactions = () => {
         Go back
       </Link>
       {itemsToDisplay.reverse().map((group, index) => (
-        <div className="w-1/2" key={index}>
-          <h3 className="text-neutral-400 font-semibold flex items-center">
+        <div className="w-[95%] sm:w-3/4 lg:w-1/2" key={index}>
+          <h3 className="text-neutral-400 font-semibold flex items-center mb-6 mt-2">
             {group.date}
             <span className="w-48 h-1 block bg-neutral-600 ml-4"></span>
           </h3>
           <ul className="w-full flex flex-col mt-4">
             {group.items.map((item, idx) => (
               <React.Fragment key={idx}>
-                <li className="w-full h-20 rounded-full bg-thirdColor flex justify-between items-center relative z-10 mb-4">
+                <li className="w-full h-20 rounded-full bg-thirdColor flex justify-between items-center relative z-10 mb-10 xlg:mb-4">
                   <div
                     className={`h-14 w-14 sm:h-16 sm:w-16 border-2 ${
                       resourceType === "incomes"
@@ -170,7 +171,8 @@ const AllTransactions = () => {
                         : "border-red-500"
                     } rounded-full ml-2 sm:ml-4 flex justify-center items-center`}
                   >
-                    <FontAwesomeIcon icon={faShirt} className="text-2xl" />
+                    {/* tutaj ikona kategorii */} 
+                    <CategoryCases category='food'/>
                   </div>
                   <div className="pl-4 flex flex-col gap-4 grow">
                     <h3 className="text-2xl">
@@ -186,8 +188,8 @@ const AllTransactions = () => {
                           } font-bold text-[17px]`}
                         >
                           {resourceType === "incomes"
-                            ? item.amount
-                            : item.price}
+                            ? item.amount.toFixed(2)
+                            : item.price.toFixed(2)}
                           $
                         </span>{" "}
                         - <DateTransaction date={item.date} />
@@ -200,7 +202,7 @@ const AllTransactions = () => {
                               expanded: true,
                             }))
                           }
-                          className="absolute left-[calc(50%-4rem)] bottom-1 w-32 text-neutral-500"
+                          className="absolute left-[calc(50%-5rem)] bg-thirdColor rounded-b-3xl top-full h-6 xlg:-mt-7 w-40 text-neutral-500 font-semibold transition-all duration-300 hover:text-neutral-400"
                         >
                           show details
                         </button>
@@ -218,11 +220,11 @@ const AllTransactions = () => {
                   </Link>
                 </li>
                 <div
-                  className={`w-[calc(100%-12rem)] bg-thirdColor ${
+                  className={`w-[85%] bg-thirdColor ${
                     isExpanded.id === item.slug && isExpanded.expanded
                       ? "block"
                       : "hidden"
-                  } mx-auto relative -top-4 pt-2 px-8 rounded-b-3xl pb-8`}
+                  } mx-auto relative -top-10 xlg:-top-4 pt-2 px-8 rounded-b-3xl pb-8`}
                   id="expandedElement"
                 >
                   <p className="bg-main p-4">{item.description}</p>
@@ -233,7 +235,7 @@ const AllTransactions = () => {
                         expanded: false,
                       }))
                     }
-                    className="absolute left-[calc(50%-4rem)] bottom-1 w-32 text-neutral-500"
+                    className="absolute left-[calc(50%-4rem)] bottom-1 w-32 text-neutral-500 font-semibold transition-all duration-300 hover:text-neutral-400"
                   >
                     hide details
                   </button>

@@ -38,11 +38,9 @@ const LineChart = ({
 
   return (
     <div
-      className={`h-[60vh] w-full lg:w-[80%] pt-12 pb-4 px-2 lg:py-12 md:px-4 mt-8 md:rounded-2xl lg:rounded-3xl ${
-        name === "summaries" ? "" : "bg-thirdColor"
-      } relative`}
+      className={`h-[60vh] lg:h-[70vh] w-full lg:w-3/4 sm:pb-4 sm:px-4 md:rounded-2xl lg:rounded-3xl pt-12 md:pt-0 relative`}
     >
-      <h2 className=" w-1/3 h-8 top-4 text-right pr-4 top text-xl absolute left-2/3 uppercase font-semibold text-neutral-500">
+      <h2 className=" w-1/3 h-8 top-4 text-right pr-4 md:top-1 text-xl absolute left-2/3 uppercase font-semibold text-neutral-500">
         This Year
       </h2>
       <Line

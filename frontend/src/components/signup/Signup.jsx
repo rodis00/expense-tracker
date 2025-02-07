@@ -74,6 +74,10 @@ const Signup = () => {
     mutate(formData);
   }
 
+  // const generateRandomColor = () => {
+  //   return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+  // };
+
   return (
     <div className="w-full h-screen flex items-center justify-center">
       <form
@@ -93,6 +97,18 @@ const Signup = () => {
             value={formData.username}
             onChange={handleChange}
           />
+          {/* <div className="flex justify-center">
+            {formData.username && (
+              <div
+                className="w-20 h-20 flex items-center justify-center rounded-full font-bold text-white text-2xl"
+                style={{
+                  backgroundColor: generateRandomColor(),
+                }}
+              >
+                {formData.username.charAt(0).toUpperCase()}
+              </div>
+            )}
+          </div> */}
 
           {formErrors && <p className="text-red-500">{formErrors.username}</p>}
 

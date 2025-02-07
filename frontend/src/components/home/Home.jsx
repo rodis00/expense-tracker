@@ -20,7 +20,7 @@ const Home = () => {
   }, []);
 
   const handleScroll = () => {
-    window.scrollBy({
+    window.scrollTo({
       top: window.innerHeight,
       behavior: "smooth",
     });

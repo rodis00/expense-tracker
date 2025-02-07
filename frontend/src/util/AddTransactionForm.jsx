@@ -13,6 +13,7 @@ import "./AddTransactionForm.css";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { newIncome } from "./http/incomeHttp";
 import { newExpense } from "./http/expenseHttp";
+import SelectCategory from "./SelectCategory";
 
 const AddTransactionForm = ({ value, upperValue }) => {
   const [formErrors, setFormErrors] = useState({});
@@ -23,6 +24,7 @@ const AddTransactionForm = ({ value, upperValue }) => {
   const buttonText = value === "amount" ? "Add income" : "Add expense";
   const pending = value === "amount" ? "Adding income..." : "Adding expense...";
   const queryClient = useQueryClient();
+  const resource = value === "amount" ? "incomes" : "expenses";
 
   const { mutate, isPending } = useMutation({
     mutationFn: value === "amount" ? newIncome : newExpense,
@@ -77,6 +79,8 @@ const AddTransactionForm = ({ value, upperValue }) => {
           placeholder="Enter your title"
           type="text"
           inputId="title"
+          minLength="3"
+          maxLength="80"
         />
         {formErrors && (
           <p className="h-4 text-red-500 -mt-4 mb-4">{formErrors.title}</p>
@@ -86,6 +90,8 @@ const AddTransactionForm = ({ value, upperValue }) => {
           icon={faDollar}
           placeholder={`Enter your ${value}`}
           type="number"
+          min="0.01"
+          step="0.01"
           inputId={value}
           className="pr-2"
         />
@@ -130,17 +136,12 @@ const AddTransactionForm = ({ value, upperValue }) => {
               <span className="pl-4">
                 <FontAwesomeIcon icon={faList} />
               </span>
-              <select
+              <SelectCategory
+                resource={resource}
                 name="category"
                 id="category"
                 className="bg-neutral-800 sm:bg-main focus:outline-none w-full h-12 lg:h-10 pl-4 rounded-3xl border-none focus:ring-0"
-              >
-                <option value="work">Work</option>
-                <option value="sell">Sell</option>
-                <option value="trade">Trade</option>
-                <option value="survey">Survey</option>
-                <option value="other">Other</option>
-              </select>
+              />
             </div>
           </div>
         </div>

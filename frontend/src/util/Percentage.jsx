@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { useLocation } from "react-router-dom";
+import { fetchAllExpenses } from "./http/expenseHttp";
 
 const Percentage = () => {
   const userId = useSelector((state) => state.auth.user);
@@ -42,7 +43,11 @@ const Percentage = () => {
       if (itemMonth === currentMonth - 1 && currentYear === itemYear) {
         previousMonthValue += resource === "incomes" ? item.amount : item.price;
       }
-      if (currentMonth === 0 && itemMonth === 11 && currentYear - 1 === itemYear) {
+      if (
+        currentMonth === 0 &&
+        itemMonth === 11 &&
+        currentYear - 1 === itemYear
+      ) {
         previousMonthValue += resource === "incomes" ? item.amount : item.price;
       }
     });
@@ -56,7 +61,7 @@ const Percentage = () => {
       percent = 100;
     }
   }
-
+  
   return (
     <>
       {resource === "incomes" ? (
