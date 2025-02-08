@@ -1,6 +1,6 @@
 package com.github.rodis00.backend.income;
 
-import jakarta.validation.constraints.Min;
+import com.github.rodis00.backend.utils.customValidator.MinValue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -19,7 +19,7 @@ public class Income {
     private String title;
 
     @NotNull(message = "Amount shouldn't be empty.")
-    @Min(value = 1, message = "Amount can't be lower than 1.")
+    @MinValue
     private BigDecimal amount;
 
     @NotNull(message = "Invalid date.")
