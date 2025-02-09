@@ -45,6 +45,7 @@ public class ExpenseService {
                         .user(user)
                         .description(expense.getDescription())
                         .slug(generateSlug())
+                        .category(expense.getCategory())
                         .build()
         );
     }
@@ -69,6 +70,7 @@ public class ExpenseService {
         actualExpense.setPrice(expense.getPrice());
         actualExpense.setDate(expense.getDate());
         actualExpense.setDescription(expense.getDescription());
+        actualExpense.setCategory(expense.getCategory());
         expenseRepository.save(actualExpense);
 
         return actualExpense;

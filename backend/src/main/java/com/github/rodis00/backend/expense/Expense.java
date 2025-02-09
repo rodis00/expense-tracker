@@ -25,5 +25,7 @@ public class Expense {
     @NotNull(message = "Invalid date.")
     private LocalDateTime date;
 
+    private ExpenseCategory category;
+
     private String description;
 }
