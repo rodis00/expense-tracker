@@ -1,5 +1,6 @@
 package com.github.rodis00.backend.entity;
 
+import com.github.rodis00.backend.income.IncomeCategory;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,4 +33,7 @@ public class IncomeEntity extends BaseEntity {
             nullable = false
     )
     private String slug;
+
+    @Enumerated(EnumType.STRING)
+    private IncomeCategory category = IncomeCategory.OTHER;
 }

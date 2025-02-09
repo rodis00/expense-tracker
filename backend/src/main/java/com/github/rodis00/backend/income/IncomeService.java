@@ -45,6 +45,7 @@ public class IncomeService {
                         .user(user)
                         .description(income.getDescription())
                         .slug(generateSlug())
+                        .category(income.getCategory())
                         .build()
         );
     }
@@ -68,6 +69,7 @@ public class IncomeService {
         actualIncome.setAmount(income.getAmount());
         actualIncome.setDate(income.getDate());
         actualIncome.setDescription(income.getDescription());
+        actualIncome.setCategory(income.getCategory());
         incomeRepository.save(actualIncome);
 
         return actualIncome;

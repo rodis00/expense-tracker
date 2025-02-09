@@ -25,5 +25,7 @@ public class Income {
     @NotNull(message = "Invalid date.")
     private LocalDateTime date;
 
+    private IncomeCategory category;
+
     private String description;
 }
