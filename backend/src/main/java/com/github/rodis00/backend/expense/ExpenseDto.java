@@ -15,6 +15,8 @@ public class ExpenseDto {
     private BigDecimal price;
     private LocalDateTime date;
     private ExpenseCategory category;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private String description;
 
     public static ExpenseDto from(ExpenseEntity expense) {
@@ -24,6 +26,8 @@ public class ExpenseDto {
                 expense.getPrice(),
                 expense.getDate(),
                 expense.getCategory(),
+                expense.getCreatedAt(),
+                expense.getUpdatedAt(),
                 expense.getDescription()
         );
     }

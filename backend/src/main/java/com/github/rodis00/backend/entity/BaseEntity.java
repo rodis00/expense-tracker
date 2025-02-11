@@ -3,6 +3,10 @@ package com.github.rodis00.backend.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @MappedSuperclass
 @Getter
@@ -20,4 +24,11 @@ public class BaseEntity {
             strategy = GenerationType.SEQUENCE
     )
     private Long id;
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }

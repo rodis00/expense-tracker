@@ -15,6 +15,8 @@ public class IncomeDto {
     private BigDecimal amount;
     private LocalDateTime date;
     private IncomeCategory category;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private String description;
 
     public static IncomeDto from(IncomeEntity income) {
@@ -24,6 +26,8 @@ public class IncomeDto {
                 income.getAmount(),
                 income.getDate(),
                 income.getCategory(),
+                income.getCreatedAt(),
+                income.getUpdatedAt(),
                 income.getDescription()
         );
     }

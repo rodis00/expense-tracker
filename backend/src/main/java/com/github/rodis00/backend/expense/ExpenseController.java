@@ -77,7 +77,7 @@ public class ExpenseController {
             @RequestParam(defaultValue = "0") @Min(0) Integer pageNumber,
             @RequestParam(defaultValue = "10") @Min(1) Integer pageSize,
             @RequestParam(defaultValue = "DESC") Sort.Direction sortDirection,
-            @RequestParam(defaultValue = "date") String sortBy,
+            @RequestParam(defaultValue = "createdAt") String sortBy,
             @RequestParam(required = false) Integer year,
             @RequestParam(required = false) Integer month
     ) {
