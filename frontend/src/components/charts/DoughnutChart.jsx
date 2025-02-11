@@ -33,7 +33,7 @@ const DoughnutChart = ({ data, isPending }) => {
   });
 
   return (
-    <div className="h-56">
+    <div className="h-56 xlg:h-64">
       <Doughnut
         data={{
           labels: categoryValues.map((item) => item.label),
@@ -50,6 +50,9 @@ const DoughnutChart = ({ data, isPending }) => {
               display: true,
               position: "right",
               align: "center",
+              labels:{
+                color: 'white',
+              }
             },
           },
         }}

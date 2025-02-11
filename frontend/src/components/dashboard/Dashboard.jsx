@@ -132,20 +132,22 @@ const Dashboard = () => {
           </div>
         </section>
 
-        <section className="w-full lg:w-[45%] xlg:w-1/2 flex flex-col items-center gap-2 lg:gap-8 mb-4 lg:mb-8">
-          <div className="w-[90%] sm:w-3/4 md:w-3/5 lg:w-[80%]">
-            <h2 className="text-2xl font-semibold text-secondColor text-left my-8">
+        <h2 className="text-3xl font-semibold my-12">Transactions by categories</h2>
+
+        <section className="w-full flex flex-col lg:flex-row lg:justify-center items-center gap-8">
+          <div className="w-full sm:w-4/5 md:w-3/5 lg:w-2/5 xlg:w-1/3 bg-thirdColor pb-12 rounded-xl xlg:pr-8">
+            <h2 className="text-2xl font-semibold text-secondColor text-left ml-4 sm:ml-12 xlg:ml-32 my-8">
               Incomes
-              <span className="text-neutral-700 text-base pl-4">
+              <span className="text-neutral-500 text-base pl-4">
                 (by category)
               </span>
             </h2>
             <DoughnutChart data={incomesData} isPending={incomesPending} />
           </div>
-          <div className="w-[90%] sm:w-3/4 md:w-3/5 lg:w-[80%]">
-            <h2 className="text-2xl font-semibold text-red-500 text-left my-8">
+          <div className="w-full sm:w-4/5 md:w-3/5 lg:w-2/5 xlg:w-1/3 bg-thirdColor pb-12 rounded-xl xlg:pr-8">
+            <h2 className="text-2xl font-semibold text-red-500 text-left ml-4 sm:ml-12 xlg:ml-32 my-8">
               Expenses
-              <span className="text-neutral-700 text-base pl-4">
+              <span className="text-neutral-500 text-base pl-4">
                 (by category)
               </span>
             </h2>
@@ -202,8 +204,8 @@ const Dashboard = () => {
             <p className="text-neutral-600 pr-4">max</p>
           </div>
           <div className="flex w-[95%] h-16 mt-2 items-center justify-between rounded-3xl bg-thirdColor">
-            <p className="pl-4 text-secondColor">{minIncome}$</p>
-            <p className="pr-4 text-secondColor">{maxIncome}$</p>
+            <p className="pl-4 text-secondColor">{minIncome.toFixed(2)}$</p>
+            <p className="pr-4 text-secondColor">{maxIncome.toFixed(2)}$</p>
           </div>
           <div className="flex justify-between mt-8 w-[95%]">
             <p className="text-neutral-600 pl-4">min</p>
@@ -211,8 +213,8 @@ const Dashboard = () => {
             <p className="text-neutral-600 pr-4">max</p>
           </div>
           <div className="flex w-[95%] h-16 mt-2 items-center justify-between rounded-3xl bg-thirdColor mb-4">
-            <p className="pl-4 text-red-500">{minExpense}$</p>
-            <p className="pr-4 text-red-500">{maxExpense}$</p>
+            <p className="pl-4 text-red-500">{minExpense.toFixed(2)}$</p>
+            <p className="pr-4 text-red-500">{maxExpense.toFixed(2)}$</p>
           </div>
         </aside>
       </div>
