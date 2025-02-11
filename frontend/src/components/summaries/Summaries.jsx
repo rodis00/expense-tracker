@@ -91,26 +91,7 @@ const Summaries = () => {
           </div>
         </section>
 
-        <section className="w-full lg:w-[45%] xlg:w-1/2 flex flex-col items-center gap-2 lg:gap-8 mb-4 lg:mb-8">
-          <div className="w-[90%] sm:w-3/4 md:w-3/5 lg:w-[80%]">
-            <h2 className="text-2xl font-semibold text-secondColor text-left my-8">
-              Incomes{" "}
-              <span className="text-neutral-700 text-base pl-4">
-                (by category)
-              </span>
-            </h2>
-            <DoughnutChart />
-          </div>
-          <div className="w-[90%] sm:w-3/4 md:w-3/5 lg:w-[80%]">
-            <h2 className="text-2xl font-semibold text-red-500 text-left my-8">
-              Expenses{" "}
-              <span className="text-neutral-700 text-base pl-4">
-                (by category)
-              </span>
-            </h2>
-            <DoughnutChart />
-          </div>
-        </section>
+       
       </div>
     </main>
   );

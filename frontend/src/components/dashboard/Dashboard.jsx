@@ -1,11 +1,9 @@
 import React, { useEffect } from "react";
 import LineChart from "../charts/LineChart";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowTrendUp,
   faArrowTrendDown,
   faDollar,
-  faBriefcase,
 } from "@fortawesome/free-solid-svg-icons";
 import DashboardValueListElement from "./DashboardValueListElement";
 import { useQuery } from "@tanstack/react-query";
@@ -15,6 +13,7 @@ import { fetchAllExpenses } from "../../util/http/expenseHttp";
 import DateTransaction from "../../util/DateTransaction";
 import { jwtDecode } from "jwt-decode";
 import CategoryCases from "../../util/CategoryCases";
+import DoughnutChart from "../charts/DoughnutChart";
 
 const Dashboard = () => {
   const token = localStorage.getItem("token");
@@ -96,7 +95,7 @@ const Dashboard = () => {
     <main className="w-full min-h-screen flex flex-col text-white">
       <div className="text-center my-4">
         <h1 className="text-2xl text-neutral-600">Welcome back</h1>
-        <span className="text-3xl font-semibold">{username  }</span>
+        <span className="text-3xl font-semibold">{username}</span>
       </div>
       <div className="flex flex-col items-center flex-grow mt-4">
         <section className="w-full md:w-3/4 lg:w-full h-full flex flex-col items-center justify-center">
@@ -133,6 +132,27 @@ const Dashboard = () => {
           </div>
         </section>
 
+        <section className="w-full lg:w-[45%] xlg:w-1/2 flex flex-col items-center gap-2 lg:gap-8 mb-4 lg:mb-8">
+          <div className="w-[90%] sm:w-3/4 md:w-3/5 lg:w-[80%]">
+            <h2 className="text-2xl font-semibold text-secondColor text-left my-8">
+              Incomes
+              <span className="text-neutral-700 text-base pl-4">
+                (by category)
+              </span>
+            </h2>
+            <DoughnutChart data={incomesData} isPending={incomesPending} />
+          </div>
+          <div className="w-[90%] sm:w-3/4 md:w-3/5 lg:w-[80%]">
+            <h2 className="text-2xl font-semibold text-red-500 text-left my-8">
+              Expenses
+              <span className="text-neutral-700 text-base pl-4">
+                (by category)
+              </span>
+            </h2>
+            <DoughnutChart data={expensesData} isPending={expensePending} />
+          </div>
+        </section>
+
         <aside className="w-full md:w-3/4 flex flex-col items-center lg:w-1/2 h-full">
           <h2 className="text-center text-2xl lg:text-3xl mt-12 font-semibold">
             Recently Added
@@ -153,7 +173,7 @@ const Dashboard = () => {
                     item.amount ? "border-secondColor" : "border-red-500"
                   } rounded-full ml-2 sm:ml-4 flex justify-center items-center`}
                 >
-                  <CategoryCases category='clothes'/>
+                  <CategoryCases category={item.category} />
                 </div>
                 <div className="pl-4 flex flex-col gap-4 grow">
                   <h3 className="text-2xl">{item.title}</h3>
