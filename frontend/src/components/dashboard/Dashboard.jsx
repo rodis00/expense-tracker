@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import LineChart from "../charts/LineChart";
 import {
   faArrowTrendUp,
@@ -14,12 +14,14 @@ import DateTransaction from "../../util/DateTransaction";
 import { jwtDecode } from "jwt-decode";
 import CategoryCases from "../../util/CategoryCases";
 import DoughnutChart from "../charts/DoughnutChart";
+import TruncateText from "../../util/TruncateText";
 
 const Dashboard = () => {
   const token = localStorage.getItem("token");
   const username = jwtDecode(token).sub;
   const userId = useSelector((state) => state.auth.user);
-  const year = new Date().getFullYear();
+  const currentYear = new Date().getFullYear();
+  const [year, setYear] = useState(currentYear);
   const month = "";
   let incomesLatestAdded;
   let expenseLatestAdded;
@@ -95,6 +97,10 @@ const Dashboard = () => {
     );
   }
 
+  const changeYear = (year) => {
+    setYear(year);
+  };
+
   return (
     <main className="w-full min-h-screen flex flex-col text-white">
       <div className="text-center my-4">
@@ -102,8 +108,8 @@ const Dashboard = () => {
         <span className="text-3xl font-semibold">{username}</span>
       </div>
       <div className="flex flex-col items-center flex-grow mt-4">
-        <section className="w-full md:w-3/4 lg:w-full h-full flex flex-col items-center justify-center">
-          <ul className="w-full lg:w-[85%] flex flex-col xsm:flex-row justify-center items-center md:gap-8 ">
+        <section className="w-full md:w-3/4 lg:w-full h-full flex flex-col items-center justify-center ">
+          <ul className="w-full lg:w-[85%] flex flex-col xsm:flex-row justify-center items-center md:gap-8 md:mb-12 lg:mb-0 ">
             <DashboardValueListElement
               border="border-yellow-500"
               color="text-yellow-500"
@@ -119,8 +125,8 @@ const Dashboard = () => {
               icon={faArrowTrendUp}
             />
             <DashboardValueListElement
-              border="border-red-400"
-              color="text-red-400"
+              border="border-red-500"
+              color="text-red-500"
               title="Expenses"
               value={expenses}
               icon={faArrowTrendDown}
@@ -132,6 +138,7 @@ const Dashboard = () => {
               expensesData={expensesData}
               incomesPending={incomesPending}
               expensePending={expensePending}
+              changeYear={changeYear}
             />
           </div>
         </section>
@@ -161,11 +168,11 @@ const Dashboard = () => {
           </div>
         </section>
 
-        <aside className="w-full md:w-3/4 flex flex-col items-center lg:w-1/2 h-full">
+        <aside className="w-full md:w-3/4 flex flex-col items-center lg:w-1/2 h-full mb-8">
           <h2 className="text-center text-2xl lg:text-3xl mt-12 font-semibold">
             Recently Added
           </h2>
-          <ul className="w-[95%] h-[40vh] flex flex-col mt-12 gap-8">
+          <ul className="w-[95%] h-[40vh] flex flex-col mt-12 mb-12 md:mb-4 gap-8">
             {incomesData <= 0 && expensesData <= 0 && (
               <p className="text-neutral-400 text-center text-xl">
                 You haven't added any transactions yet.
@@ -184,7 +191,9 @@ const Dashboard = () => {
                   <CategoryCases category={item.category} />
                 </div>
                 <div className="pl-4 flex flex-col gap-4 grow">
-                  <h3 className="text-2xl">{item.title}</h3>
+                  <h3 className="text-2xl">
+                    <TruncateText text={item.title} />
+                  </h3>
                   <div className="flex">
                     <p>
                       {item.amount && (
