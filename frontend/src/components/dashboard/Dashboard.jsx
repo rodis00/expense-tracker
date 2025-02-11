@@ -58,7 +58,9 @@ const Dashboard = () => {
       return current.amount > item ? current.amount : item;
     }, incomesData[0].amount);
 
-    incomesLatestAdded = incomesData?.slice(-3);
+    incomesLatestAdded = incomesData?.sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
   }
 
   if (expensesData && expensesData.length > 0) {
@@ -70,7 +72,9 @@ const Dashboard = () => {
       return current.price > item ? current.price : item;
     }, expensesData[0].price);
 
-    expenseLatestAdded = expensesData?.slice(-3);
+    expenseLatestAdded = expensesData?.sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
   }
 
   if (expensesData && incomesData) {
@@ -87,7 +91,7 @@ const Dashboard = () => {
     combinedArray = [...incomesLatestAdded, ...expenseLatestAdded];
 
     recentlyAdded = combinedArray.sort(
-      (a, b) => new Date(b.date) - new Date(a.date)
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
     );
   }
 
@@ -132,7 +136,9 @@ const Dashboard = () => {
           </div>
         </section>
 
-        <h2 className="text-3xl font-semibold my-12">Transactions by categories</h2>
+        <h2 className="text-3xl font-semibold my-12">
+          Transactions by categories
+        </h2>
 
         <section className="w-full flex flex-col lg:flex-row lg:justify-center items-center gap-8">
           <div className="w-full sm:w-4/5 md:w-3/5 lg:w-2/5 xlg:w-1/3 bg-thirdColor pb-12 rounded-xl xlg:pr-8">
