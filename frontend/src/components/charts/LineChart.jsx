@@ -2,13 +2,48 @@ import React from "react";
 import { Chart as ChartJS } from "chart.js/auto";
 import { Line } from "react-chartjs-2";
 import { ChartDataPoints } from "./ChartDataPoints";
+import { fetchIncomeYears } from "../../util/http/incomeHttp";
+import { fetchExpenseYears } from "../../util/http/expenseHttp";
+import { useQuery } from "@tanstack/react-query";
 
 const LineChart = ({
   incomesData,
   expensesData,
   incomesPending,
   expensePending,
+  changeYear
 }) => {
+  let years = [];
+  const token = localStorage.getItem("token");
+
+  const { data: incomeYears } = useQuery({
+    queryKey: ["incomes", token],
+    queryFn: () => fetchIncomeYears({ token }),
+  });
+
+  const { data: expenseYears } = useQuery({
+    queryKey: ["expenses", token],
+    queryFn: () => fetchExpenseYears({ token }),
+  });
+
+  if (incomeYears) {
+    incomeYears.forEach((item) => {
+      const isDuplicate = years.some((elem) => elem === item);
+      if ((years.length > 0 && !isDuplicate) || years.length === 0) {
+        years.push(item);
+      }
+    });
+  }
+
+  if (expenseYears) {
+    expenseYears.forEach((item) => {
+      const isDuplicate = years.some((elem) => elem === item);
+      if ((years.length > 0 && !isDuplicate) || years.length === 0) {
+        years.push(item);
+      }
+    });
+  }
+
   const ChartDataPointsEarnings = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
   const ChartDataPointsExpenses = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -39,9 +74,22 @@ const LineChart = ({
     <div
       className={`h-[60vh] lg:h-[70vh] w-full lg:w-3/4 sm:pb-4 sm:px-4 md:rounded-2xl lg:rounded-3xl pt-12 md:pt-0 relative`}
     >
-      <h2 className=" w-1/3 h-8 top-4 text-right pr-4 md:top-1 text-xl absolute left-2/3 uppercase font-semibold text-neutral-500">
-        This Year
-      </h2>
+      <div className="absolute -top-4 right-1/2 whitespace-nowrap translate-x-1/2 md:-top-16 lg:translate-x-0 lg:right-0 lg:top-0">
+        <span className="text-neutral-500 font-semibold mr-4">
+          (Select year)
+        </span>
+        <select
+          name="years"
+          id="years"
+          className="bg-neutral-800 text-white focus:outline-none w-24 h-12 lg:h-10 pl-4 rounded-3xl border-none focus:ring-0"
+          onChange={(e)=>changeYear(e.target.value)}
+        >
+          {years?.reverse().map((item) => (
+            <option value={item} key={item}>{item}</option>
+          ))}
+        </select>
+      </div>
+
       <Line
         data={{
           labels: ChartDataPoints,
