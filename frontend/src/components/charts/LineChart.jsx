@@ -4,7 +4,6 @@ import { Line } from "react-chartjs-2";
 import { ChartDataPoints } from "./ChartDataPoints";
 
 const LineChart = ({
-  name,
   incomesData,
   expensesData,
   incomesPending,
