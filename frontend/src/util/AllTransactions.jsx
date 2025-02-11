@@ -10,7 +10,6 @@ import {
   faArrowUp,
   faEye,
   faMagnifyingGlass,
-  faShirt,
 } from "@fortawesome/free-solid-svg-icons";
 import Input from "./Input";
 import TruncateText from "./TruncateText";
@@ -154,97 +153,102 @@ const AllTransactions = () => {
       >
         Go back
       </Link>
-      {itemsToDisplay.reverse().map((group, index) => (
-        <div className="w-[95%] sm:w-3/4 lg:w-1/2" key={index}>
-          <h3 className="text-neutral-400 font-semibold flex items-center mb-6 mt-2">
-            {group.date}
-            <span className="w-48 h-1 block bg-neutral-600 ml-4"></span>
-          </h3>
-          <ul className="w-full flex flex-col mt-4">
-            {group.items.map((item, idx) => (
-              <React.Fragment key={idx}>
-                <li className="w-full h-20 rounded-full bg-thirdColor flex justify-between items-center relative z-10 mb-10 xlg:mb-4">
-                  <div
-                    className={`h-14 w-14 sm:h-16 sm:w-16 border-2 ${
-                      resourceType === "incomes"
-                        ? "border-secondColor"
-                        : "border-red-500"
-                    } rounded-full ml-2 sm:ml-4 flex justify-center items-center`}
-                  >
-                    {/* tutaj ikona kategorii */} 
-                    <CategoryCases category='food'/>
-                  </div>
-                  <div className="pl-4 flex flex-col gap-4 grow">
-                    <h3 className="text-2xl">
-                      <TruncateText text={item.title} />
-                    </h3>
-                    <div className="flex">
-                      <p>
-                        <span
-                          className={`${
-                            resourceType === "incomes"
-                              ? "text-secondColor"
-                              : "text-red-500"
-                          } font-bold text-[17px]`}
-                        >
-                          {resourceType === "incomes"
-                            ? item.amount.toFixed(2)
-                            : item.price.toFixed(2)}
-                          $
-                        </span>{" "}
-                        - <DateTransaction date={item.date} />
-                      </p>
-                      {isExpanded.id !== item.slug && (
-                        <button
-                          onClick={() =>
-                            setIsExpanded(() => ({
-                              id: item.slug,
-                              expanded: true,
-                            }))
-                          }
-                          className="absolute left-[calc(50%-5rem)] bg-thirdColor rounded-b-3xl top-full h-6 xlg:-mt-7 w-40 text-neutral-500 font-semibold transition-all duration-300 hover:text-neutral-400"
-                        >
-                          show details
-                        </button>
-                      )}
+      {itemsToDisplay
+        .sort((a, b) => {
+          const dateA = a.date.split(".").reverse().join("-");
+          const dateB = b.date.split(".").reverse().join("-");
+          return new Date(dateB) - new Date(dateA);
+        })
+        .map((group, index) => (
+          <div className="w-[95%] sm:w-3/4 lg:w-1/2" key={index}>
+            <h3 className="text-neutral-400 font-semibold flex items-center mb-6 mt-2">
+              {group.date}
+              <span className="w-48 h-1 block bg-neutral-600 ml-4"></span>
+            </h3>
+            <ul className="w-full flex flex-col mt-4">
+              {group.items.map((item, idx) => (
+                <React.Fragment key={idx}>
+                  <li className="w-full h-20 rounded-full bg-thirdColor flex justify-between items-center relative z-10 mb-10 xlg:mb-4">
+                    <div
+                      className={`h-14 w-14 sm:h-16 sm:w-16 border-2 ${
+                        resourceType === "incomes"
+                          ? "border-secondColor"
+                          : "border-red-500"
+                      } rounded-full ml-2 sm:ml-4 flex justify-center items-center`}
+                    >
+                      <CategoryCases category={item.category} />
                     </div>
+                    <div className="pl-4 flex flex-col gap-4 grow">
+                      <h3 className="text-2xl">
+                        <TruncateText text={item.title} />
+                      </h3>
+                      <div className="flex">
+                        <p>
+                          <span
+                            className={`${
+                              resourceType === "incomes"
+                                ? "text-secondColor"
+                                : "text-red-500"
+                            } font-bold text-[17px]`}
+                          >
+                            {resourceType === "incomes"
+                              ? item.amount.toFixed(2)
+                              : item.price.toFixed(2)}
+                            $
+                          </span>{" "}
+                          - <DateTransaction date={item.date} />
+                        </p>
+                        {isExpanded.id !== item.slug && (
+                          <button
+                            onClick={() =>
+                              setIsExpanded(() => ({
+                                id: item.slug,
+                                expanded: true,
+                              }))
+                            }
+                            className="absolute left-[calc(50%-5rem)] bg-thirdColor rounded-b-3xl top-full h-6 xlg:-mt-7 w-40 text-neutral-500 font-semibold transition-all duration-300 hover:text-neutral-400"
+                          >
+                            show details
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                    <Link
+                      to={`/${resourceType}/all-transactions/${item.slug}`}
+                      className="w-12 h-12 xsm:w-14 lg:w-16 xsm:h-14 lg:h-16 mr-2 sm:mr-4 bg-secondColor rounded-full flex items-center justify-center transition-all duration-300 hover:bg-[#28bf8a]"
+                    >
+                      <FontAwesomeIcon
+                        icon={faEye}
+                        className="text-lg xsm:text-xl lg:text-2xl"
+                      />
+                    </Link>
+                  </li>
+                  <div
+                    className={`w-[85%] bg-thirdColor ${
+                      isExpanded.id === item.slug && isExpanded.expanded
+                        ? "block"
+                        : "hidden"
+                    } mx-auto relative -top-10 xlg:-top-4 pt-2 px-8 rounded-b-3xl pb-8`}
+                    id="expandedElement"
+                  >
+                    <p className="bg-main p-4">{item.description}</p>
+                    <button
+                      onClick={() =>
+                        setIsExpanded(() => ({
+                          id: null,
+                          expanded: false,
+                        }))
+                      }
+                      className="absolute left-[calc(50%-4rem)] bottom-1 w-32 text-neutral-500 font-semibold transition-all duration-300 hover:text-neutral-400"
+                    >
+                      hide details
+                    </button>
                   </div>
-                  <Link
-                    to={`/${resourceType}/all-transactions/${item.slug}`}
-                    className="w-12 h-12 xsm:w-14 lg:w-16 xsm:h-14 lg:h-16 mr-2 sm:mr-4 bg-secondColor rounded-full flex items-center justify-center transition-all duration-300 hover:bg-[#28bf8a]"
-                  >
-                    <FontAwesomeIcon
-                      icon={faEye}
-                      className="text-lg xsm:text-xl lg:text-2xl"
-                    />
-                  </Link>
-                </li>
-                <div
-                  className={`w-[85%] bg-thirdColor ${
-                    isExpanded.id === item.slug && isExpanded.expanded
-                      ? "block"
-                      : "hidden"
-                  } mx-auto relative -top-10 xlg:-top-4 pt-2 px-8 rounded-b-3xl pb-8`}
-                  id="expandedElement"
-                >
-                  <p className="bg-main p-4">{item.description}</p>
-                  <button
-                    onClick={() =>
-                      setIsExpanded(() => ({
-                        id: null,
-                        expanded: false,
-                      }))
-                    }
-                    className="absolute left-[calc(50%-4rem)] bottom-1 w-32 text-neutral-500 font-semibold transition-all duration-300 hover:text-neutral-400"
-                  >
-                    hide details
-                  </button>
-                </div>
-              </React.Fragment>
-            ))}
-          </ul>
-        </div>
-      ))}
+                </React.Fragment>
+              ))}
+            </ul>
+          </div>
+        ))}
 
       {filteredItems.length > 5 && (
         <button

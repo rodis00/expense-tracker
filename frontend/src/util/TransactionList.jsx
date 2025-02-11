@@ -26,8 +26,7 @@ const TransactionList = ({ name, data, isPending, error, isError }) => {
                 name === "incomes" ? "border-secondColor" : "border-red-500"
               } rounded-full ml-2 sm:ml-4 flex justify-center items-center`}
             >
-              {/* tutaj ikona kategorii */}
-              <CategoryCases category="other" />
+              <CategoryCases category={item.category} />
             </div>
             <div className="pl-4 flex flex-col gap-4 grow">
               <h3 className="text-2xl">

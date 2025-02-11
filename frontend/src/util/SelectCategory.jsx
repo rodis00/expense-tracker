@@ -2,30 +2,30 @@ import React from "react";
 
 const SelectCategory = ({ resource, ...props }) => {
   return (
-    <select {...props}>
+    <>
       {resource === "incomes" ? (
-        <>
-          <option value="salary">Salary</option>
-          <option value="business income">Business income</option>
-          <option value="investment">Investment</option>
-          <option value="gifts">Gifts</option>
-          <option value="pension">Pension</option>
-          <option value="other">Other</option>
-        </>
+        <select defaultValue="SALARY" {...props}>
+          <option value="SALARY">Salary</option>
+          <option value="BUSINESS_INCOME">Business income</option>
+          <option value="INVESTMENT">Investment</option>
+          <option value="GIFTS">Gifts</option>
+          <option value="PENSION">Pension</option>
+          <option value="OTHER">Other</option>
+        </select>
       ) : (
-        <>
-          <option value="food">Food</option>
-          <option value="house">House</option>
-          <option value="transport">Transport</option>
-          <option value="health">Health</option>
-          <option value="education">Education</option>
-          <option value="clothes">Clothes</option>
-          <option value="travel">Travel</option>
-          <option value="gifts">Gifts</option>
-          <option value="other">Other</option>
-        </>
+        <select defaultValue="FOOD" {...props}>
+          <option value="FOOD">Food</option>
+          <option value="HOUSE">House</option>
+          <option value="TRANSPORT">Transport</option>
+          <option value="HEALTH">Health</option>
+          <option value="EDUCATION">Education</option>
+          <option value="CLOTHES">Clothes</option>
+          <option value="TRAVEL">Travel</option>
+          <option value="GIFTS">Gifts</option>
+          <option value="OTHER">Other</option>
+        </select>
       )}
-    </select>
+    </>
   );
 };
 
