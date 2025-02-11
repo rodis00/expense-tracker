@@ -18,50 +18,52 @@ import React from "react";
 
 const CategoryCases = ({ category }) => {
   let icon;
-  switch (category.toLowerCase()) {
-    case "food":
+  switch (category) {
+    case "FOOD":
       icon = <FontAwesomeIcon icon={faBurger} className="text-2xl" />;
       break;
-    case "house":
+    case "HOUSE":
       icon = <FontAwesomeIcon icon={faHouse} className="text-2xl" />;
       break;
-    case "transport":
+    case "TRANSPORT":
       icon = <FontAwesomeIcon icon={faCarSide} className="text-2xl" />;
       break;
-    case "health":
+    case "HEALTH":
       icon = <FontAwesomeIcon icon={faKitMedical} className="text-2xl" />;
       break;
-    case "education":
+    case "EDUCATION":
       icon = <FontAwesomeIcon icon={faGraduationCap} className="text-2xl" />;
       break;
-    case "clothes":
+    case "CLOTHES":
       icon = <FontAwesomeIcon icon={faShirt} className="text-2xl" />;
       break;
-    case "travel":
+    case "TRAVEL":
       icon = <FontAwesomeIcon icon={faPlane} className="text-2xl" />;
       break;
-    case "gifts":
+    case "GIFTS":
       icon = <FontAwesomeIcon icon={faGift} className="text-2xl" />;
       break;
-    case "salary":
+    case "SALARY":
       icon = <FontAwesomeIcon icon={faSackDollar} className="text-2xl" />;
       break;
-    case "business income":
+    case "BUSINESS_INCOME":
       icon = <FontAwesomeIcon icon={faBusinessTime} className="text-2xl" />;
       break;
-    case "investment":
+    case "INVESTMENT":
       icon = (
         <FontAwesomeIcon icon={faHandHoldingDollar} className="text-2xl" />
       );
       break;
-    case "pension":
+    case "PENSION":
       icon = <FontAwesomeIcon icon={faPersonCane} className="text-2xl" />;
       break;
-    case "other":
+    case "OTHER":
       icon = <FontAwesomeIcon icon={faGlobe} className="text-2xl" />;
       break;
 
-    // case 'food': icon = <FontAwesomeIcon icon={faBurger} className="text-2xl" />
+    default:
+      icon = <FontAwesomeIcon icon={faGlobe} className="text-2xl" />;
+      break;
   }
   return <>{icon}</>;
 };

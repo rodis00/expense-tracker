@@ -44,10 +44,9 @@ const TransactionElementLayoutForm = ({
     [value]:
       name === "incomes" ? data.amount.toFixed(2) : data.price.toFixed(2),
     date: dateWithoutHours,
-    // category: data.category,
+    category: data.category,
     description: data.description,
   };
-  /* tutaj dodanie kategorii */
   const [formErrors, setFormErrors] = useState({});
   const [formData, setFormData] = useState(initialState);
   const [elementToEdit, setElementToEdit] = useState("");
@@ -195,9 +194,13 @@ const TransactionElementLayoutForm = ({
           {name === "incomes" ? formData.amount : "-" + formData.price}$
         </p>
         <hr className="border-neutral-700 border-dashed border-1 w-11/12 mx-auto" />
-        <div className="flex justify-between text-gray-400">
+        <div className="flex justify-between items-center text-gray-400">
           <p className="px-6 py-6">Category</p>
-          {/* <p className="px-6 pb-6">{formData.category}</p> */}
+          <p className="px-6 py-6">
+            {formData.category !== null &&
+              formData.category.charAt(0).toUpperCase() +
+                formData.category.slice(1).toLowerCase()}
+          </p>
         </div>
         <div className="flex justify-between text-gray-400">
           <p className="px-6 pb-6">Operation Date</p>
@@ -340,7 +343,7 @@ const TransactionElementLayoutForm = ({
                     resource={name}
                     disabled={!isEditting}
                     onChange={handleChange}
-                    // value={formData.category}
+                    value={formData.category}
                     type="text"
                     id="category"
                     name="category"
