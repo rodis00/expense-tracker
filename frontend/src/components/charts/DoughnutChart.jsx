@@ -34,8 +34,8 @@ const DoughnutChart = ({ data, isPending }) => {
 
   if (data <= 0) {
     return (
-      <div className="flex h-56 xlg:h-64 justify-center items-center">
-        <span className="text-2xl">
+      <div className="flex h-[25rem] sm:h-[20rem] justify-center items-center">
+        <span className="text-2xl p-4 text-center">
           You haven't added any data in this period
         </span>
       </div>
