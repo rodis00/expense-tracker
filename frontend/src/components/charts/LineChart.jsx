@@ -151,6 +151,9 @@ const LineChart = ({
             },
           },
           plugins: {
+            datalabels: {
+              display: false,
+            },
             legend: {
               labels: {
                 font: {

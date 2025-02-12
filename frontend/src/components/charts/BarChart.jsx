@@ -132,6 +132,9 @@ const BarChart = ({ selectedPoints, name, home, data }) => {
             },
           },
           plugins: {
+            datalabels: {
+              display: false,
+            },
             legend: {
               labels: {
                 font: {
