@@ -1,8 +1,27 @@
 import React from "react";
-import { Chart as ChartJS } from "chart.js/auto";
+import {
+  Chart as ChartJS,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+  CategoryScale,
+} from "chart.js/auto";
 import { Doughnut } from "react-chartjs-2";
+import ChartDataLabels from "chartjs-plugin-datalabels";
+import { useMediaQuery } from "@react-hook/media-query";
+
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+  CategoryScale,
+  ChartDataLabels
+);
 
 const DoughnutChart = ({ data, isPending }) => {
+  const isSmallScreen = useMediaQuery("(max-width: 640px)");
   let categoryValues = [];
 
   if (isPending) {
@@ -43,7 +62,7 @@ const DoughnutChart = ({ data, isPending }) => {
   });
 
   return (
-    <div className="h-56 xlg:h-64">
+    <div className="h-[25rem] sm:h-[20rem]">
       <Doughnut
         data={{
           labels: categoryValues.map((item) => item.label),
@@ -58,11 +77,30 @@ const DoughnutChart = ({ data, isPending }) => {
           plugins: {
             legend: {
               display: true,
-              position: "right",
+              position: isSmallScreen ? "bottom" : "right",
               align: "center",
               labels: {
                 color: "white",
+                padding: isSmallScreen ? 25 : 20,
               },
+            },
+            datalabels: {
+              color: "#fff",
+              anchor: "end",
+              align: "end",
+              formatter: (value, ctx) => {
+                let total = ctx.dataset.data.reduce((acc, val) => acc + val, 0);
+                let percentage = ((value / total) * 100).toFixed(2) + "%";
+                return percentage;
+              },
+            },
+          },
+          layout: {
+            padding: {
+              left: 20,
+              right: 20,
+              top: 20,
+              bottom: 20,
             },
           },
         }}

@@ -129,8 +129,8 @@ const Dashboard = () => {
           Transactions by categories
         </h2>
 
-        <section className="w-full flex flex-col lg:flex-row lg:justify-center items-center gap-8">
-          <div className="w-full sm:w-4/5 md:w-3/5 lg:w-2/5 xlg:w-1/3 bg-thirdColor pb-12 rounded-xl xlg:pr-8">
+        <section className="w-full flex flex-col xlg:flex-row xlg:justify-center items-center gap-8">
+          <div className="w-full md:w-4/5 lg:w-3/5 xlg:w-2/5 bg-thirdColor pb-4 sm:pb-12 rounded-xl xlg:pr-8">
             <h2 className="text-2xl font-semibold text-secondColor text-left ml-4 sm:ml-12 xlg:ml-32 my-8">
               Incomes
               <span className="text-neutral-500 text-base pl-4">
@@ -139,7 +139,7 @@ const Dashboard = () => {
             </h2>
             <DoughnutChart data={incomesData} isPending={incomesPending} />
           </div>
-          <div className="w-full sm:w-4/5 md:w-3/5 lg:w-2/5 xlg:w-1/3 bg-thirdColor pb-12 rounded-xl xlg:pr-8">
+          <div className="w-full md:w-4/5 lg:w-3/5 xlg:w-2/5 bg-thirdColor pb-4 sm:pb-12 rounded-xl xlg:pr-8">
             <h2 className="text-2xl font-semibold text-red-500 text-left ml-4 sm:ml-12 xlg:ml-32 my-8">
               Expenses
               <span className="text-neutral-500 text-base pl-4">
