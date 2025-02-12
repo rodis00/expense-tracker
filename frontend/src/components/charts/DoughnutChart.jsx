@@ -13,6 +13,16 @@ const DoughnutChart = ({ data, isPending }) => {
     return [];
   }
 
+  if (data <= 0) {
+    return (
+      <div className="flex h-56 xlg:h-64 justify-center items-center">
+        <span className="text-2xl">
+          You haven't added any data in this period
+        </span>
+      </div>
+    );
+  }
+
   data.forEach((item) => {
     const isDuplicate = categoryValues.some(
       (elem) => elem.label === item.category
@@ -50,9 +60,9 @@ const DoughnutChart = ({ data, isPending }) => {
               display: true,
               position: "right",
               align: "center",
-              labels:{
-                color: 'white',
-              }
+              labels: {
+                color: "white",
+              },
             },
           },
         }}
