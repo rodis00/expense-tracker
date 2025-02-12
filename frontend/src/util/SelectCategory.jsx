@@ -1,8 +1,8 @@
 import React from "react";
 
-const SelectCategory = ({ resource, ...props }) => {
+const SelectCategory = ({ resource, span = "", ...props }) => {
   return (
-    <>
+    <span className={`px-2 flex items-center ${span}`}>
       {resource === "incomes" ? (
         <select defaultValue="SALARY" {...props}>
           <option value="SALARY">Salary</option>
@@ -25,7 +25,7 @@ const SelectCategory = ({ resource, ...props }) => {
           <option value="OTHER">Other</option>
         </select>
       )}
-    </>
+    </span>
   );
 };
 

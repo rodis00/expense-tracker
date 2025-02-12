@@ -12,11 +12,15 @@ import PageNumber from "../../util/PageNumber";
 import { Link } from "react-router-dom";
 import AddInfoModal from "../../util/AddInfoModal";
 import Percentage from "../../util/Percentage";
+import FullScreenLoader from "../../util/FullScreenLoader";
+import useLoader from "../../util/hooks/useLoader";
 
 const Incomes = () => {
   const [pageNumber, setPageNumber] = useState(0);
   const [chartPoints, setChartPoints] = useState("Monthly");
   const userId = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
+  const version = useSelector((state) => state.modal.modalVersion);
   const token = localStorage.getItem("token");
   const pageSize = 5;
   const year =
@@ -38,11 +42,18 @@ const Incomes = () => {
     enabled: !!userId,
   });
 
-  const { data: allIncomesData } = useQuery({
+  const { data: allIncomesData, isPending: allIncomesPending } = useQuery({
     queryKey: ["incomes", { userId, token, year, month }],
     queryFn: () => fetchAllIncomes({ userId, token, year, month }),
     enabled: !!userId,
   });
+
+  const isFetching = isPending || allIncomesPending;
+  const isLoading = useLoader(isFetching);
+
+  if (isLoading) {
+    return <FullScreenLoader />;
+  }
 
   if (allIncomesData) {
     allIncomesData.forEach((item) => (incomesAmount += item.amount));
@@ -51,9 +62,6 @@ const Incomes = () => {
   const handleDataPointsSelection = (selectedPoints) => {
     setChartPoints(selectedPoints);
   };
-
-  const dispatch = useDispatch();
-  const version = useSelector((state) => state.modal.modalVersion);
 
   const handleModalForm = () => {
     dispatch(modalActions.showForm());
@@ -78,7 +86,9 @@ const Incomes = () => {
       <main className="w-full min-h-screen flex flex-col items-center text-white ">
         <div className="text-center">
           <h1 className="text-xl mt-4 text-neutral-600">Total Incomes</h1>
-          <span className="text-3xl text-secondColor">{incomesAmount.toFixed(2)}$</span>
+          <span className="text-3xl text-secondColor">
+            {incomesAmount.toFixed(2)}$
+          </span>
         </div>
         <DataPointsSelection
           handleSelection={handleDataPointsSelection}

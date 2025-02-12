@@ -11,7 +11,7 @@ const LineChart = ({
   expensesData,
   incomesPending,
   expensePending,
-  changeYear
+  changeYear,
 }) => {
   let years = [];
   const token = localStorage.getItem("token");
@@ -75,19 +75,25 @@ const LineChart = ({
       className={`h-[60vh] lg:h-[70vh] w-full lg:w-3/4 sm:pb-4 sm:px-4 md:rounded-2xl lg:rounded-3xl pt-12 md:pt-0 relative`}
     >
       <div className="absolute -top-4 right-1/2 whitespace-nowrap translate-x-1/2 md:-top-16 lg:translate-x-0 lg:right-0 lg:top-0">
-        <span className="text-neutral-500 font-semibold mr-4">
-          (Select year)
+        <span className="flex items-center">
+          <span className="text-neutral-500 font-semibold mr-4">
+            (Select year)
+          </span>
+          <span className="flex px-2 bg-neutral-800 rounded-full">
+            <select
+              name="years"
+              id="years"
+              className="bg-neutral-800 text-white focus:outline-none w-24 h-12 lg:h-10 pl-4 rounded-3xl border-none focus:ring-0"
+              onChange={(e) => changeYear(e.target.value)}
+            >
+              {years?.reverse().map((item) => (
+                <option value={item} key={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </span>
         </span>
-        <select
-          name="years"
-          id="years"
-          className="bg-neutral-800 text-white focus:outline-none w-24 h-12 lg:h-10 pl-4 rounded-3xl border-none focus:ring-0"
-          onChange={(e)=>changeYear(e.target.value)}
-        >
-          {years?.reverse().map((item) => (
-            <option value={item} key={item}>{item}</option>
-          ))}
-        </select>
       </div>
 
       <Line
