@@ -5,6 +5,7 @@ import com.github.rodis00.backend.entity.UserEntity;
 import com.github.rodis00.backend.exception.ExpenseNotFoundException;
 import com.github.rodis00.backend.page.GlobalPage;
 import com.github.rodis00.backend.user.UserService;
+import com.github.rodis00.backend.utils.TitleFormatter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -39,7 +40,7 @@ public class ExpenseService {
 
         return expenseRepository.save(
                 ExpenseEntity.builder()
-                        .title(expense.getTitle())
+                        .title(TitleFormatter.capitalizeFirstLetter(expense.getTitle()))
                         .date(expense.getDate())
                         .price(expense.getPrice())
                         .user(user)
@@ -66,7 +67,7 @@ public class ExpenseService {
     ) {
         ExpenseEntity actualExpense = getExpenseBySlug(slug);
 
-        actualExpense.setTitle(expense.getTitle());
+        actualExpense.setTitle(TitleFormatter.capitalizeFirstLetter(expense.getTitle()));
         actualExpense.setPrice(expense.getPrice());
         actualExpense.setDate(expense.getDate());
         actualExpense.setDescription(expense.getDescription());

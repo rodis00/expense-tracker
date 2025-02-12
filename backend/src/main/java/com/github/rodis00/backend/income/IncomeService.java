@@ -5,6 +5,7 @@ import com.github.rodis00.backend.entity.UserEntity;
 import com.github.rodis00.backend.exception.IncomeNotFoundException;
 import com.github.rodis00.backend.page.GlobalPage;
 import com.github.rodis00.backend.user.UserService;
+import com.github.rodis00.backend.utils.TitleFormatter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -39,7 +40,7 @@ public class IncomeService {
 
         return incomeRepository.save(
                 IncomeEntity.builder()
-                        .title(income.getTitle())
+                        .title(TitleFormatter.capitalizeFirstLetter(income.getTitle()))
                         .amount(income.getAmount())
                         .date(income.getDate())
                         .user(user)
@@ -65,7 +66,7 @@ public class IncomeService {
     ) {
         IncomeEntity actualIncome = getIncomeBySlug(slug);
 
-        actualIncome.setTitle(income.getTitle());
+        actualIncome.setTitle(TitleFormatter.capitalizeFirstLetter(income.getTitle()));
         actualIncome.setAmount(income.getAmount());
         actualIncome.setDate(income.getDate());
         actualIncome.setDescription(income.getDescription());
