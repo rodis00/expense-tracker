@@ -13,6 +13,8 @@ import { fetchAllExpenses } from "../../util/http/expenseHttp";
 import { jwtDecode } from "jwt-decode";
 import DoughnutChart from "../charts/DoughnutChart";
 import DashboardRecentlyAdded from "./DashboardRecentlyAdded";
+import FullScreenLoader from "../../util/FullScreenLoader";
+import useLoader from "../../util/hooks/useLoader";
 
 const Dashboard = () => {
   const token = localStorage.getItem("token");
@@ -46,6 +48,12 @@ const Dashboard = () => {
     placeholderData: keepPreviousData,
     enabled: !!userId,
   });
+  const isFetching = incomesPending || expensePending;
+  const isLoading = useLoader(isFetching);
+
+  if (isLoading) {
+    return <FullScreenLoader />;
+  }
 
   if (incomesData && incomesData.length > 0) {
     incomesData.forEach((item) => (incomes += item.amount));

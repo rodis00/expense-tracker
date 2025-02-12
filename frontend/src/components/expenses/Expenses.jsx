@@ -12,11 +12,15 @@ import PageNumber from "../../util/PageNumber";
 import { Link } from "react-router-dom";
 import AddInfoModal from "../../util/AddInfoModal";
 import Percentage from "../../util/Percentage";
+import FullScreenLoader from "../../util/FullScreenLoader";
+import useLoader from "../../util/hooks/useLoader";
 
 const Expenses = () => {
   const [pageNumber, setPageNumber] = useState(0);
   const [chartPoints, setChartPoints] = useState("Monthly");
   const userId = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
+  const version = useSelector((state) => state.modal.modalVersion);
   const token = localStorage.getItem("token");
   const pageSize = 5;
   const year =
@@ -41,11 +45,18 @@ const Expenses = () => {
     enabled: !!userId,
   });
 
-  const { data: allExpensesData } = useQuery({
+  const { data: allExpensesData, isPending: allExpensesPending } = useQuery({
     queryKey: ["expenses", { userId, token, year, month }],
     queryFn: () => fetchAllExpenses({ userId, token, year, month }),
     enabled: !!userId,
   });
+
+  const isFetching = isPending || allExpensesPending;
+  const isLoading = useLoader(isFetching);
+
+  if (isLoading) {
+    return <FullScreenLoader />;
+  }
 
   if (allExpensesData) {
     allExpensesData.forEach((item) => (expensesPrice += item.price));
@@ -54,9 +65,6 @@ const Expenses = () => {
   const handleDataPointsSelection = (selectedPoints) => {
     setChartPoints(selectedPoints);
   };
-
-  const dispatch = useDispatch();
-  const version = useSelector((state) => state.modal.modalVersion);
 
   const handleModalForm = () => {
     dispatch(modalActions.showForm());
@@ -81,7 +89,9 @@ const Expenses = () => {
       <main className="w-full min-h-screen flex flex-col items-center text-white">
         <div className="text-center">
           <h1 className="text-xl mt-4 text-neutral-600">Total Expenses</h1>
-          <span className="text-3xl text-red-500">{expensesPrice.toFixed(2)}$</span>
+          <span className="text-3xl text-red-500">
+            {expensesPrice.toFixed(2)}$
+          </span>
         </div>
         <DataPointsSelection
           handleSelection={handleDataPointsSelection}

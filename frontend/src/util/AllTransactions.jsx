@@ -15,6 +15,8 @@ import Input from "./Input";
 import TruncateText from "./TruncateText";
 import "./AllTransactions.css";
 import CategoryCases from "./CategoryCases";
+import FullScreenLoader from "./FullScreenLoader";
+import useLoader from "./hooks/useLoader";
 
 const AllTransactions = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -75,10 +77,10 @@ const AllTransactions = () => {
     return item.title.toLowerCase().includes(searchTerm.trim().toLowerCase());
   });
 
-  if (isPending) {
-    return (
-      <div className="w-full text-center text-2xl text-white">Loading...</div>
-    );
+  const isLoading = useLoader(isPending);
+
+  if (isLoading) {
+    return <FullScreenLoader />;
   }
 
   if (isError) {

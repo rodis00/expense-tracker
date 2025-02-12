@@ -4,6 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useLocation } from "react-router-dom";
 import { fetchIncomeById } from "../http/incomeHttp";
 import { fetchExpenseById } from "../http/expenseHttp";
+import FullScreenLoader from "../FullScreenLoader";
+import useLoader from "../hooks/useLoader";
 
 const TransactionElement = () => {
   const [isEditting, setIsEditting] = useState(false);
@@ -14,7 +16,7 @@ const TransactionElement = () => {
   const id = pathParts[pathParts.length - 1];
   const token = localStorage.getItem("token");
 
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, isPending, isError, error } = useQuery({
     queryKey:
       resourceType === "incomes"
         ? ["incomes", { id, token }]
@@ -33,8 +35,10 @@ const TransactionElement = () => {
     setIsEditting(false);
   }
 
+  const isLoading = useLoader(isPending);
+
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <FullScreenLoader />;
   }
 
   if (isError) {
