@@ -5,7 +5,7 @@ const useLoader = (isFetching) => {
   const [timeElapsed, setTimeElapsed] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setTimeElapsed(true), 1000);
+    const timer = setTimeout(() => setTimeElapsed(true), 500);
 
     return () => clearTimeout(timer);
   }, []);
