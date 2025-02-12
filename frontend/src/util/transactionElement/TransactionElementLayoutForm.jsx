@@ -347,7 +347,8 @@ const TransactionElementLayoutForm = ({
                     type="text"
                     id="category"
                     name="category"
-                    className="w-full h-full bg-main rounded-full flex items-center pl-12 border-2 border-secondColor"
+                    className="w-full h-full bg-main rounded-full flex items-center pl-10 outline-none"
+                    span="w-full h-full border-2 border-secondColor rounded-full"
                   />
                 </div>
                 <p className="h-4 mt-2 mb-4"></p>
