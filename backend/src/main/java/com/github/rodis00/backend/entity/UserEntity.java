@@ -56,6 +56,8 @@ public class UserEntity extends BaseEntity implements UserDetails {
     )
     private List<ExpenseEntity> expenses;
 
+    private String profilePicture;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
