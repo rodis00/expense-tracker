@@ -18,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -29,13 +30,19 @@ public class ImageService {
 
     private final UserRepository userRepository;
 
+    private final Set<String> ALLOWED_CONTENT_TYPES = Set.of(
+            "image/jpeg",
+            "image/png",
+            "image/gif",
+            "image/bmp",
+            "image/webp"
+    );
+
     public ImageDto saveImage(
             MultipartFile file,
             String username
     ) {
-        if (Objects.isNull(file) || file.isEmpty()) {
-            throw new InvalidFileException("File is empty");
-        }
+        validateFile(file);
         try {
             UserEntity user = userRepository.findByUsername(username)
                     .orElseThrow(() -> new UserNotFoundException("User not found"));
@@ -50,6 +57,16 @@ public class ImageService {
             return new ImageDto(user.getProfilePicture());
         } catch (IOException e) {
             throw new InvalidFileException("Could not save image: " + e.getMessage());
+        }
+    }
+
+    private void validateFile(MultipartFile file) {
+        if (Objects.isNull(file) || file.isEmpty()) {
+            throw new InvalidFileException("File is empty");
+        }
+        String contentType = file.getContentType();
+        if (contentType == null || !ALLOWED_CONTENT_TYPES.contains(contentType)) {
+            throw new InvalidFileException("Invalid file type, allowed types: " + ALLOWED_CONTENT_TYPES);
         }
     }
 
