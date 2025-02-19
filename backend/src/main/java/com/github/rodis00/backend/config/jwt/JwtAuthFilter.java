@@ -1,6 +1,5 @@
 package com.github.rodis00.backend.config.jwt;
 
-import com.github.rodis00.backend.token.TokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,16 +20,13 @@ import java.io.IOException;
 public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
-    private final TokenRepository tokenRepository;
 
     public JwtAuthFilter(
             JwtService jwtService,
-            UserDetailsService userDetailsService,
-            TokenRepository tokenRepository
+            UserDetailsService userDetailsService
     ) {
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
-        this.tokenRepository = tokenRepository;
     }
 
     @Override
@@ -54,11 +50,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-            boolean isTokenValid = tokenRepository.findByToken(token)
-                    .map(t -> !t.isExpired() && !t.isRevoked())
-                    .orElse(false);
-
-            if (jwtService.isTokenValid(token, userDetails) && isTokenValid) {
+            if (jwtService.isTokenValid(token, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
