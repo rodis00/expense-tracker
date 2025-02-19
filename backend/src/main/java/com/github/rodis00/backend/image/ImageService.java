@@ -43,17 +43,28 @@ public class ImageService {
             String username
     ) {
         validateFile(file);
+
+        String originalFilename = file.getOriginalFilename();
+        if (originalFilename == null || !originalFilename.contains(".")) {
+            throw new InvalidFileException("Invalid file name: no extension found");
+        }
+
         try {
             UserEntity user = userRepository.findByUsername(username)
                     .orElseThrow(() -> new UserNotFoundException("User not found"));
+
             Path directory = Paths.get(uploadDir);
-            String fileExtension = file.getOriginalFilename()
-                    .substring(file.getOriginalFilename().lastIndexOf("."));
-            Path filePath = directory.resolve(UUID.randomUUID() + fileExtension);
-            Files.createDirectories(directory);
+            Files.createDirectories(directory); // Create directory if it doesn't exist
+
+            String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+            String newFilename = UUID.randomUUID() + fileExtension;
+
+            Path filePath = directory.resolve(newFilename);
             Files.write(filePath, file.getBytes());
+
             updateUserProfilePicture(user, filePath.toString());
             userRepository.save(user);
+
             return new ImageDto(user.getProfilePicture());
         } catch (IOException e) {
             throw new InvalidFileException("Could not save image: " + e.getMessage());
@@ -64,6 +75,7 @@ public class ImageService {
         if (Objects.isNull(file) || file.isEmpty()) {
             throw new InvalidFileException("File is empty");
         }
+
         String contentType = file.getContentType();
         if (contentType == null || !ALLOWED_CONTENT_TYPES.contains(contentType)) {
             throw new InvalidFileException("Invalid file type, allowed types: " + ALLOWED_CONTENT_TYPES);
