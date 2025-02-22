@@ -1,13 +1,12 @@
 package com.github.rodis00.backend.auth;
 
+import com.github.rodis00.backend.config.jwt.RefreshTokenRequest;
+import com.github.rodis00.backend.config.jwt.RefreshTokenResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,14 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
-    private final LogoutService logoutService;
 
-    public AuthController(
-            AuthService authService,
-            LogoutService logoutService
-    ) {
+    public AuthController(AuthService authService) {
         this.authService = authService;
-        this.logoutService = logoutService;
     }
 
     @Operation(
@@ -57,23 +51,11 @@ public class AuthController {
             summary = "Retrieve a new JWT Token"
     )
     @PostMapping("/refresh-token")
-    public ResponseEntity<AuthResponse> refreshToken(
-            HttpServletRequest request
+    public ResponseEntity<RefreshTokenResponse> refreshToken(
+            @RequestBody RefreshTokenRequest refreshTokenRequest
     ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(authService.refreshToken(request));
-    }
-
-    @Operation(
-            summary = "Logout user and expire JWT Token"
-    )
-    @PostMapping("/logout")
-    public void logout(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            Authentication authentication
-    ) {
-        logoutService.logout(request, response, authentication);
+                .body(authService.refreshToken(refreshTokenRequest));
     }
 }

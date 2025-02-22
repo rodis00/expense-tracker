@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 public class UserDto {
     private String username;
     private String email;
+    private String profilePicture;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -18,6 +19,7 @@ public class UserDto {
         return new UserDto(
                 user.getUsername(),
                 user.getEmail(),
+                user.getProfilePicture(),
                 user.getCreatedAt(),
                 user.getUpdatedAt()
         );
