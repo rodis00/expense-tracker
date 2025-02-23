@@ -137,7 +137,7 @@ public class ExpenseController {
             summary = "Retrieve a list of expense years"
     )
     @GetMapping("/users/{username}/years")
-    public ResponseEntity<List<Integer>> getYears(@RequestParam String username) {
+    public ResponseEntity<List<Integer>> getYears(@PathVariable String username) {
         return ResponseEntity.ok(expenseService.getYears(username));
     }
 }
