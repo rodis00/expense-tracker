@@ -108,12 +108,12 @@ public class IncomeService {
         return incomeRepository.findAllIncomesByUser_UsernameAndYear(username, year, month, pageable);
     }
 
-    public List<Integer> getYears() {
+    public List<Integer> getYears(String username) {
         return incomeRepository
                 .findAll()
                 .stream()
+                .filter(income -> income.getUser().getUsername().equals(username))
                 .map(income -> income.getDate().getYear())
-                .distinct()
                 .sorted()
                 .toList();
     }

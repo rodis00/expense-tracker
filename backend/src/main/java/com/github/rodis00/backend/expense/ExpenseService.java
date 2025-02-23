@@ -109,12 +109,12 @@ public class ExpenseService {
         return expenseRepository.findAllExpensesByUser_UsernameAndYear(username, year, month, pageable);
     }
 
-    public List<Integer> getYears() {
+    public List<Integer> getYears(String username) {
         return expenseRepository
                 .findAll()
                 .stream()
+                .filter(expense -> expense.getUser().getUsername().equals(username))
                 .map(expense -> expense.getDate().getYear())
-                .distinct()
                 .sorted()
                 .toList();
     }
