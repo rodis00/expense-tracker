@@ -118,9 +118,9 @@ export async function deleteIncomeById({ id, token }) {
   }
 }
 
-export async function fetchIncomeYears({ token }) {
+export async function fetchIncomeYears({ token, userId }) {
   const response = await fetch(
-    `http://localhost:8080/expense-tracker/api/v1/incomes/years`,
+    `http://localhost:8080/expense-tracker/api/v1/incomes/users/${userId}/years`,
     {
       headers: {
         "Content-Type": "application/json",

@@ -5,6 +5,7 @@ import { ChartDataPoints } from "./ChartDataPoints";
 import { fetchIncomeYears } from "../../util/http/incomeHttp";
 import { fetchExpenseYears } from "../../util/http/expenseHttp";
 import { useQuery } from "@tanstack/react-query";
+import { useSelector } from "react-redux";
 
 const LineChart = ({
   incomesData,
@@ -15,15 +16,16 @@ const LineChart = ({
 }) => {
   let years = [];
   const token = localStorage.getItem("token");
+  const userId = useSelector((state) => state.auth.user);
 
   const { data: incomeYears } = useQuery({
-    queryKey: ["incomes", token],
-    queryFn: () => fetchIncomeYears({ token }),
+    queryKey: ["incomes", token, userId],
+    queryFn: () => fetchIncomeYears({ token, userId }),
   });
 
   const { data: expenseYears } = useQuery({
-    queryKey: ["expenses", token],
-    queryFn: () => fetchExpenseYears({ token }),
+    queryKey: ["expenses", token, userId],
+    queryFn: () => fetchExpenseYears({ token, userId }),
   });
 
   if (incomeYears) {
