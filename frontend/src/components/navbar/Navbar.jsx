@@ -17,6 +17,10 @@ import { NavLink, useLocation } from "react-router-dom";
 import "./Navbar.css";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../store/auth-slice";
+import UserImage from "../../util/UserImage";
+import { useQuery } from "@tanstack/react-query";
+import { getUserData } from "../../util/http/user";
+import { getImage } from "../../util/http/image";
 
 const Navbar = () => {
   const [activeMenu, setActiveMenu] = useState(false);
@@ -26,16 +30,38 @@ const Navbar = () => {
   const location = useLocation();
   const pathParts = location.pathname.split("/");
   const id = pathParts[pathParts.length - 1];
+  const userId = useSelector((state) => state.auth.user);
+  const token = localStorage.getItem("token");
+  const [image, setImage] = useState(null);
   const isSmallScreen = useMediaQuery("(max-width: 767.5px)");
 
   function handleLogout() {
     dispatch(authActions.logout());
     localStorage.removeItem("token");
+    localStorage.removeItem("bg");
   }
 
   function handleActiveMenu() {
     setActiveMenu((prev) => !prev);
   }
+
+  const { data } = useQuery({
+    queryKey: ["user", { userId, token }],
+    queryFn: () => getUserData({ userId, token }),
+    enabled: !!userId,
+  });
+
+  const { data: dataImage } = useQuery({
+    queryKey: ["image", token, image],
+    queryFn: () => getImage(image, token),
+    enabled: !!image && !!userId,
+  });
+
+  useEffect(() => {
+    if (data) {
+      setImage(() => data.profilePicture);
+    }
+  }, [data]);
 
   useEffect(() => {
     const indicator = indicatorRef.current;
@@ -114,9 +140,21 @@ const Navbar = () => {
           activeMenu ? "left-0" : "sm:-left-1/2"
         } md:left-0 md:w-16 h-screen bg-fourthColor transition-all duration-500 overflow-hidden md:hover:w-60`}
       >
-        <div className="w-12 h-12 mt-2 mx-auto bg-red-800 rounded-full text-center">
-          logo
+        <div className="w-full h-12 flex items-center mt-3">
+          <UserImage
+            className="w-12 h-12 mx-2 text-2xl"
+            userImage={dataImage}
+          />
+          <span className="w-44 block uppercase pl-4 text-amber-300 font-semibold">
+            {userId && userId.length > 10 ? (
+              <span>{userId.slice(0, 10) + "..."}</span>
+            ) : (
+              <span>{userId}</span>
+            )}
+            {!userId && <span>Logo</span>}
+          </span>
         </div>
+        <hr className="h-2 w-full mt-3 border-neutral-700" />
         <div className="w-full h-12 absolute mt-4 top-16 hover:bg-gray-700">
           <NavLink
             to={"/"}

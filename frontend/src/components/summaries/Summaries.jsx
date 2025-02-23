@@ -6,8 +6,9 @@ import DoughnutChart from "../charts/DoughnutChart";
 
 const Summaries = () => {
   return (
-    <main className="w-full min-h-screen flex flex-col items-center text-white overflow-x-hidden">
-      <div className="text-center">
+    <main className="w-full min-h-screen flex flex-col items-center justify-center text-white overflow-x-hidden">
+      <div className="text-5xl text-neutral-200">Section in progress</div>
+      {/* <div className="text-center">
         <h1 className="text-xl mt-4 text-neutral-600">Total Balance</h1>
         <span className="text-3xl text-amber-300">$10000</span>
       </div>
@@ -92,7 +93,7 @@ const Summaries = () => {
         </section>
 
        
-      </div>
+      </div> */}
     </main>
   );
 };

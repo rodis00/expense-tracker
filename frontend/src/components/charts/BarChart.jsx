@@ -5,8 +5,9 @@ import { ChartDataPoints, ChartDataPointsDaily } from "./ChartDataPoints";
 import { useQuery } from "@tanstack/react-query";
 import { fetchIncomeYears } from "../../util/http/incomeHttp";
 import { fetchExpenseYears } from "../../util/http/expenseHttp";
+import { useSelector } from "react-redux";
 
-const BarChart = ({ selectedPoints, name, home, data }) => {
+const BarChart = ({ selectedPoints, name, data }) => {
   let labels;
   let dataValues;
   let updatedData;
@@ -16,13 +17,17 @@ const BarChart = ({ selectedPoints, name, home, data }) => {
   const MonthlyDataPoints = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   const WeeklyDataPoints = [0, 0, 0, 0, 0, 0, 0];
   const token = localStorage.getItem("token");
+  const userId = useSelector((state) => state.auth.user);
 
   const { data: dataYears } = useQuery({
-    queryKey: name === "incomes" ? ["incomes", token] : ["expenses", token],
+    queryKey:
+      name === "incomes"
+        ? ["incomes", token, userId]
+        : ["expenses", token, userId],
     queryFn:
       name === "incomes"
-        ? () => fetchIncomeYears({ token })
-        : () => fetchExpenseYears({ token }),
+        ? () => fetchIncomeYears({ token, userId })
+        : () => fetchExpenseYears({ token, userId }),
   });
 
   if (dataYears) {
@@ -34,6 +39,8 @@ const BarChart = ({ selectedPoints, name, home, data }) => {
   } else {
     YearlyDataPoints = [];
   }
+
+  console.log(dataYears);
 
   if (data) {
     updatedData = data?.map((item) => ({

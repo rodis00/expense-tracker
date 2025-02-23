@@ -11,6 +11,7 @@ import Input from "../../util/Input";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "../../util/http/auth";
+import { generateRandomColor } from "../../util/ColorGenerator";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ const Login = () => {
     mutationFn: login,
     onSuccess: () => {
       navigate("/dashboard");
+      localStorage.setItem("bg", generateRandomColor());
     },
     onError: (error) => {
       setFormErrors(error);
