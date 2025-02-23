@@ -116,6 +116,7 @@ public class ExpenseService {
                 .filter(expense -> expense.getUser().getUsername().equals(username))
                 .map(expense -> expense.getDate().getYear())
                 .sorted()
+                .distinct()
                 .toList();
     }
 }

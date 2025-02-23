@@ -114,6 +114,7 @@ public class IncomeService {
                 .stream()
                 .filter(income -> income.getUser().getUsername().equals(username))
                 .map(income -> income.getDate().getYear())
+                .distinct()
                 .sorted()
                 .toList();
     }
