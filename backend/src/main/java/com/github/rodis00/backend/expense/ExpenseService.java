@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -109,12 +110,12 @@ public class ExpenseService {
         return expenseRepository.findAllExpensesByUser_UsernameAndYear(username, year, month, pageable);
     }
 
-    public List<Integer> getYears() {
+    public List<Integer> getYears(String username) {
         return expenseRepository
                 .findAll()
                 .stream()
+                .filter(expense -> expense.getUser().getUsername().equals(username))
                 .map(expense -> expense.getDate().getYear())
-                .distinct()
                 .sorted()
                 .toList();
     }
