@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Input from "../../util/Input";
 import {
   faBan,
@@ -8,6 +8,7 @@ import {
   faFloppyDisk,
   faLock,
   faPencil,
+  faPlus,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,11 +17,16 @@ import { getUserData, updateUserData } from "../../util/http/user";
 import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../../store/modal-slice";
 import UserDataChangeModal from "../../util/UserDataChangeModal";
+import UserImage from "../../util/UserImage";
+import FullScreenLoader from "../../util/FullScreenLoader";
+import useLoader from "../../util/hooks/useLoader";
+import { getImage, uploadImage } from "../../util/http/image";
 
 const Settings = () => {
   const [typePassword, setTypePassword] = useState("password");
   const [typeConfirmPassword, setTypeConfirmPassword] = useState("password");
   const [isEditing, setIsEditing] = useState(false);
+  const [image, setImage] = useState(null);
   const userId = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
@@ -30,14 +36,23 @@ const Settings = () => {
     username: "",
     email: "",
     password: "",
+    profilePicture: null,
   });
   const [formErrors, setFormErrors] = useState({});
   const queryClient = useQueryClient();
+  const fileInputRef = useRef(null);
+  const [imageError, setImageError] = useState();
 
   const { data, isPending, error, isError } = useQuery({
     queryKey: ["user", { userId, token }],
     queryFn: () => getUserData({ userId, token }),
     enabled: !!userId,
+  });
+
+  const { data: dataImage, isPending: imagePending } = useQuery({
+    queryKey: ["image", token, userData.profilePicture],
+    queryFn: () => getImage(userData.profilePicture, token),
+    enabled: !!userData.profilePicture && !!userId,
   });
 
   const { mutate } = useMutation({
@@ -57,18 +72,35 @@ const Settings = () => {
     },
   });
 
+  const { mutate: imageMutate } = useMutation({
+    mutationFn: uploadImage,
+    onSuccess: () => {
+      setIsEditing(false);
+      dispatch(modalActions.showUserUpdateInfo());
+      queryClient.invalidateQueries(["image", token, userData.profilePicture]);
+      queryClient.invalidateQueries(["user", { userId, token }]);
+    },
+    onError: (error) => {
+      setImageError(error);
+    },
+  });
+
   useEffect(() => {
     if (data) {
       setUserData((prev) => ({
         ...prev,
         username: data.username,
         email: data.email,
+        profilePicture: data.profilePicture,
       }));
     }
   }, [data]);
 
-  if (isPending) {
-    return <h1>Loading...</h1>;
+  const pending = isPending || (userData.profilePicture ? imagePending : null);
+  const isLoading = useLoader(pending);
+
+  if (isLoading) {
+    return <FullScreenLoader />;
   }
 
   if (isError) {
@@ -115,10 +147,19 @@ const Settings = () => {
       ...prev,
       username: data.username,
       email: data.email,
+      profilePicture: data.profilePicture,
     }));
     setIsEditing(false);
+    setImage(null);
+    setImageError(null);
     setPasswordError("");
     setFormErrors({});
+  };
+
+  const hnadleFileChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      setImage(event.target.files[0]);
+    }
   };
 
   const handleSubmit = () => {
@@ -141,26 +182,49 @@ const Settings = () => {
       }
     });
 
-    if (Object.keys(values).length === 0) {
+    if (Object.keys(values).length === 0 && !image) {
       setPasswordError(`You haven't changed any data`);
       return;
     }
-    // Object.keys(values).forEach((key) => {
-    //   if (key === "username") {
-    //   }
-    // });
-    mutate({ userId, token, values });
+
+    if (Object.keys(values).length !== 0) {
+      mutate({ userId, token, values });
+    }
+
+    if (image) {
+      imageMutate({ userId, token, image });
+    }
   };
 
   return (
     <>
       <UserDataChangeModal />
       <div className="w-full min-h-screen flex justify-center items-center">
-        <div className="sm:bg-fourthColor w-full h-full sm:h-3/5 sm:w-3/4 md:w-1/2 xlg:w-1/3 flex flex-col items-center pb-20 sm:rounded-3xl text-white">
+        <div className="sm:bg-fourthColor w-full h-full sm:h-3/5 sm:w-3/4 md:w-1/2 xlg:w-1/3 flex flex-col items-center pb-8 sm:rounded-3xl text-white">
           <h2 className="text-3xl font-semibold my-4">Your Profile</h2>
-          <div className="h-24 w-24 rounded-full bg-red-600 flex justify-center items-center text-5xl mb-12">
-            A
-          </div>
+          <UserImage
+            className="h-24 w-24 mb-4 text-5xl"
+            image={image}
+            userImage={dataImage}
+          />
+          <input
+            type="file"
+            className="hidden"
+            ref={fileInputRef}
+            accept="image/*"
+            onChange={hnadleFileChange}
+          />
+          {isEditing && (
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className="bg-neutral-500 rounded-full w-10 h-10 mb-4"
+            >
+              <FontAwesomeIcon icon={faPlus} />
+            </button>
+          )}
+          {imageError && (
+            <p className="text-red-500 text-center">{imageError.error}</p>
+          )}
           <div className="w-4/5">
             <Input
               labelText="Username"
