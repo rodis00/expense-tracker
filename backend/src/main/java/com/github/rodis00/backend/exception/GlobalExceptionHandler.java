@@ -145,14 +145,4 @@ public class GlobalExceptionHandler {
                 Collections.singletonMap(Fields.error.name(), "File is too large. Maximum size is " + maxFileSize)
         );
     }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MissingRequestCookieException.class)
-    public ApiResponse handleMissingRequestCookieException(MissingRequestCookieException e) {
-        return new ApiResponse(
-                HttpStatus.BAD_REQUEST,
-                HttpStatus.BAD_REQUEST.value(),
-                Collections.singletonMap(Fields.error.name(), "required cookie, received undefined")
-        );
-    }
 }

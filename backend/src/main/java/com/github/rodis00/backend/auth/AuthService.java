@@ -1,6 +1,5 @@
 package com.github.rodis00.backend.auth;
 
-import com.github.rodis00.backend.config.jwt.CookieRequest;
 import com.github.rodis00.backend.config.jwt.JwtService;
 import com.github.rodis00.backend.config.jwt.TokenResponse;
 import com.github.rodis00.backend.entity.UserEntity;
@@ -9,11 +8,13 @@ import com.github.rodis00.backend.role.RoleRepository;
 import com.github.rodis00.backend.user.UserRepository;
 import com.github.rodis00.backend.user.UserService;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -86,10 +87,19 @@ public class AuthService {
     }
 
     public TokenResponse refreshToken(
-            CookieRequest cookieRequest
+            HttpServletRequest request
     ) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies == null) {
+            throw new InvalidTokenException("required cookie, received undefined");
+        }
+
         final String username;
-        final String refreshToken = cookieRequest.refreshToken();
+        final String refreshToken = Arrays.stream(cookies)
+                .filter(cookie -> cookie.getName().equals("refreshToken"))
+                .findFirst()
+                .map(Cookie::getValue)
+                .orElseThrow(() -> new InvalidTokenException("No refresh token found"));
 
         username = jwtService.extractUsername(refreshToken);
 

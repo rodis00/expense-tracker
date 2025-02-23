@@ -37,7 +37,8 @@ public class SecurityConfig {
             "/swagger-ui/**",
             "/webjars/**",
             "/swagger-ui.html",
-            "/expense-tracker/api/v1/auth/**"
+            "/expense-tracker/api/v1/auth/register",
+            "/expense-tracker/api/v1/auth/authenticate",
     };
     private final JwtAuthFilter jwtAuthFilter;
     private final CustomUserDetailsService customUserDetailsService;

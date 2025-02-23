@@ -1,13 +1,16 @@
 package com.github.rodis00.backend.auth;
 
-import com.github.rodis00.backend.config.jwt.CookieRequest;
 import com.github.rodis00.backend.config.jwt.TokenResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("expense-tracker/api/v1/auth")
@@ -53,8 +56,8 @@ public class AuthController {
     )
     @PostMapping("/refresh-token")
     public ResponseEntity<TokenResponse> refreshToken(
-            @CookieValue CookieRequest refreshToken
+            HttpServletRequest request
     ) {
-        return ResponseEntity.ok(authService.refreshToken(refreshToken));
+        return ResponseEntity.ok(authService.refreshToken(request));
     }
 }
