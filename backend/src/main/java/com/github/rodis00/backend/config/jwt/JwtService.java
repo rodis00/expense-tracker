@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -20,11 +21,11 @@ public class JwtService {
     @Value("${application.security.jwt.secret-key}")
     private String SECRET_KEY;
 
-    @Value("${application.security.jwt.jwt-expiration}")
-    private long jwtExpiration;
+//    @Value("${application.security.jwt.jwt-expiration}")
+    private long jwtExpiration = 15 * 1000; //TODO: temporary 15 seconds
 
-    @Value("${application.security.jwt.jwt-refresh-expiration}")
-    private long refreshTokenExpiration;
+//    @Value("${application.security.jwt.jwt-refresh-expiration}")
+    private long refreshTokenExpiration = 60 * 1000; //TODO: temporary 1 minute
 
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
@@ -100,5 +101,16 @@ public class JwtService {
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
+    }
+
+    public Cookie createCookie(String refreshToken) {
+        Cookie cookie = new Cookie("refreshToken", refreshToken);
+        cookie.setSecure(true);
+        cookie.setHttpOnly(true);
+        // TODO: Set the cookie path to env variable and hide visibility
+//        cookie.setPath("/expense-tracker/api/v1/auth/refresh-token");
+        int cookieMaxAge = (int) refreshTokenExpiration / 1000;
+        cookie.setMaxAge(cookieMaxAge);
+        return cookie;
     }
 }

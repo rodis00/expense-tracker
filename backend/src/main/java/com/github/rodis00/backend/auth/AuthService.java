@@ -1,13 +1,14 @@
 package com.github.rodis00.backend.auth;
 
+import com.github.rodis00.backend.config.jwt.CookieRequest;
 import com.github.rodis00.backend.config.jwt.JwtService;
-import com.github.rodis00.backend.config.jwt.RefreshTokenRequest;
-import com.github.rodis00.backend.config.jwt.RefreshTokenResponse;
+import com.github.rodis00.backend.config.jwt.TokenResponse;
 import com.github.rodis00.backend.entity.UserEntity;
 import com.github.rodis00.backend.exception.*;
 import com.github.rodis00.backend.role.RoleRepository;
 import com.github.rodis00.backend.user.UserRepository;
 import com.github.rodis00.backend.user.UserService;
+import jakarta.servlet.http.Cookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -57,8 +58,9 @@ public class AuthService {
 
         String jwtToken = jwtService.generateToken(savedUser.getUsername());
         String refreshToken = jwtService.generateRefreshToken(savedUser.getUsername());
+        Cookie cookie = jwtService.createCookie(refreshToken);
 
-        return new AuthResponse(jwtToken, refreshToken);
+        return new AuthResponse(jwtToken, cookie);
     }
 
     public AuthResponse authenticate(AuthRequest request) {
@@ -78,19 +80,16 @@ public class AuthService {
 
         String jwtToken = jwtService.generateToken(user.getUsername());
         String refreshToken = jwtService.generateRefreshToken(user.getUsername());
+        Cookie cookie = jwtService.createCookie(refreshToken);
 
-        return new AuthResponse(jwtToken, refreshToken);
+        return new AuthResponse(jwtToken, cookie);
     }
 
-    public RefreshTokenResponse refreshToken(
-            RefreshTokenRequest refreshTokenRequest
+    public TokenResponse refreshToken(
+            CookieRequest cookieRequest
     ) {
         final String username;
-        final String refreshToken = refreshTokenRequest.refreshToken();
-
-        if (refreshToken == null || refreshToken.isEmpty()) {
-            throw new InvalidTokenException("Refresh token is missing");
-        }
+        final String refreshToken = cookieRequest.refreshToken();
 
         username = jwtService.extractUsername(refreshToken);
 
@@ -103,6 +102,6 @@ public class AuthService {
 
         String accessToken = jwtService.generateToken(user.getUsername());
 
-        return new RefreshTokenResponse(accessToken);
+        return new TokenResponse(accessToken);
     }
 }

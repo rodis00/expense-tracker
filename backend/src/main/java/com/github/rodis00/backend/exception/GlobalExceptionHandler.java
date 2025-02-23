@@ -4,6 +4,7 @@ import com.github.rodis00.backend.api.ApiResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestCookieException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -142,6 +143,16 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST,
                 HttpStatus.BAD_REQUEST.value(),
                 Collections.singletonMap(Fields.error.name(), "File is too large. Maximum size is " + maxFileSize)
+        );
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MissingRequestCookieException.class)
+    public ApiResponse handleMissingRequestCookieException(MissingRequestCookieException e) {
+        return new ApiResponse(
+                HttpStatus.BAD_REQUEST,
+                HttpStatus.BAD_REQUEST.value(),
+                Collections.singletonMap(Fields.error.name(), "required cookie, received undefined")
         );
     }
 }
