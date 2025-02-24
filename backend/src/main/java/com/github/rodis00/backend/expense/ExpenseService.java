@@ -12,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -110,13 +112,20 @@ public class ExpenseService {
     }
 
     public List<Integer> getYears(String username) {
-        return expenseRepository
-                .findAll()
-                .stream()
-                .filter(expense -> expense.getUser().getUsername().equals(username))
-                .map(expense -> expense.getDate().getYear())
-                .sorted()
-                .distinct()
-                .toList();
+        List<Integer> years = new ArrayList<>(
+                expenseRepository
+                        .findAll()
+                        .stream()
+                        .filter(expense -> expense.getUser().getUsername().equals(username))
+                        .map(expense -> expense.getDate().getYear())
+                        .sorted()
+                        .distinct()
+                        .toList()
+        );
+        // return current year if there are no expenses
+        if (years.isEmpty()) {
+            years.add(LocalDate.now().getYear());
+        }
+        return years;
     }
 }
