@@ -41,7 +41,7 @@ const Settings = () => {
   const [formErrors, setFormErrors] = useState({});
   const queryClient = useQueryClient();
   const fileInputRef = useRef(null);
-  const [imageError, setImageError] = useState();
+  const [imageError, setImageError] = useState("");
 
   const { data, isPending, error, isError } = useQuery({
     queryKey: ["user", { userId, token }],
@@ -79,6 +79,7 @@ const Settings = () => {
       dispatch(modalActions.showUserUpdateInfo());
       queryClient.invalidateQueries(["image", token, userData.profilePicture]);
       queryClient.invalidateQueries(["user", { userId, token }]);
+      setImageError("");
     },
     onError: (error) => {
       setImageError(error);

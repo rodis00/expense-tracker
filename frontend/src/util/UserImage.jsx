@@ -60,7 +60,7 @@ const UserImage = ({ className, image, userImage }) => {
             <img
               key={user}
               src={imageURL}
-              className={`w-full h-full bg-main rounded-full`}
+              className={`w-full h-full bg-main rounded-full object-cover`}
             />
           </div>
         </div>
@@ -73,7 +73,7 @@ const UserImage = ({ className, image, userImage }) => {
           >
             <img
               src={preview}
-              className={`w-full h-full bg-main rounded-full`}
+              className={`w-full h-full bg-main rounded-full object-cover`}
             />
           </div>
         </div>
