@@ -28,6 +28,7 @@ const BarChart = ({ selectedPoints, name, data }) => {
       name === "incomes"
         ? () => fetchIncomeYears({ token, userId })
         : () => fetchExpenseYears({ token, userId }),
+    enabled: !!userId,
   });
 
   if (dataYears) {
@@ -39,8 +40,6 @@ const BarChart = ({ selectedPoints, name, data }) => {
   } else {
     YearlyDataPoints = [];
   }
-
-  console.log(dataYears);
 
   if (data) {
     updatedData = data?.map((item) => ({

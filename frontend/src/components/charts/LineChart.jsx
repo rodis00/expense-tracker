@@ -21,11 +21,13 @@ const LineChart = ({
   const { data: incomeYears } = useQuery({
     queryKey: ["incomes", token, userId],
     queryFn: () => fetchIncomeYears({ token, userId }),
+    enabled: !!userId,
   });
 
   const { data: expenseYears } = useQuery({
     queryKey: ["expenses", token, userId],
     queryFn: () => fetchExpenseYears({ token, userId }),
+    enabled: !!userId,
   });
 
   if (incomeYears) {
