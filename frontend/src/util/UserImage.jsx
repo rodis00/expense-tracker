@@ -53,7 +53,17 @@ const UserImage = ({ className, image, userImage }) => {
       )}
 
       {bg && !image && userImage && (
-        <img key={user} src={imageURL} className={`${className} bg-main rounded-full`} />
+        <div className="flex justify-center">
+          <div
+            className={`flex items-center justify-center rounded-full font-bold ${className}`}
+          >
+            <img
+              key={user}
+              src={imageURL}
+              className={`w-full h-full bg-main rounded-full`}
+            />
+          </div>
+        </div>
       )}
 
       {bg && image && (userImage || !userImage) && (
@@ -61,7 +71,10 @@ const UserImage = ({ className, image, userImage }) => {
           <div
             className={`flex items-center justify-center rounded-full font-bold ${className}`}
           >
-            <img src={preview} className={` bg-main rounded-full`} />
+            <img
+              src={preview}
+              className={`w-full h-full bg-main rounded-full`}
+            />
           </div>
         </div>
       )}
