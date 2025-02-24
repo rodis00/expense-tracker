@@ -1,5 +1,6 @@
 package com.github.rodis00.backend.auth;
 
+import jakarta.servlet.http.Cookie;
 import lombok.*;
 
 @Getter
@@ -11,5 +12,5 @@ public class AuthResponse {
 
     private String token;
 
-    private String refreshToken;
+    private Cookie cookie;
 }

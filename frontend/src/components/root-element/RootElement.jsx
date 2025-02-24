@@ -6,10 +6,24 @@ import { jwtDecode } from "jwt-decode";
 import { authActions } from "../../store/auth-slice";
 import SessionModal from "../../util/SessionModal";
 import { modalActions } from "../../store/modal-slice";
+import { useMutation } from "@tanstack/react-query";
+import { refreshToken } from "../../util/http/auth";
 
 const RootElement = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const { mutate } = useMutation({
+    mutationFn: refreshToken,
+    onError: () => {
+      localStorage.removeItem("token");
+      localStorage.removeItem("bg");
+      dispatch(authActions.logout());
+      navigate("/login");
+      dispatch(modalActions.showSessionExpiredInfo());
+      // console.clear();
+    },
+  });
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -19,11 +33,8 @@ const RootElement = () => {
         const userId = jwtDecode(token).sub;
         const exp = jwtDecode(token).exp;
         const tokenDate = new Date(exp * 1000);
-        if (currentDate > tokenDate) {
-          localStorage.removeItem("token");
-          dispatch(authActions.logout());
-          navigate("/login");
-          dispatch(modalActions.showSessionExpiredInfo());
+        if (currentDate >= tokenDate) {
+          mutate();
         } else {
           dispatch(authActions.login(userId));
         }

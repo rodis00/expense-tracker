@@ -1,11 +1,11 @@
 package com.github.rodis00.backend.auth;
 
-import com.github.rodis00.backend.config.jwt.RefreshTokenRequest;
-import com.github.rodis00.backend.config.jwt.RefreshTokenResponse;
+import com.github.rodis00.backend.config.jwt.TokenResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,35 +27,37 @@ public class AuthController {
             summary = "Create a new user and retrieve JWT Token"
     )
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(
-            @RequestBody @Valid RegisterRequest request
+    public ResponseEntity<TokenResponse> register(
+            @RequestBody @Valid RegisterRequest request,
+            HttpServletResponse response
     ) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(authService.register(request));
+        AuthResponse authResponse = authService.register(request);
+        response.addCookie(authResponse.getCookie());
+
+        return ResponseEntity.ok(new TokenResponse(authResponse.getToken()));
     }
 
     @Operation(
             summary = "Authenticate existing user and retrieve JWT Token"
     )
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthResponse> authenticate(
-            @RequestBody @Valid AuthRequest request
+    public ResponseEntity<TokenResponse> authenticate(
+            @RequestBody @Valid AuthRequest request,
+            HttpServletResponse response
     ) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(authService.authenticate(request));
+        AuthResponse authResponse = authService.authenticate(request);
+        response.addCookie(authResponse.getCookie());
+
+        return ResponseEntity.ok(new TokenResponse(authResponse.getToken()));
     }
 
     @Operation(
             summary = "Retrieve a new JWT Token"
     )
     @PostMapping("/refresh-token")
-    public ResponseEntity<RefreshTokenResponse> refreshToken(
-            @RequestBody RefreshTokenRequest refreshTokenRequest
+    public ResponseEntity<TokenResponse> refreshToken(
+            HttpServletRequest request
     ) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(authService.refreshToken(refreshTokenRequest));
+        return ResponseEntity.ok(authService.refreshToken(request));
     }
 }

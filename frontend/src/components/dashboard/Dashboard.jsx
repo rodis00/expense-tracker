@@ -10,7 +10,6 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import { fetchAllIncomes } from "../../util/http/incomeHttp";
 import { fetchAllExpenses } from "../../util/http/expenseHttp";
-import { jwtDecode } from "jwt-decode";
 import DoughnutChart from "../charts/DoughnutChart";
 import DashboardRecentlyAdded from "./DashboardRecentlyAdded";
 import FullScreenLoader from "../../util/FullScreenLoader";
@@ -18,7 +17,6 @@ import useLoader from "../../util/hooks/useLoader";
 
 const Dashboard = () => {
   const token = localStorage.getItem("token");
-  const username = jwtDecode(token).sub;
   const userId = useSelector((state) => state.auth.user);
   const currentYear = new Date().getFullYear();
   const [year, setYear] = useState(currentYear);
@@ -87,7 +85,7 @@ const Dashboard = () => {
     <main className="w-full min-h-screen flex flex-col text-white">
       <div className="text-center my-4">
         <h1 className="text-2xl text-neutral-600">Welcome back</h1>
-        <span className="text-3xl font-semibold">{username}</span>
+        <span className="text-3xl font-semibold">{userId}</span>
       </div>
       <div className="flex flex-col items-center flex-grow mt-4">
         <section className="w-full md:w-3/4 lg:w-full h-full flex flex-col items-center justify-center ">
