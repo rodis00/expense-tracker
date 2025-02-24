@@ -21,11 +21,13 @@ public class JwtService {
     @Value("${application.security.jwt.secret-key}")
     private String SECRET_KEY;
 
-//    @Value("${application.security.jwt.jwt-expiration}")
-    private long jwtExpiration = 120 * 1000; //TODO: temporary 15 seconds
+    @Value("${application.security.jwt.jwt-expiration}")
+    private long jwtExpiration;
 
-//    @Value("${application.security.jwt.jwt-refresh-expiration}")
-    private long refreshTokenExpiration = 60 * 1000; //TODO: temporary 1 minute
+    @Value("${application.security.jwt.jwt-refresh-expiration}")
+    private long refreshTokenExpiration;
+
+    private final String cookiePath = "/expense-tracker/api/v1/auth/refresh-token";
 
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
@@ -107,8 +109,8 @@ public class JwtService {
         Cookie cookie = new Cookie("refreshToken", refreshToken);
         cookie.setSecure(true);
         cookie.setHttpOnly(true);
-        // TODO: Set the cookie path to env variable and hide visibility
-//        cookie.setPath("/expense-tracker/api/v1/auth/refresh-token");
+        // cookie is added only to the refresh token endpoint (cookiePath)
+        cookie.setPath(cookiePath);
         int cookieMaxAge = (int) refreshTokenExpiration / 1000;
         cookie.setMaxAge(cookieMaxAge);
         return cookie;
