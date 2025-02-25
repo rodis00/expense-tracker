@@ -36,6 +36,13 @@ const AddTransactionForm = ({ value, upperValue }) => {
         : queryClient.invalidateQueries({
             queryKey: ["expenses", { userId, token }],
           });
+      value === "amount"
+        ? queryClient.invalidateQueries({
+            queryKey: ["incomes", token, userId],
+          })
+        : queryClient.invalidateQueries({
+            queryKey: ["expenses", token, userId],
+          });
       dispatch(modalActions.closeModal());
       setTimeout(() => {
         dispatch(modalActions.showAddInfo());

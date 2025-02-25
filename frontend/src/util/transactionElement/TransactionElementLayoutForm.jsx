@@ -55,6 +55,7 @@ const TransactionElementLayoutForm = ({
   const version = useSelector((state) => state.modal.modalVersion);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const userId = useSelector((state) => state.auth.user);
   let deleteError = "";
 
   const { mutate, isPending } = useMutation({
@@ -80,6 +81,13 @@ const TransactionElementLayoutForm = ({
     mutationFn: name === "incomes" ? deleteIncomeById : deleteExpenseById,
     onSuccess: () => {
       name === "incomes" ? navigate("/incomes") : navigate("/expenses");
+      name === "incomes"
+        ? queryClient.invalidateQueries({
+            queryKey: ["incomes", token, userId],
+          })
+        : queryClient.invalidateQueries({
+            queryKey: ["expenses", token, userId],
+          });
     },
     onError: () => {
       deleteError = `Your ${
