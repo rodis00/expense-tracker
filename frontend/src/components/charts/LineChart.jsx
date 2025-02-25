@@ -90,11 +90,13 @@ const LineChart = ({
               className="bg-neutral-800 text-white focus:outline-none w-24 h-12 lg:h-10 pl-4 rounded-3xl border-none focus:ring-0"
               onChange={(e) => changeYear(e.target.value)}
             >
-              {years?.reverse().map((item) => (
-                <option value={item} key={item}>
-                  {item}
-                </option>
-              ))}
+              {years
+                ?.sort((a, b) => b - a)
+                .map((item) => (
+                  <option value={item} key={item}>
+                    {item}
+                  </option>
+                ))}
             </select>
           </span>
         </span>
