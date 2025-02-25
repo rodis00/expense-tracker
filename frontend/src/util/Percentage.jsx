@@ -3,7 +3,11 @@ import React from "react";
 import { fetchAllIncomes } from "./http/incomeHttp";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowDown,
+  faArrowUp,
+  faMinus,
+} from "@fortawesome/free-solid-svg-icons";
 import { useLocation } from "react-router-dom";
 import { fetchAllExpenses } from "./http/expenseHttp";
 
@@ -19,8 +23,11 @@ const Percentage = () => {
   let currentMonthValue = 0;
   let previousMonthValue = 0;
   let percent = 0;
+  let icon;
+  let comparisonText = "";
+  let percentColor;
 
-  const { data, isPending, isError, error } = useQuery({
+  const { data } = useQuery({
     queryKey:
       resource === "incomes"
         ? ["incomes", { userId, token, year, month }]
@@ -52,49 +59,57 @@ const Percentage = () => {
       }
     });
 
-    if (previousMonthValue !== 0) {
-      percent = (
-        ((currentMonthValue - previousMonthValue) / previousMonthValue) *
-        100
-      ).toFixed(0);
-    } else {
+    if (previousMonthValue !== 0 && currentMonthValue !== 0) {
+      percent =
+        ((currentMonthValue - previousMonthValue) / previousMonthValue) * 100;
+
+      if (Math.abs(percent) < 100) {
+        percent = percent.toFixed(2);
+      } else {
+        percent = percent.toFixed(0);
+      }
+
+      if (percent > 999) {
+        percent = 999;
+      }
+    } else if (previousMonthValue === 0 && currentMonthValue !== 0) {
       percent = 100;
+    } else if (previousMonthValue !== 0 && currentMonthValue === 0) {
+      percent = -100;
+    } else {
+      percent = 0;
     }
   }
-  
+
+  if (percent > 0) {
+    icon = faArrowUp;
+    comparisonText = "more";
+    percentColor = resource === "incomes" ? "text-secondColor" : "text-red-500";
+  } else if (percent < 0) {
+    icon = faArrowDown;
+    comparisonText = "less";
+    percentColor = resource === "incomes" ? "text-red-500" : "text-secondColor";
+  } else {
+    icon = faMinus;
+    comparisonText = "equal";
+    percentColor = "text-neutral-600";
+  }
+
+  console.log(percent);
+
   return (
     <>
-      {resource === "incomes" ? (
-        <div className="w-[95%] sm:w-3/4 md:w-3/5 xlg:w-2/5 h-28 sm:h-20 lg:h-16 mt-4 bg-thirdColor rounded-full flex items-center justify-around text-lg shadow-lg shadow-neutral-800">
-          <span
-            className={`${
-              percent > 0 ? "text-secondColor" : "text-red-500"
-            } w-44 sm:w-32 xlg:w-28 pl-4 text-xl`}
-          >
-            <FontAwesomeIcon icon={percent >= 0 ? faArrowUp : faArrowDown} />{" "}
-            {Math.abs(percent)}%
-          </span>
-          <p className="pl-2 xlg:pl-0 pr-4 sm:pr-8 md:pr-4">
-            This month you are receving {percent >= 0 ? "more" : "less"}{" "}
-            compared to the previous month
-          </p>
-        </div>
-      ) : (
-        <div className="w-[95%] sm:w-3/4 md:w-3/5 xlg:w-2/5 h-28 sm:h-20 lg:h-16 mt-4 bg-thirdColor rounded-full flex items-center justify-around text-lg shadow-lg shadow-neutral-800">
-          <span
-            className={`${
-              percent > 0 ? "text-red-500" : "text-secondColor"
-            } w-44 sm:w-32 xlg:w-28 pl-4 text-xl`}
-          >
-            <FontAwesomeIcon icon={percent >= 0 ? faArrowUp : faArrowDown} />{" "}
-            {Math.abs(percent)}%
-          </span>
-          <p className="pl-2 xlg:pl-0 pr-4 sm:pr-8 md:pr-4">
-            This month you are spending {percent >= 0 ? "more" : "less"}{" "}
-            compared to the previous month
-          </p>
-        </div>
-      )}
+      <div className="px-4 mt-8 min-h-16 flex items-center justify-center shadow-lg shadow-neutral-800 bg-thirdColor rounded-full w-auto md:w-3/5 lg:w-auto">
+        <span
+          className={`${percentColor} px-4 text-xl flex items-center gap-2`}
+        >
+          <FontAwesomeIcon icon={icon} /> {Math.abs(percent)}%
+        </span>
+        <p className="px-4 border-l-2 border-neutral-600 py-2 sm:py-0">
+          This month you are {resource === "incomes" ? "receiving" : "spending"}{" "}
+          {comparisonText} compared to the previous month
+        </p>
+      </div>
     </>
   );
 };

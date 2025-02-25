@@ -70,9 +70,6 @@ const BarChart = ({ selectedPoints, name, data }) => {
     legend = "Years";
   }
 
-  console.log(labels);
-  console.log(dataValues);
-
   for (const elem of updatedData) {
     const elemMonth = elem.date.getMonth();
     MonthlyDataPoints[elemMonth] += elem.value;
