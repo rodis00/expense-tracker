@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 const BarChart = ({ selectedPoints, name, data }) => {
   let labels;
   let dataValues;
+  let legend = "";
   let updatedData;
   let minYear;
   let YearlyDataPoints = [];
@@ -58,13 +59,19 @@ const BarChart = ({ selectedPoints, name, data }) => {
   if (selectedPoints === "Monthly") {
     labels = ChartDataPoints;
     dataValues = MonthlyDataPoints;
+    legend = "Months";
   } else if (selectedPoints === "Weekly") {
     labels = ChartDataPointsDaily;
     dataValues = WeeklyDataPoints;
+    legend = "Days";
   } else {
     labels = ChartDataPointsYearly;
     dataValues = YearlyDataPoints;
+    legend = "Years";
   }
+
+  console.log(labels);
+  console.log(dataValues);
 
   for (const elem of updatedData) {
     const elemMonth = elem.date.getMonth();
@@ -79,9 +86,8 @@ const BarChart = ({ selectedPoints, name, data }) => {
 
   for (const elem of updatedData) {
     const elemYear = elem.date.getFullYear();
-    const index = elemYear - minYear;
-    if (index >= 0 && index < ChartDataPointsYearly.length)
-      YearlyDataPoints[index] += elem.value;
+    if (ChartDataPointsYearly.indexOf(elemYear) >= 0)
+      YearlyDataPoints[ChartDataPointsYearly.indexOf(elemYear)] += elem.value;
   }
 
   return (
@@ -113,7 +119,7 @@ const BarChart = ({ selectedPoints, name, data }) => {
               },
               title: {
                 display: true,
-                text: "Months",
+                text: legend,
                 color: "rgb(100,100,100)",
                 font: {
                   size: "20px",
