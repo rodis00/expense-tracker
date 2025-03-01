@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../store/modal-slice";
 
 const UserDataChangeModal = () => {
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const version = useSelector((state) => state.modal.modalVersion);
   const dispatch = useDispatch();
 
@@ -20,7 +21,10 @@ const UserDataChangeModal = () => {
           icon={faCircleCheck}
           className="text-[50px] text-secondColor"
         />
-        <p className="text-lg px-2">Your data has been updated successfully</p>
+        <p className="text-lg px-2">
+          Your data has been updated successfully.{" "}
+          {isAuthenticated ? "" : "Please login again."}
+        </p>
         <button
           className="bg-secondColor w-28 h-12 rounded-full transition-all duration-300 hover:bg-[#28bf8a]"
           onClick={handleCloseModal}

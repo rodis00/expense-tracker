@@ -8,6 +8,7 @@ import SessionModal from "../../util/SessionModal";
 import { modalActions } from "../../store/modal-slice";
 import { useMutation } from "@tanstack/react-query";
 import { refreshToken } from "../../util/http/auth";
+import UserDataChangeModal from "../../util/UserDataChangeModal";
 
 const RootElement = () => {
   const navigate = useNavigate();
@@ -46,6 +47,7 @@ const RootElement = () => {
 
   return (
     <>
+      <UserDataChangeModal />
       <SessionModal />
       <Navbar />
       <Outlet />

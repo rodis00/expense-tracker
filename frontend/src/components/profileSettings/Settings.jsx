@@ -16,11 +16,12 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getUserData, updateUserData } from "../../util/http/user";
 import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../../store/modal-slice";
-import UserDataChangeModal from "../../util/UserDataChangeModal";
 import UserImage from "../../util/UserImage";
 import FullScreenLoader from "../../util/FullScreenLoader";
 import useLoader from "../../util/hooks/useLoader";
 import { getImage, uploadImage } from "../../util/http/image";
+import { authActions } from "../../store/auth-slice";
+import { useNavigate } from "react-router-dom";
 
 const Settings = () => {
   const [typePassword, setTypePassword] = useState("password");
@@ -42,6 +43,7 @@ const Settings = () => {
   const queryClient = useQueryClient();
   const fileInputRef = useRef(null);
   const [imageError, setImageError] = useState("");
+  const navigate = useNavigate();
 
   const { data, isPending, error, isError } = useQuery({
     queryKey: ["user", { userId, token }],
@@ -60,12 +62,16 @@ const Settings = () => {
     onSuccess: () => {
       queryClient.invalidateQueries(["user", { userId, token }]);
       setIsEditing(false);
-      dispatch(modalActions.showUserUpdateInfo());
       setConfirmPassword("");
+      setFormErrors("");
       setUserData((prev) => ({
         ...prev,
         password: "",
       }));
+      if (userId === null) {
+        navigate("/login");
+      }
+      dispatch(modalActions.showUserUpdateInfo());
     },
     onError: (error) => {
       setFormErrors(error);
@@ -170,6 +176,7 @@ const Settings = () => {
     }
 
     const values = {};
+    const keysToCheck = ["username", "password"];
 
     Object.keys(userData).forEach((key) => {
       if (key !== "id") {
@@ -190,6 +197,11 @@ const Settings = () => {
 
     if (Object.keys(values).length !== 0) {
       mutate({ userId, token, values });
+      if (Object.keys(values).some((key) => keysToCheck.includes(key))) {
+        dispatch(authActions.logout());
+        localStorage.removeItem("token");
+        localStorage.removeItem("bg");
+      }
     }
 
     if (image) {
@@ -199,7 +211,6 @@ const Settings = () => {
 
   return (
     <>
-      <UserDataChangeModal />
       <div className="w-full min-h-screen flex justify-center items-center">
         <div className="sm:bg-fourthColor w-full h-full sm:h-3/5 sm:w-3/4 md:w-1/2 xlg:w-1/3 flex flex-col items-center pb-8 sm:rounded-3xl text-white">
           <h2 className="text-3xl font-semibold my-4">Your Profile</h2>

@@ -95,8 +95,6 @@ const Percentage = () => {
     percentColor = "text-neutral-600";
   }
 
-  console.log(percent);
-
   return (
     <>
       <div className="px-4 mt-8 min-h-16 flex items-center justify-center shadow-lg shadow-neutral-800 bg-thirdColor rounded-full w-auto md:w-3/5 lg:w-auto">
