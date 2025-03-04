@@ -4,8 +4,13 @@ import { Navigate, Outlet } from "react-router-dom";
 
 function ProtectedAuthRoute() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const token = localStorage.getItem("token");
 
-  return !isAuthenticated ? <Outlet /> : <Navigate to={"/"} replace />;
+  return !isAuthenticated && !token ? (
+    <Outlet />
+  ) : (
+    <Navigate to={"/"} replace />
+  );
 }
 
 export default ProtectedAuthRoute;
