@@ -145,4 +145,24 @@ public class GlobalExceptionHandler {
                 Collections.singletonMap(Fields.error.name(), "File is too large. Maximum size is " + maxFileSize)
         );
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ResetTokenNotFoundException.class)
+    public ApiResponse handleResetTokenNotFoundException(ResetTokenNotFoundException e) {
+        return new ApiResponse(
+                HttpStatus.BAD_REQUEST,
+                HttpStatus.BAD_REQUEST.value(),
+                Collections.singletonMap(e.getFieldName(), e.getMessage())
+        );
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ResetTokenExpiredException.class)
+    public ApiResponse handleResetTokenExpiredException(ResetTokenExpiredException e) {
+        return new ApiResponse(
+                HttpStatus.BAD_REQUEST,
+                HttpStatus.BAD_REQUEST.value(),
+                Collections.singletonMap(e.getFieldName(), e.getMessage())
+        );
+    }
 }
