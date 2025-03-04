@@ -12,6 +12,8 @@ import ErrorBoundary from "./components/error/ErrorBoundary";
 import TransactionElement from "./pages/transactionElement/TransactionElement";
 import AllTransactions from "./pages/allTransactions/AllTransactions";
 import Settings from "./pages/settings/Settings";
+import ProtectedRoute from "./components/protectedRoutes/ProtectedRoute";
+import ProtectedAuthRoute from "./components/protectedRoutes/ProtectedAuthRoute";
 
 const router = createBrowserRouter([
   {
@@ -21,25 +23,38 @@ const router = createBrowserRouter([
     id: "root",
     children: [
       { index: true, element: <Home /> },
-      { path: "dashboard", element: <Dashboard /> },
       {
-        path: "incomes",
-        element: <Incomes />,
+        element: <ProtectedRoute />,
+        children: [
+          { path: "dashboard", element: <Dashboard /> },
+          {
+            path: "incomes",
+            element: <Incomes />,
+          },
+          { path: "incomes/:id", element: <TransactionElement /> },
+          { path: "incomes/all-transactions", element: <AllTransactions /> },
+          {
+            path: "incomes/all-transactions/:id",
+            element: <TransactionElement />,
+          },
+          { path: "expenses", element: <Expenses /> },
+          { path: "expenses/:id", element: <TransactionElement /> },
+          { path: "expenses/all-transactions", element: <AllTransactions /> },
+          {
+            path: "expenses/all-transactions/:id",
+            element: <TransactionElement />,
+          },
+          { path: "summaries", element: <Summaries /> },
+          { path: "settings", element: <Settings /> },
+        ],
       },
-      { path: "incomes/:id", element: <TransactionElement /> },
-      { path: "incomes/all-transactions", element: <AllTransactions /> },
-      { path: "incomes/all-transactions/:id", element: <TransactionElement /> },
-      { path: "expenses", element: <Expenses /> },
-      { path: "expenses/:id", element: <TransactionElement /> },
-      { path: "expenses/all-transactions", element: <AllTransactions /> },
       {
-        path: "expenses/all-transactions/:id",
-        element: <TransactionElement />,
+        element: <ProtectedAuthRoute />,
+        children: [
+          { path: "login", element: <Login /> },
+          { path: "signup", element: <Signup /> },
+        ],
       },
-      { path: "summaries", element: <Summaries /> },
-      { path: "settings", element: <Settings /> },
-      { path: "login", element: <Login /> },
-      { path: "signup", element: <Signup /> },
     ],
   },
 ]);
