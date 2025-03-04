@@ -1,3 +1,40 @@
 spring:
-  profiles:
-    active: dev
+  datasource:
+    driver-class-name: ${DB_DRIVER}
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: ${DDL_AUTO}
+    properties:
+      hibernate:
+        dialect: ${HIBERNATE_DIALECT}
+    show-sql: ${SHOW_SQL}
+  servlet:
+    multipart:
+      max-file-size: ${MAX_FILE_SIZE}
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+
+application:
+  security:
+    jwt:
+      secret-key: ${JWT_SECRET_KEY}
+      jwt-expiration: ${JWT_EXPIRATION}
+      jwt-refresh-expiration: ${JWT_REFRESH_EXPIRATION}
+  image:
+    upload-dir: ${UPLOAD_DIR}
+  password-reset-token:
+    expiration-time: ${PASSWORD_RESET_TOKEN_EXPIRATION}
+  frontend-port: ${FRONTEND_PORT}
+springdoc:
+  swagger-ui:
+    use-root-path: true
+    persist-authorization: true

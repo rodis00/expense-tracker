@@ -34,3 +34,5 @@ build/
 
 ### App secrets ###
 application-dev.yml
+.env-prod
+.env-dev
