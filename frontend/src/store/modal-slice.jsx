@@ -25,8 +25,14 @@ const modalSlice = createSlice({
     showSessionExpiredInfo(state) {
       state.modalVersion = "sessionExpired";
     },
-    showInProgress(state){
-      state.modalVersion = 'inProgress'
+    showInProgress(state) {
+      state.modalVersion = "inProgress";
+    },
+    loginInfoModal(state) {
+      state.modalVersion = "loginInfo";
+    },
+    signupInfoModal(state) {
+      state.modalVersion = "signupInfo";
     },
     closeModal(state) {
       state.modalVersion = "";
