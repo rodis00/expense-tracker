@@ -4,11 +4,11 @@ import Navbar from "../navbar/Navbar";
 import { useDispatch } from "react-redux";
 import { jwtDecode } from "jwt-decode";
 import { authActions } from "../../store/auth-slice";
-import SessionModal from "../../util/SessionModal";
+import SessionModal from "../modal/SessionModal";
 import { modalActions } from "../../store/modal-slice";
 import { useMutation } from "@tanstack/react-query";
-import { refreshToken } from "../../util/http/auth";
-import UserDataChangeModal from "../../util/UserDataChangeModal";
+import { refreshToken } from "../../http/auth";
+import UserDataChangeModal from "../modal/UserDataChangeModal";
 
 const RootElement = () => {
   const navigate = useNavigate();

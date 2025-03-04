@@ -2,8 +2,8 @@ import React from "react";
 import { Chart as ChartJS } from "chart.js/auto";
 import { Line } from "react-chartjs-2";
 import { ChartDataPoints } from "./ChartDataPoints";
-import { fetchIncomeYears } from "../../util/http/incomeHttp";
-import { fetchExpenseYears } from "../../util/http/expenseHttp";
+import { fetchIncomeYears } from "../../http/incomeHttp";
+import { fetchExpenseYears } from "../../http/expenseHttp";
 import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 

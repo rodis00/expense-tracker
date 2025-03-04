@@ -1,17 +1,17 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import RootElement from "./components/root-element/RootElement";
-import Home from "./components/home/Home";
-import Dashboard from "./components/dashboard/Dashboard";
-import Incomes from "./components/incomes/Incomes";
-import Expenses from "./components/expenses/Expenses";
-import Summaries from "./components/summaries/Summaries";
-import Login from "./components/login/Login";
+import Home from "./pages/home/Home";
+import Dashboard from "./pages/dashboard/Dashboard";
+import Incomes from "./pages/incomes/Incomes";
+import Expenses from "./pages/expenses/Expenses";
+import Summaries from "./pages/summaries/Summaries";
+import Login from "./pages/login/Login";
 import "./App.css";
-import Signup from "./components/signup/Signup";
+import Signup from "./pages/signup/Signup";
 import ErrorBoundary from "./components/error/ErrorBoundary";
-import TransactionElement from "./util/transactionElement/TransactionElement";
-import AllTransactions from "./util/AllTransactions";
-import Settings from "./components/profileSettings/Settings";
+import TransactionElement from "./pages/transactionElement/TransactionElement";
+import AllTransactions from "./pages/allTransactions/AllTransactions";
+import Settings from "./pages/settings/Settings";
 
 const router = createBrowserRouter([
   {

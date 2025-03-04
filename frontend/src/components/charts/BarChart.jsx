@@ -3,8 +3,8 @@ import { Chart as ChartJS } from "chart.js/auto";
 import { Bar } from "react-chartjs-2";
 import { ChartDataPoints, ChartDataPointsDaily } from "./ChartDataPoints";
 import { useQuery } from "@tanstack/react-query";
-import { fetchIncomeYears } from "../../util/http/incomeHttp";
-import { fetchExpenseYears } from "../../util/http/expenseHttp";
+import { fetchIncomeYears } from "../../http/incomeHttp";
+import { fetchExpenseYears } from "../../http/expenseHttp";
 import { useSelector } from "react-redux";
 
 const BarChart = ({ selectedPoints, name, data }) => {

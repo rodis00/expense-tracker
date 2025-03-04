@@ -17,10 +17,10 @@ import { NavLink, useLocation } from "react-router-dom";
 import "./Navbar.css";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../store/auth-slice";
-import UserImage from "../../util/UserImage";
+import UserImage from "../userImage/UserImage";
 import { useQuery } from "@tanstack/react-query";
-import { getUserData } from "../../util/http/user";
-import { getImage } from "../../util/http/image";
+import { getUserData } from "../../http/user";
+import { getImage } from "../../http/image";
 
 const Navbar = () => {
   const [activeMenu, setActiveMenu] = useState(false);
