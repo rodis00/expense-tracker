@@ -1,6 +1,7 @@
 package com.github.rodis00.backend.config;
 
 import com.github.rodis00.backend.config.jwt.JwtAuthFilter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -42,6 +43,9 @@ public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
     private final CustomUserDetailsService customUserDetailsService;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
+    @Value("${application.frontend-port}")
+    private String FRONTEND_PORT;
 
     public SecurityConfig(
             JwtAuthFilter jwtAuthFilter,
@@ -95,7 +99,7 @@ public class SecurityConfig {
     public CorsConfiguration corsConfiguration() {
         CorsConfiguration corsConfig = new CorsConfiguration();
         corsConfig.setAllowedOrigins(List.of(
-                "http://localhost:5173"
+                FRONTEND_PORT
         ));
         corsConfig.setAllowCredentials(true);
         corsConfig.setAllowedHeaders(List.of(
