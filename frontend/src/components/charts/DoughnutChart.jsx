@@ -62,7 +62,7 @@ const DoughnutChart = ({ data, isPending }) => {
   });
 
   return (
-    <div className="h-[25rem] sm:h-[20rem]">
+    <div className="h-[25rem]">
       <Doughnut
         data={{
           labels: categoryValues.map((item) => item.label),
@@ -73,6 +73,7 @@ const DoughnutChart = ({ data, isPending }) => {
           ],
         }}
         options={{
+          radius: "80%",
           maintainAspectRatio: false,
           plugins: {
             legend: {
@@ -88,6 +89,27 @@ const DoughnutChart = ({ data, isPending }) => {
               color: "#fff",
               anchor: "end",
               align: "end",
+              padding: (context) => {
+                let dataset = context.dataset.data;
+                let total = dataset.reduce((acc, val) => acc + val, 0);
+
+                let smallSegments = dataset
+                  .map((val, index) => ({
+                    index,
+                    percentage: (val / total) * 100,
+                  }))
+                  .filter((item) => item.percentage < 5);
+
+                if (smallSegments.length <= 1) {
+                  return 5;
+                }
+
+                let smallIndex = smallSegments.findIndex(
+                  (item) => item.index === context.dataIndex
+                );
+                return smallIndex % 2 === 0 ? 25 : 5;
+              },
+              clip: false,
               formatter: (value, ctx) => {
                 let total = ctx.dataset.data.reduce((acc, val) => acc + val, 0);
                 let percentage = ((value / total) * 100).toFixed(2) + "%";
