@@ -107,7 +107,7 @@ const AddTransactionForm = ({ value, upperValue }) => {
             {value === "amount" ? formErrors.amount : formErrors.price}
           </p>
         )}
-        <div className="flex justify-between mb-4">
+        <div className="flex flex-col xsm:flex-row justify-between mb-4">
           <div className="w-full xsm:w-1/2">
             <label
               htmlFor="date"
@@ -147,7 +147,8 @@ const AddTransactionForm = ({ value, upperValue }) => {
                 resource={resource}
                 name="category"
                 id="category"
-                className="bg-neutral-800 sm:bg-main focus:outline-none w-full h-12 lg:h-10 pl-4 rounded-3xl border-none focus:ring-0"
+                span="w-full"
+                className="bg-neutral-800 sm:bg-main w-full focus:outline-none h-12 lg:h-10 pl-4 rounded-3xl border-none focus:ring-0"
               />
             </div>
           </div>
