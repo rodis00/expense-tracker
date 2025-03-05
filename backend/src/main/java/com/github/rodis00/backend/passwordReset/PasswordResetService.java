@@ -46,7 +46,7 @@ public class PasswordResetService {
 
     private EmailDto prepareEmail(String recipient) {
         PasswordResetTokenEntity resetToken = generateResetToken(recipient);
-        String resetLink =  BASE_URL + "/auth/reset-password?resetToken=" + resetToken.getToken();
+        String resetLink =  BASE_URL + "/reset-password?resetToken=" + resetToken.getToken();
 
         String subject = "Reset password";
         String content = "Click here to reset your password: " + resetLink +
