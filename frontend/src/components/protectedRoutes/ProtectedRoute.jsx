@@ -16,7 +16,8 @@ function ProtectedRoute() {
     !token &&
     (location.pathname === "/login" ||
       location.pathname === "/signup" ||
-      location.pathname === "/forgot-password")
+      location.pathname === "/forgot-password" ||
+      location.pathname === "/reset-password")
   ) {
     return <Outlet />;
   }

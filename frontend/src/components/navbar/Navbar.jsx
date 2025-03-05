@@ -110,6 +110,9 @@ const Navbar = () => {
         case "/forgot-password":
           indicator.style.transform = "translateY(calc(100vh - 9rem))";
           break;
+        case "/reset-password":
+          indicator.style.transform = "translateY(calc(100vh - 9rem))";
+          break;
         case "/signup":
           indicator.style.transform = "translateY(calc(100vh - 9rem))";
           break;
