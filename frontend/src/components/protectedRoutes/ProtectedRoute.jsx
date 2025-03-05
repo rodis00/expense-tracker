@@ -1,11 +1,33 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 function ProtectedRoute() {
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const token = localStorage.getItem("token");
+  const location = useLocation();
 
-  return isAuthenticated ? <Outlet /> : <Navigate to={"/login"} replace />;
+  if (
+    token &&
+    (location.pathname === "/login" || location.pathname === "/signup")
+  ) {
+    return <Navigate to={"/"} replace />;
+  }
+
+  if (
+    !token &&
+    (location.pathname === "/login" || location.pathname === "/signup")
+  ) {
+    return <Outlet />;
+  }
+
+  if (
+    !token &&
+    location.pathname !== "/login" &&
+    location.pathname !== "/signup"
+  ) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <Outlet />;
 }
 
 export default ProtectedRoute;

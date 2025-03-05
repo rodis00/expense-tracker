@@ -13,7 +13,6 @@ import TransactionElement from "./pages/transactionElement/TransactionElement";
 import AllTransactions from "./pages/allTransactions/AllTransactions";
 import Settings from "./pages/settings/Settings";
 import ProtectedRoute from "./components/protectedRoutes/ProtectedRoute";
-import ProtectedAuthRoute from "./components/protectedRoutes/ProtectedAuthRoute";
 
 const router = createBrowserRouter([
   {
@@ -46,11 +45,6 @@ const router = createBrowserRouter([
           },
           { path: "summaries", element: <Summaries /> },
           { path: "settings", element: <Settings /> },
-        ],
-      },
-      {
-        element: <ProtectedAuthRoute />,
-        children: [
           { path: "login", element: <Login /> },
           { path: "signup", element: <Signup /> },
         ],
