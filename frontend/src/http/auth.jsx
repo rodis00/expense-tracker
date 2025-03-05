@@ -84,5 +84,20 @@ export async function forgotPassword(values) {
     const error = await response.json();
     throw error.message;
   }
+}
 
+export async function resetPassword(values) {
+  const response = await fetch(
+    `http://localhost:8080/expense-tracker/api/v1/auth/reset-password`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
+    }
+  );
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw error.message;
+  }
 }
