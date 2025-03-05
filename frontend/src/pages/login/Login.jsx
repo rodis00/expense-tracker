@@ -96,9 +96,12 @@ const Login = () => {
               </button>
             </Input>
 
-            <button className="text-neutral-500 -mt-3 transition-all duration-300 hover:text-red-500 relative float-right lg:text-sm">
+            <Link
+              to={"/forgot-password"}
+              className="text-neutral-500 -mt-3 transition-all duration-300 hover:text-red-500 relative float-right lg:text-sm"
+            >
               Forgot your password?
-            </button>
+            </Link>
 
             {formErrors && (
               <p className="text-red-500">{formErrors.password}</p>

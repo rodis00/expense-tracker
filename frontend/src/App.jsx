@@ -13,6 +13,7 @@ import TransactionElement from "./pages/transactionElement/TransactionElement";
 import AllTransactions from "./pages/allTransactions/AllTransactions";
 import Settings from "./pages/settings/Settings";
 import ProtectedRoute from "./components/protectedRoutes/ProtectedRoute";
+import ForgotPassword from "./pages/forgotPassword/ForgotPassword";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,7 @@ const router = createBrowserRouter([
           { path: "summaries", element: <Summaries /> },
           { path: "settings", element: <Settings /> },
           { path: "login", element: <Login /> },
+          { path: "forgot-password", element: <ForgotPassword /> },
           { path: "signup", element: <Signup /> },
         ],
       },
