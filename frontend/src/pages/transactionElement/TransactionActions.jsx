@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useMediaQuery } from "@react-hook/media-query";
 import React from "react";
 
 const TransactionActions = ({
@@ -12,11 +13,31 @@ const TransactionActions = ({
   deleteIcon,
   closeIcon,
   editIcon,
+  descriptionIcon,
+  displayDescription,
+  isDisplayedDescription,
 }) => {
+  const isLargeScreen = useMediaQuery("(max-width: 1024px)");
   return (
     <>
       {isEditting ? (
-        <div className="text-white flex justify-center gap-8 mt-4 mr-4 mb-8">
+        <div
+          className={`text-white flex justify-center gap-8 ${
+            isLargeScreen ? "relative mt-4" : "absolute mt-0"
+          } bottom-4`}
+        >
+          <div className="flex flex-col items-center">
+            <button
+              type="button"
+              onClick={displayDescription}
+              className="rounded-full w-16 h-16 flex items-center justify-center gap-4 text-2xl border-2 border-secondColor text-secondColor shadow-lg shadow-neutral-600 "
+            >
+              <FontAwesomeIcon icon={descriptionIcon} />
+            </button>
+            <span className="mt-2">
+              {isDisplayedDescription ? "Hide" : "Show"}
+            </span>
+          </div>
           <div className="flex flex-col items-center">
             <button
               type="button"
@@ -39,7 +60,23 @@ const TransactionActions = ({
           </div>
         </div>
       ) : (
-        <div className="text-white flex justify-center gap-8 mt-4 mr-4 mb-8">
+        <div
+          className={`text-white flex justify-center gap-8 ${
+            isLargeScreen ? "relative mt-4" : "absolute mt-0"
+          } bottom-4`}
+        >
+          <div className="flex flex-col items-center">
+            <button
+              type="button"
+              onClick={displayDescription}
+              className="rounded-full w-16 h-16 flex items-center justify-center gap-4 text-2xl border-2 border-secondColor text-secondColor shadow-lg shadow-neutral-600 "
+            >
+              <FontAwesomeIcon icon={descriptionIcon} />
+            </button>
+            <span className="mt-2">
+              {isDisplayedDescription ? "Hide" : "Show"}
+            </span>
+          </div>
           <div className="flex flex-col items-center">
             <button
               type="button"

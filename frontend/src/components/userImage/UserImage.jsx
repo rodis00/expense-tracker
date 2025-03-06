@@ -1,6 +1,7 @@
 import { jwtDecode } from "jwt-decode";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import logo from "../../../public/et-logo.png";
 
 const UserImage = ({ className, image, userImage }) => {
   const user = useSelector((state) => state.auth.user);
@@ -30,9 +31,9 @@ const UserImage = ({ className, image, userImage }) => {
       {!token && (
         <div className="flex justify-center">
           <div
-            className={`flex items-center justify-center rounded-full font-bold text-white bg-secondColor ${className}`}
+            className={`flex items-center justify-center rounded-full font-bold text-white ${className}`}
           >
-            L
+            <img src={logo} />
           </div>
         </div>
       )}

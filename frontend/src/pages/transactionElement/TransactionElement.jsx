@@ -47,7 +47,7 @@ const TransactionElement = () => {
 
   return (
     <div className="w-full min-h-screen flex justify-center items-center">
-      <div className="w-full md:w-3/4 lg:w-1/2 xlg:w-1/2 min-h-screen flex flex-col rounded-3xl">
+      <div className="w-full md:w-3/4 lg:w-3/4 xlg:w-2/3 flex flex-col rounded-3xl">
         {data && (
           <TransactionElementLayoutForm
             id={id}
