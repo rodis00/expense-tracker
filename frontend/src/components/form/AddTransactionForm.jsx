@@ -132,7 +132,7 @@ const AddTransactionForm = ({ value, upperValue }) => {
               <p className="h-4 mb-4 text-red-500">{formErrors.date}</p>
             )}
           </div>
-          <div className="mt-4 xsm:mt-0 w-full xsm:w-5/12">
+          <div className="mt-0 w-full xsm:w-5/12">
             <label
               htmlFor="category"
               className="text-white text-nowrap font-semibold text-xl lg:text-base mt-8"
@@ -147,13 +147,13 @@ const AddTransactionForm = ({ value, upperValue }) => {
                 resource={resource}
                 name="category"
                 id="category"
-                span="w-full"
+                span="w-full h-full bg-main rounded-full bg-neutral-800 sm:bg-main"
                 className="bg-neutral-800 sm:bg-main w-full focus:outline-none h-12 lg:h-10 pl-4 rounded-3xl border-none focus:ring-0"
               />
             </div>
           </div>
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col mt-8">
           <label
             htmlFor="description"
             className="text-white text-nowrap font-semibold text-xl lg:text-base"
