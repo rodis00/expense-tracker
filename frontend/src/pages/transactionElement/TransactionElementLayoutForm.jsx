@@ -209,7 +209,7 @@ const TransactionElementLayoutForm = ({
         </Link>
         <div className="lg:w-1/2 flex flex-col items-center relative">
           <div
-            className={`w-[95%] text-white relative top-8 items-center transition-all duration-300 ${
+            className={`w-5/6 text-white relative top-8 items-center transition-all duration-300 ${
               !displayDescription ? "delay-0" : "delay-300"
             } ${displayDescription ? "opacity-100" : "opacity-0"}
             ${displayDescription ? "z-10" : "z-0"}`}
@@ -219,9 +219,8 @@ const TransactionElementLayoutForm = ({
             </h3>
             <p
               ref={textRef}
-              className={`px-6 pb-6 whitespace-pre-line min-h-[20rem] max-h-[20rem] ${overflow}`}
+              className={`px-6 pb-6 whitespace-pre-line min-h-[20rem] max-h-[20rem] border-2 border-neutral-700 ${overflow}`}
             >
-              {/* hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee*/}
               {formData.description}
             </p>
           </div>
