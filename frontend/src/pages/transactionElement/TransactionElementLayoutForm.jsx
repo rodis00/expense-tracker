@@ -219,7 +219,7 @@ const TransactionElementLayoutForm = ({
             </h3>
             <p
               ref={textRef}
-              className={`px-6 pb-6 whitespace-pre-line min-h-[20rem] max-h-[20rem] border-2 border-neutral-700 ${overflow}`}
+              className={`px-6 pb-6 pt-4 whitespace-pre-line min-h-[20rem] max-h-[20rem] border-2 border-neutral-700 ${overflow}`}
             >
               {formData.description}
             </p>
