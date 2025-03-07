@@ -2,7 +2,6 @@ package com.github.rodis00.backend.user;
 
 import com.github.rodis00.backend.entity.UserEntity;
 import com.github.rodis00.backend.exception.UserAlreadyExistsException;
-import com.github.rodis00.backend.exception.UserNotFoundException;
 import com.github.rodis00.backend.exception.UsernameIsTakenException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

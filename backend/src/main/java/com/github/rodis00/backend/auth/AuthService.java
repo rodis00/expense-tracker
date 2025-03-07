@@ -67,7 +67,7 @@ public class AuthService {
     public AuthResponse authenticate(AuthRequest request) {
         UserEntity user = userRepository
                 .findByUsername(request.getUsername())
-                .orElseThrow(() -> new InvalidUsernameException("Username does not exist."));
+                .orElseThrow(() -> new InvalidUsernameException("User does not exist."));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword()))
             throw new InvalidPasswordException("Invalid password.");
@@ -91,7 +91,7 @@ public class AuthService {
     ) {
         Cookie[] cookies = request.getCookies();
         if (cookies == null) {
-            throw new InvalidTokenException("required cookie, received undefined");
+            throw new InvalidTokenException("Required cookie, received undefined");
         }
 
         final String username;
@@ -104,7 +104,7 @@ public class AuthService {
         username = jwtService.extractUsername(refreshToken);
 
         UserEntity user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
         if (!jwtService.isTokenValid(refreshToken, user) || !jwtService.isRefreshToken(refreshToken)) {
             throw new InvalidTokenException("Refresh token is not valid");

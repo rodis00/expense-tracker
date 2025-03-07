@@ -1,9 +1,8 @@
 package com.github.rodis00.backend.image;
 
 import com.github.rodis00.backend.entity.UserEntity;
-import com.github.rodis00.backend.exception.FileNotFoundException;
+import com.github.rodis00.backend.exception.EntityNotFoundException;
 import com.github.rodis00.backend.exception.InvalidFileException;
-import com.github.rodis00.backend.exception.UserNotFoundException;
 import com.github.rodis00.backend.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.query.sqm.PathElementException;
@@ -51,7 +50,7 @@ public class ImageService {
 
         try {
             UserEntity user = userRepository.findByUsername(username)
-                    .orElseThrow(() -> new UserNotFoundException("User not found"));
+                    .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
             Path directory = Paths.get(uploadDir);
             Files.createDirectories(directory); // Create directory if it doesn't exist
@@ -102,7 +101,7 @@ public class ImageService {
 
     public void deleteUserProfilePicture(String username) {
         UserEntity user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
         deleteUserProfilePicture(user.getProfilePicture(), user);
         userRepository.save(user);
     }
@@ -116,7 +115,7 @@ public class ImageService {
                     .contentType(MediaType.parseMediaType(contentType))
                     .body(fileData);
         } catch (PathElementException | IOException e) {
-            throw new FileNotFoundException("Image not found or could not be read");
+            throw new EntityNotFoundException("Image not found or could not be read");
         }
     }
 }

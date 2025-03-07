@@ -4,7 +4,6 @@ import com.github.rodis00.backend.api.ApiResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.MissingRequestCookieException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -21,28 +20,8 @@ public class GlobalExceptionHandler {
     private String maxFileSize;
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(IncomeNotFoundException.class)
-    public ApiResponse handleIncomeNotFoundException(IncomeNotFoundException e) {
-        return new ApiResponse(
-                HttpStatus.NOT_FOUND,
-                HttpStatus.NOT_FOUND.value(),
-                Collections.singletonMap(e.getFieldName(), e.getMessage())
-        );
-    }
-
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(ExpenseNotFoundException.class)
-    public ApiResponse handleExpenseNotFoundException(ExpenseNotFoundException e) {
-        return new ApiResponse(
-                HttpStatus.NOT_FOUND,
-                HttpStatus.NOT_FOUND.value(),
-                Collections.singletonMap(e.getFieldName(), e.getMessage())
-        );
-    }
-
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(UserNotFoundException.class)
-    public ApiResponse handleUserNotFoundException(UserNotFoundException e) {
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ApiResponse handleEntityNotFoundException(EntityNotFoundException e) {
         return new ApiResponse(
                 HttpStatus.NOT_FOUND,
                 HttpStatus.NOT_FOUND.value(),
@@ -116,16 +95,6 @@ public class GlobalExceptionHandler {
         );
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(FileNotFoundException.class)
-    public ApiResponse handleFileNotFoundException(FileNotFoundException e) {
-        return new ApiResponse(
-                HttpStatus.NOT_FOUND,
-                HttpStatus.NOT_FOUND.value(),
-                Collections.singletonMap(e.getFieldName(), e.getMessage())
-        );
-    }
-
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(InvalidFileException.class)
     public ApiResponse handleInvalidFileException(InvalidFileException e) {
@@ -143,16 +112,6 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST,
                 HttpStatus.BAD_REQUEST.value(),
                 Collections.singletonMap(Fields.error.name(), "File is too large. Maximum size is " + maxFileSize)
-        );
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(ResetTokenNotFoundException.class)
-    public ApiResponse handleResetTokenNotFoundException(ResetTokenNotFoundException e) {
-        return new ApiResponse(
-                HttpStatus.BAD_REQUEST,
-                HttpStatus.BAD_REQUEST.value(),
-                Collections.singletonMap(e.getFieldName(), e.getMessage())
         );
     }
 

@@ -2,7 +2,6 @@ package com.github.rodis00.backend.income;
 
 import com.github.rodis00.backend.entity.IncomeEntity;
 import com.github.rodis00.backend.entity.UserEntity;
-import com.github.rodis00.backend.exception.IncomeNotFoundException;
 import com.github.rodis00.backend.page.GlobalPage;
 import com.github.rodis00.backend.user.UserService;
 import org.junit.jupiter.api.BeforeEach;

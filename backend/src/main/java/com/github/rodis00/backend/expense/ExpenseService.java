@@ -2,7 +2,7 @@ package com.github.rodis00.backend.expense;
 
 import com.github.rodis00.backend.entity.ExpenseEntity;
 import com.github.rodis00.backend.entity.UserEntity;
-import com.github.rodis00.backend.exception.ExpenseNotFoundException;
+import com.github.rodis00.backend.exception.EntityNotFoundException;
 import com.github.rodis00.backend.page.GlobalPage;
 import com.github.rodis00.backend.user.UserService;
 import com.github.rodis00.backend.utils.TitleFormatter;
@@ -60,7 +60,7 @@ public class ExpenseService {
     public ExpenseEntity getExpenseBySlug(String slug) {
         return expenseRepository
                 .findBySlug(slug)
-                .orElseThrow(() -> new ExpenseNotFoundException("Expense not found."));
+                .orElseThrow(() -> new EntityNotFoundException("Expense not found."));
     }
 
     public ExpenseEntity updateExpense(
