@@ -59,7 +59,8 @@ const Settings = () => {
 
   const { mutate } = useMutation({
     mutationFn: updateUserData,
-    onSuccess: () => {
+    onSuccess: (values, variables) => {
+      const { username, password } = variables.values;
       queryClient.invalidateQueries(["user", { userId, token }]);
       setIsEditing(false);
       setConfirmPassword("");
@@ -68,7 +69,10 @@ const Settings = () => {
         ...prev,
         password: "",
       }));
-      if (userId === null) {
+      if (username || password) {
+        dispatch(authActions.logout());
+        localStorage.removeItem("token");
+        localStorage.removeItem("bg");
         navigate("/login");
       }
       dispatch(modalActions.showUserUpdateInfo());
@@ -176,7 +180,6 @@ const Settings = () => {
     }
 
     const values = {};
-    const keysToCheck = ["username", "password"];
 
     Object.keys(userData).forEach((key) => {
       if (key !== "id") {
@@ -197,11 +200,6 @@ const Settings = () => {
 
     if (Object.keys(values).length !== 0) {
       mutate({ userId, token, values });
-      if (Object.keys(values).some((key) => keysToCheck.includes(key))) {
-        dispatch(authActions.logout());
-        localStorage.removeItem("token");
-        localStorage.removeItem("bg");
-      }
     }
 
     if (image) {
@@ -212,7 +210,7 @@ const Settings = () => {
   return (
     <>
       <div className="w-full min-h-screen flex justify-center items-center">
-        <div className="sm:bg-fourthColor w-full h-full sm:h-3/5 sm:w-3/4 md:w-1/2 xlg:w-1/3 flex flex-col items-center pb-8 sm:rounded-3xl text-white">
+        <div className="sm:bg-fourthColor w-full h-full sm:w-3/4 lg:w-1/2 xlg:w-1/3 flex flex-col items-center pb-8 sm:rounded-3xl text-white">
           <h2 className="text-3xl font-semibold my-4">Your Profile</h2>
           <UserImage
             className="h-24 w-24 mb-4 text-5xl"
@@ -249,7 +247,9 @@ const Settings = () => {
               onChange={handleChange}
             />
             {formErrors && (
-              <p className="text-red-500">{formErrors.username}</p>
+              <p className="text-red-500 -mt-4 mb-4 min-h-4">
+                {formErrors.username}
+              </p>
             )}
             <Input
               labelText="Email"
@@ -261,7 +261,11 @@ const Settings = () => {
               value={userData.email}
               onChange={handleChange}
             />
-            {formErrors && <p className="text-red-500">{formErrors.email}</p>}
+            {formErrors && (
+              <p className="text-red-500 -mt-4 mb-4 min-h-4">
+                {formErrors.email}
+              </p>
+            )}
             {isEditing && (
               <Input
                 labelText="Password"
@@ -284,7 +288,9 @@ const Settings = () => {
               </Input>
             )}
             {formErrors && (
-              <p className="text-red-500">{formErrors.password}</p>
+              <p className="text-red-500 -mt-4 mb-4 min-h-4">
+                {formErrors.password}
+              </p>
             )}
 
             {isEditing && (
@@ -311,7 +317,9 @@ const Settings = () => {
               </Input>
             )}
 
-            {passwordError && <p className="text-red-500">{passwordError}</p>}
+            {passwordError && (
+              <p className="text-red-500 -mt-4 mb-4 min-h-4">{passwordError}</p>
+            )}
           </div>
           {isEditing ? (
             <div className="flex gap-8 mt-8">
