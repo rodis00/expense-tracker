@@ -39,7 +39,8 @@ const ResetPassword = () => {
     setPasswordError("");
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
     mutate(changePassword);
   };
 
@@ -63,8 +64,8 @@ const ResetPassword = () => {
       inputId={"password"}
       title={"Set your new password"}
       icon={faLock}
-      value={changePassword.password}
-      error={passwordError.token}
+      value={changePassword.newPassword}
+      error={passwordError.token || passwordError.newPassword}
       handleSubmit={handleSubmit}
     />
   );

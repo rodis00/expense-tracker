@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 
 const incomeCategories = [
   ["SALARY", "Salary"],
+  ["SELL", "Sell"],
+  ["SOCIAL_MEDIA", "Social media"],
   ["BUSINESS_INCOME", "Business income"],
   ["INVESTMENT", "Investment"],
   ["GIFTS", "Gifts"],
@@ -20,6 +22,7 @@ const expenseCategories = [
   ["EDUCATION", "Education"],
   ["CLOTHES", "Clothes"],
   ["TRAVEL", "Travel"],
+  ["SUBSCRIPTION", "Subscription"],
   ["GIFTS", "Gifts"],
   ["OTHER", "Other"],
 ];

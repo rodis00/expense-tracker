@@ -194,7 +194,7 @@ const TransactionElementLayoutForm = ({
       )}
 
       <div
-        className={`bg-thirdColor w-full min-h-[40rem] mx-auto md:rounded-3xl flex flex-col lg:flex-row overflow-hidden relative`}
+        className={`bg-thirdColor w-full min-h-[40rem] lg:min-h-[45rem] xlg:min-h-[40rem] mx-auto md:rounded-3xl flex flex-col lg:flex-row overflow-hidden relative`}
       >
         <Link
           to={
@@ -359,8 +359,8 @@ const TransactionElementLayoutForm = ({
               )}
             </div>
 
-            <div className="flex flex-col sm:flex-row w-full justify-between -mt-8">
-              <div className="flex flex-col w-full sm:w-1/2 xlg:w-2/5">
+            <div className="flex flex-col sm:flex-row lg:flex-col xlg:flex-row w-full justify-between -mt-8">
+              <div className="flex flex-col w-full sm:w-1/2 lg:w-full xlg:w-2/5">
                 <Input
                   textLgSize={"lg:text-xl"}
                   labelText={"Date"}
@@ -381,7 +381,7 @@ const TransactionElementLayoutForm = ({
                 )}
               </div>
 
-              <div className="flex flex-col w-full sm:w-1/2 xlg:w-2/5 -mt-8 sm:mt-0">
+              <div className="flex flex-col w-full sm:w-3/5 lg:w-full 2xl:w-1/2 -mt-8 sm:mt-0 lg:-mt-8 xlg:mt-0">
                 <label
                   htmlFor="category"
                   className="text-white text-nowrap font-semibold text-xl mt-8"
@@ -405,7 +405,7 @@ const TransactionElementLayoutForm = ({
               </div>
             </div>
 
-            <div className="w-full flex flex-col -mt-12">
+            <div className="w-full flex flex-col -mt-8">
               <Input
                 textLgSize={"lg:text-xl"}
                 labelText={name === "incomes" ? "Amount" : "Price"}

@@ -84,7 +84,7 @@ const AddTransactionForm = ({ value, upperValue }) => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="w-[95%] sm:w-3/4 flex flex-col">
+    <form onSubmit={handleSubmit} className="w-[95%] sm:w-[90%] flex flex-col">
       <h2 className="text-center text-white my-8 xsm:my-4 text-2xl font-semibold">
         Add your {value === "amount" ? "income" : "expense"}
       </h2>
@@ -141,7 +141,7 @@ const AddTransactionForm = ({ value, upperValue }) => {
               <p className="h-4 mb-4 text-red-500">{formErrors.date}</p>
             )}
           </div>
-          <div className="mt-4 xsm:mt-0 w-full xsm:w-1/2">
+          <div className="w-full xsm:w-1/2">
             <label
               htmlFor="category"
               className="text-white text-nowrap font-semibold text-xl lg:text-base mt-8"

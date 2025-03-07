@@ -2,11 +2,14 @@ import {
   faBurger,
   faBusinessTime,
   faCarSide,
+  faCircleDollarToSlot,
+  faCreditCard,
   faGift,
   faGlobe,
   faGraduationCap,
   faHandHoldingDollar,
   faHouse,
+  faIcons,
   faKitMedical,
   faPersonCane,
   faPlane,
@@ -40,11 +43,22 @@ const CategoryCases = ({ category }) => {
     case "TRAVEL":
       icon = <FontAwesomeIcon icon={faPlane} className="text-2xl" />;
       break;
+    case "SUBSCRIPTION":
+      icon = <FontAwesomeIcon icon={faCreditCard} className="text-2xl" />;
+      break;
     case "GIFTS":
       icon = <FontAwesomeIcon icon={faGift} className="text-2xl" />;
       break;
     case "SALARY":
       icon = <FontAwesomeIcon icon={faSackDollar} className="text-2xl" />;
+      break;
+    case "SELL":
+      icon = (
+        <FontAwesomeIcon icon={faCircleDollarToSlot} className="text-2xl" />
+      );
+      break;
+    case "SOCIAL_MEDIA":
+      icon = <FontAwesomeIcon icon={faIcons} className="text-2xl" />;
       break;
     case "BUSINESS_INCOME":
       icon = <FontAwesomeIcon icon={faBusinessTime} className="text-2xl" />;

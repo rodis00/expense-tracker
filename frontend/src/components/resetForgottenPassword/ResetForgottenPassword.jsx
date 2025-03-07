@@ -69,6 +69,7 @@ const ResetForgottenPassword = ({
               Go back
             </Link>
             <button
+              type="button"
               onClick={handleSubmit}
               className="text-white w-28 h-12 bg-secondColor font-semibold rounded-full mt-4 transition-all duration-300 hover:bg-[#28bf8a]"
             >

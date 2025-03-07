@@ -47,7 +47,7 @@ const ForgotPassword = () => {
       title={"Forgot password"}
       icon={faEnvelope}
       value={changeEmail.email}
-      error={emailError.error}
+      error={emailError.email}
       handleSubmit={handleSubmit}
     />
   );
