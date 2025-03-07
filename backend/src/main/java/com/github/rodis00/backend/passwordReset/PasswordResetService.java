@@ -31,7 +31,7 @@ public class PasswordResetService {
 
     private PasswordResetTokenEntity generateResetToken(String email) {
         UserEntity user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Email not found"));
 
         PasswordResetTokenEntity resetToken = new PasswordResetTokenEntity();
         resetToken.setToken(UUID.randomUUID().toString());
