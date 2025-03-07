@@ -77,7 +77,7 @@ const Incomes = () => {
 
   return (
     <>
-      <Modal open={version === "form"} className="min-h-full">
+      <Modal open={version === "form"} className="min-h-full xsm:rounded-3xl">
         <AddTransactionForm upperValue={"Amount"} value={"amount"} />
       </Modal>
 

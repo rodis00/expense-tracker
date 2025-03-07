@@ -6,6 +6,7 @@ import { fetchIncomeYears } from "../../http/incomeHttp";
 import { fetchExpenseYears } from "../../http/expenseHttp";
 import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
+import CustomSelect from "../customSelect/CustomSelect";
 
 const LineChart = ({
   incomesData,
@@ -13,6 +14,7 @@ const LineChart = ({
   incomesPending,
   expensePending,
   changeYear,
+  selectedYear,
 }) => {
   let years = [];
   const token = localStorage.getItem("token");
@@ -83,22 +85,16 @@ const LineChart = ({
           <span className="text-neutral-500 font-semibold mr-4">
             (Select year)
           </span>
-          <span className="flex px-2 bg-neutral-800 rounded-full">
-            <select
-              name="years"
-              id="years"
-              className="bg-neutral-800 text-white focus:outline-none w-24 h-12 lg:h-10 pl-4 rounded-3xl border-none focus:ring-0"
-              onChange={(e) => changeYear(e.target.value)}
-            >
-              {years
-                ?.sort((a, b) => b - a)
-                .map((item) => (
-                  <option value={item} key={item}>
-                    {item}
-                  </option>
-                ))}
-            </select>
-          </span>
+
+          <CustomSelect
+            divClass="w-24 relative mt-2"
+            buttonClass="rounded-3xl h-12"
+            bgClass="bg-neutral-800"
+            isCategory={false}
+            array={years}
+            selectedValue={selectedYear}
+            setValue={changeYear}
+          />
         </span>
       </div>
 

@@ -3,7 +3,6 @@ import {
   faPencil,
   faDollar,
   faCalendar,
-  faList,
   faFloppyDisk,
   faBan,
   faTrash,
@@ -25,10 +24,10 @@ import { modalActions } from "../../store/modal-slice";
 import TransactionDeleteModal from "../../components/modal/TransactionDeleteModal";
 import TransactionUpdateInfoModal from "../../components/modal/TransactionUpdateInfoModal";
 import TransactionActions from "./TransactionActions";
-import SelectCategory from "../../components/category/SelectCategory";
 import Input from "../../components/form/Input";
 import { useMediaQuery } from "@react-hook/media-query";
 import logo from "/et-logo.png";
+import CustomSelect from "../../components/customSelect/CustomSelect";
 
 const TransactionElementLayoutForm = ({
   id,
@@ -300,7 +299,7 @@ const TransactionElementLayoutForm = ({
               isDisplayedDescription={displayDescription}
             />
           )}
-{/*-------------------------------------------------------------------*/}
+
           <div
             className={`flex flex-col w-11/12 lg:w-5/6 relative lg:top-8 transition-all duration-300 ${
               !displayDescription ? "delay-0" : "delay-300"
@@ -389,22 +388,15 @@ const TransactionElementLayoutForm = ({
                 >
                   Category
                 </label>
-                <div className="w-full h-12 mt-2 relative flex items-center mb-4 ">
-                  <span className="absolute pl-4">
-                    <FontAwesomeIcon icon={faList} />
-                  </span>
-                  <SelectCategory
-                    resource={name}
-                    disabled={!isEditting}
-                    onChange={handleChange}
-                    defaultValue={formData.category}
-                    type="text"
-                    id="category"
-                    name="category"
-                    className="w-full h-full bg-neutral-800 sm:bg-main rounded-full flex items-center pl-10 outline-none"
-                    span="w-full h-full rounded-full bg-neutral-800 sm:bg-main"
-                  />
-                </div>
+                <CustomSelect
+                  divClass="w-full relative mt-2 "
+                  buttonClass="rounded-3xl h-12"
+                  bgClass="bg-neutral-800 sm:bg-main"
+                  isCategory={true}
+                  resource={name}
+                  category={formData.category}
+                  setCategoryUpdate={setFormData}
+                />
                 {formErrors && (
                   <p className="h-4 mt-2 mb-4 text-red-500 text-center">
                     {formErrors.category}

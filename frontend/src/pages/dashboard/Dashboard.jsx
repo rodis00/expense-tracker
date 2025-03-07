@@ -77,10 +77,6 @@ const Dashboard = () => {
     balance = incomes - expenses;
   }
 
-  const changeYear = (year) => {
-    setYear(year);
-  };
-
   return (
     <main className="w-full min-h-screen flex flex-col text-white">
       <div className="text-center my-4">
@@ -118,7 +114,8 @@ const Dashboard = () => {
               expensesData={expensesData}
               incomesPending={incomesPending}
               expensePending={expensePending}
-              changeYear={changeYear}
+              changeYear={setYear}
+              selectedYear={year}
             />
           </div>
         </section>

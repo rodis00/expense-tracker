@@ -80,7 +80,7 @@ const Expenses = () => {
 
   return (
     <>
-      <Modal open={version === "form"} className="min-h-full">
+      <Modal open={version === "form"} className="min-h-full xsm:rounded-3xl">
         <AddTransactionForm upperValue={"Price"} value={"price"} />
       </Modal>
 

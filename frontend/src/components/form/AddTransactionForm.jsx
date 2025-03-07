@@ -4,7 +4,6 @@ import {
   faPencil,
   faDollar,
   faCalendar,
-  faList,
 } from "@fortawesome/free-solid-svg-icons";
 import Input from "./Input";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,7 +12,7 @@ import "./AddTransactionForm.css";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { newIncome } from "../../http/incomeHttp";
 import { newExpense } from "../../http/expenseHttp";
-import SelectCategory from "../category/SelectCategory";
+import CustomSelect from "../customSelect/CustomSelect";
 
 const AddTransactionForm = ({ value, upperValue }) => {
   const [formErrors, setFormErrors] = useState({});
@@ -25,6 +24,10 @@ const AddTransactionForm = ({ value, upperValue }) => {
   const pending = value === "amount" ? "Adding income..." : "Adding expense...";
   const queryClient = useQueryClient();
   const resource = value === "amount" ? "incomes" : "expenses";
+  const [category, setCategory] = useState({
+    category: "",
+    text: "",
+  });
 
   const { mutate, isPending } = useMutation({
     mutationFn: value === "amount" ? newIncome : newExpense,
@@ -54,7 +57,12 @@ const AddTransactionForm = ({ value, upperValue }) => {
   });
 
   const handleCloseForm = () => {
+    setFormErrors("");
     dispatch(modalActions.closeModal());
+    setCategory(() => ({
+      category: "",
+      text: "",
+    }));
   };
 
   const handleShowPicker = () => {
@@ -68,6 +76,7 @@ const AddTransactionForm = ({ value, upperValue }) => {
     const values = {
       ...formValues,
       date: new Date(formValues.date),
+      category: category.category,
     };
     setFormErrors({});
     mutate({ userId, values, token });
@@ -108,7 +117,7 @@ const AddTransactionForm = ({ value, upperValue }) => {
           </p>
         )}
         <div className="flex flex-col xsm:flex-row justify-between mb-4">
-          <div className="w-full xsm:w-1/2">
+          <div className="w-full xsm:w-5/12">
             <label
               htmlFor="date"
               className="text-white text-nowrap font-semibold text-xl lg:text-base mt-8"
@@ -125,32 +134,30 @@ const AddTransactionForm = ({ value, upperValue }) => {
                 name="date"
                 ref={dateInputRef}
                 onFocus={handleShowPicker}
-                className={`w-full border-none h-12 lg:h-10 bg-neutral-800 appearance-none sm:bg-main rounded-3xl pl-12 pr-2 text-lg lg:text-base lg:focus:text-sm transition-all duration-200 focus:ring-white focus:text-base`}
+                className={`w-full border-none h-12 bg-neutral-800 appearance-none sm:bg-main rounded-3xl pl-12 pr-2 text-lg lg:text-base lg:focus:text-sm transition-all duration-200 focus:ring-white focus:text-base`}
               />
             </div>
             {formErrors && (
               <p className="h-4 mb-4 text-red-500">{formErrors.date}</p>
             )}
           </div>
-          <div className="mt-0 w-full xsm:w-5/12">
+          <div className="mt-4 xsm:mt-0 w-full xsm:w-1/2">
             <label
               htmlFor="category"
               className="text-white text-nowrap font-semibold text-xl lg:text-base mt-8"
             >
               Category
             </label>
-            <div className="w-full bg-neutral-800 sm:bg-main rounded-3xl relative flex items-center text-white mt-2">
-              <span className="pl-4">
-                <FontAwesomeIcon icon={faList} />
-              </span>
-              <SelectCategory
-                resource={resource}
-                name="category"
-                id="category"
-                span="w-full h-full bg-main rounded-full bg-neutral-800 sm:bg-main"
-                className="bg-neutral-800 sm:bg-main w-full focus:outline-none h-12 lg:h-10 pl-4 rounded-3xl border-none focus:ring-0"
-              />
-            </div>
+
+            <CustomSelect
+              divClass="w-full relative mt-2 "
+              buttonClass="rounded-3xl h-12"
+              bgClass="bg-neutral-800 sm:bg-main"
+              isCategory={true}
+              resource={resource}
+              setCategory={setCategory}
+              category={category.text}
+            />
           </div>
         </div>
         <div className="flex flex-col mt-8">
