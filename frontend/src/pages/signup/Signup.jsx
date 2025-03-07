@@ -90,7 +90,7 @@ const Signup = () => {
       <div className="w-full h-screen flex items-center justify-center">
         <form
           onSubmit={handleSubmit}
-          className="bg-main sm:bg-fourthColor w-full sm:w-2/3 md:w-1/2 xlg:w-1/3 min-h-[36rem] flex flex-col rounded-3xl"
+          className="bg-main sm:bg-fourthColor w-full md:w-2/3 lg:w-1/2 xlg:w-1/3 min-h-screen md:min-h-[36rem] flex flex-col md:rounded-3xl"
         >
           <h1 className="text-center text-3xl lg:text-2xl text-white my-8 lg:my-4 h-[10%]">
             Signup
@@ -107,7 +107,9 @@ const Signup = () => {
             />
 
             {formErrors && (
-              <p className="text-red-500">{formErrors.username}</p>
+              <p className="text-red-500 h-4 -mt-4 mb-4">
+                {formErrors.username}
+              </p>
             )}
 
             <Input
@@ -120,7 +122,9 @@ const Signup = () => {
               onChange={handleChange}
             />
 
-            {formErrors && <p className="text-red-500">{formErrors.email}</p>}
+            {formErrors && (
+              <p className="text-red-500 h-4 -mt-4 mb-4">{formErrors.email}</p>
+            )}
 
             <Input
               labelText="Password"
@@ -141,13 +145,15 @@ const Signup = () => {
                 />
               </button>
             </Input>
-            <p className="text-neutral-500 -mt-3 relative float-right lg:text-sm">
-              Password must contain 8 charatcters.
-            </p>
+            <div className="w-full flex flex-col lg:flex-row lg:justify-between lg:gap-8">
+              <p className="text-neutral-500 -mt-3 relative float-right lg:text-sm lg:w-1/2 lg:order-2 lg:text-end">
+                Password must contain 8 charatcters.
+              </p>
 
-            {formErrors && (
-              <p className="text-red-500">{formErrors.password}</p>
-            )}
+              {formErrors && (
+                <p className="text-red-500 min-h-4 mb-4 lg:-mt-3">{formErrors.password}</p>
+              )}
+            </div>
 
             <Input
               labelText="Confirm password"
@@ -169,7 +175,9 @@ const Signup = () => {
               </button>
             </Input>
 
-            {passwordError && <p className="text-red-500">{passwordError}</p>}
+            {passwordError && (
+              <p className="text-red-500 h-4 -mt-4 mb-4">{passwordError}</p>
+            )}
           </div>
 
           <div className="flex flex-col items-center gap-4 mt-4">

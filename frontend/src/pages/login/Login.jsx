@@ -60,7 +60,7 @@ const Login = () => {
       <div className="w-full h-screen flex items-center justify-center">
         <form
           onSubmit={handleSubmit}
-          className="bg-main sm:bg-fourthColor w-full sm:w-2/3 md:w-1/2 lg:w-1/3 min-h-[35rem] flex flex-col rounded-3xl"
+          className="bg-main sm:bg-fourthColor w-full sm:w-2/3 lg:w-1/2 xlg:w-1/3 min-h-[35rem] flex flex-col rounded-3xl"
         >
           <h1 className="text-center text-3xl text-white my-8 h-[10%] lg:text-2xl">
             Login
@@ -75,7 +75,9 @@ const Login = () => {
             />
 
             {formErrors && (
-              <p className="text-red-500">{formErrors.username}</p>
+              <p className="text-red-500 h-4 -mt-4 mb-4">
+                {formErrors.username}
+              </p>
             )}
 
             <Input
@@ -96,16 +98,18 @@ const Login = () => {
               </button>
             </Input>
 
-            <Link
-              to={"/forgot-password"}
-              className="text-neutral-500 -mt-3 transition-all duration-300 hover:text-red-500 relative float-right lg:text-sm"
-            >
-              Forgot your password?
-            </Link>
+            <div className="flex flex-col md:flex-row md:justify-between">
+              <Link
+                to={"/forgot-password"}
+                className="text-neutral-500 -mt-3 transition-all duration-300 hover:text-red-500 relative float-right lg:text-sm md:order-2"
+              >
+                Forgot your password?
+              </Link>
 
-            {formErrors && (
-              <p className="text-red-500">{formErrors.password}</p>
-            )}
+              {formErrors && (
+                <p className="text-red-500 h-4 md:-mt-3">{formErrors.password}</p>
+              )}
+            </div>
           </div>
 
           <div className="flex flex-col items-center gap-4 mt-12">

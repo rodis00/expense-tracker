@@ -34,8 +34,8 @@ const TransactionActions = ({
             >
               <FontAwesomeIcon icon={descriptionIcon} />
             </button>
-            <span className="mt-2">
-              {isDisplayedDescription ? "Hide" : "Show"}
+            <span className="mt-2 w-20 text-center">
+              {isDisplayedDescription ? "Hide" : "Show"}<p>description</p>
             </span>
           </div>
           <div className="flex flex-col items-center">
@@ -46,7 +46,7 @@ const TransactionActions = ({
             >
               <FontAwesomeIcon icon={saveIcon} />
             </button>
-            <span className="mt-2">{isPending ? "Saving..." : "Save"}</span>
+            <span className="mt-2 w-20 text-center">{isPending ? "Saving..." : "Save"}</span>
           </div>
           <div className="flex flex-col items-center">
             <button
@@ -56,7 +56,7 @@ const TransactionActions = ({
             >
               <FontAwesomeIcon icon={closeIcon} />
             </button>
-            <span className="mt-2">Cancel</span>
+            <span className="mt-2 w-20 text-center">Cancel</span>
           </div>
         </div>
       ) : (
@@ -73,8 +73,8 @@ const TransactionActions = ({
             >
               <FontAwesomeIcon icon={descriptionIcon} />
             </button>
-            <span className="mt-2">
-              {isDisplayedDescription ? "Hide" : "Show"}
+            <span className="mt-2 text-center w-20">
+              {isDisplayedDescription ? "Hide" : "Show"} <p>description</p>
             </span>
           </div>
           <div className="flex flex-col items-center">
@@ -85,7 +85,7 @@ const TransactionActions = ({
             >
               <FontAwesomeIcon icon={editIcon} />
             </button>
-            <span className="mt-2">Edit</span>
+            <span className="mt-2 w-20 text-center">Edit</span>
           </div>
           <div className="flex flex-col items-center">
             <button
@@ -95,7 +95,7 @@ const TransactionActions = ({
             >
               <FontAwesomeIcon icon={deleteIcon} />
             </button>
-            <span className="mt-2">Delete</span>
+            <span className="mt-2 w-20 text-center">Delete</span>
           </div>
         </div>
       )}

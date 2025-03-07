@@ -40,7 +40,6 @@ const ResetPassword = () => {
   };
 
   const handleSubmit = () => {
-    console.log(changePassword)
     mutate(changePassword);
   };
 

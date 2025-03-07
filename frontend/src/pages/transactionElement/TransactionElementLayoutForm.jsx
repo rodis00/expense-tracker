@@ -28,7 +28,7 @@ import TransactionActions from "./TransactionActions";
 import SelectCategory from "../../components/category/SelectCategory";
 import Input from "../../components/form/Input";
 import { useMediaQuery } from "@react-hook/media-query";
-import logo from "../../../public/et-logo.png";
+import logo from "/et-logo.png";
 
 const TransactionElementLayoutForm = ({
   id,
@@ -219,7 +219,7 @@ const TransactionElementLayoutForm = ({
             </h3>
             <p
               ref={textRef}
-              className={`px-6 pb-6 pt-4 whitespace-pre-line min-h-[20rem] max-h-[20rem] border-2 border-neutral-700 ${overflow}`}
+              className={`px-6 pb-6 whitespace-pre-line min-h-[20rem] max-h-[20rem] border-2 border-neutral-700 ${overflow}`}
             >
               {formData.description}
             </p>
@@ -300,7 +300,7 @@ const TransactionElementLayoutForm = ({
               isDisplayedDescription={displayDescription}
             />
           )}
-
+{/*-------------------------------------------------------------------*/}
           <div
             className={`flex flex-col w-11/12 lg:w-5/6 relative lg:top-8 transition-all duration-300 ${
               !displayDescription ? "delay-0" : "delay-300"
@@ -309,7 +309,7 @@ const TransactionElementLayoutForm = ({
           >
             <label
               htmlFor="desription"
-              className="mt-20 lg:mt-2 text-3xl text-center text-orange-500"
+              className="mt-20 lg:mt-6 lg:pb-2 text-3xl text-center text-orange-500"
             >
               Edit description
             </label>
@@ -336,7 +336,7 @@ const TransactionElementLayoutForm = ({
           )}
 
           <div
-            className={`w-5/6 rounded-3xl flex flex-col justify-center items-center mx-auto absolute transition-all duration-300 ${
+            className={`w-5/6 rounded-3xl flex flex-col justify-center items-center mx-auto lg:mt-6 absolute transition-all duration-300 ${
               !displayDescription ? "delay-300" : "delay-0"
             } ${displayDescription ? "opacity-0" : "opacity-100"}`}
           >
@@ -455,7 +455,7 @@ const TransactionElementLayoutForm = ({
         </form>
         {!isLargeScreen && (
           <div
-            className={`absolute w-1/2 h-full bg-secondColor z-20 transition-all duration-300 ${
+            className={`absolute w-1/2 h-full bg-black z-20 transition-all duration-300 ${
               isEditting ? "translate-x-0" : "translate-x-full"
             }`}
           >
