@@ -3,9 +3,8 @@ package com.github.rodis00.backend.passwordReset;
 import com.github.rodis00.backend.emailSender.EmailDto;
 import com.github.rodis00.backend.emailSender.EmailService;
 import com.github.rodis00.backend.entity.UserEntity;
+import com.github.rodis00.backend.exception.EntityNotFoundException;
 import com.github.rodis00.backend.exception.ResetTokenExpiredException;
-import com.github.rodis00.backend.exception.ResetTokenNotFoundException;
-import com.github.rodis00.backend.exception.UserNotFoundException;
 import com.github.rodis00.backend.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,7 +31,7 @@ public class PasswordResetService {
 
     private PasswordResetTokenEntity generateResetToken(String email) {
         UserEntity user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Email not found"));
 
         PasswordResetTokenEntity resetToken = new PasswordResetTokenEntity();
         resetToken.setToken(UUID.randomUUID().toString());
@@ -46,7 +45,7 @@ public class PasswordResetService {
 
     private EmailDto prepareEmail(String recipient) {
         PasswordResetTokenEntity resetToken = generateResetToken(recipient);
-        String resetLink =  BASE_URL + "/reset-password?resetToken=" + resetToken.getToken();
+        String resetLink = BASE_URL + "/reset-password?resetToken=" + resetToken.getToken();
 
         String subject = "Reset password";
         String content = "Click here to reset your password: " + resetLink +
@@ -66,7 +65,7 @@ public class PasswordResetService {
 
     public void resetPassword(String token, String newPassword) {
         PasswordResetTokenEntity resetToken = tokenRepository.findByToken(token)
-                .orElseThrow(() -> new ResetTokenNotFoundException("Invalid password reset token"));
+                .orElseThrow(() -> new EntityNotFoundException("Invalid password reset token"));
 
         if (resetToken.isExpired()) {
             throw new ResetTokenExpiredException("Password reset token expired");

@@ -2,7 +2,6 @@ package com.github.rodis00.backend.expense;
 
 import com.github.rodis00.backend.entity.ExpenseEntity;
 import com.github.rodis00.backend.entity.UserEntity;
-import com.github.rodis00.backend.exception.ExpenseNotFoundException;
 import com.github.rodis00.backend.page.GlobalPage;
 import com.github.rodis00.backend.user.UserService;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,7 +1,7 @@
 package com.github.rodis00.backend.exception;
 
-public class ExpenseNotFoundException extends RuntimeException implements FieldName{
-    public ExpenseNotFoundException(String message) {
+public class EntityNotFoundException extends RuntimeException implements FieldName{
+    public EntityNotFoundException(String message) {
         super(message);
     }
 

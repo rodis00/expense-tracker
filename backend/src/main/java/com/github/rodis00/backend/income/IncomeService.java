@@ -2,7 +2,7 @@ package com.github.rodis00.backend.income;
 
 import com.github.rodis00.backend.entity.IncomeEntity;
 import com.github.rodis00.backend.entity.UserEntity;
-import com.github.rodis00.backend.exception.IncomeNotFoundException;
+import com.github.rodis00.backend.exception.EntityNotFoundException;
 import com.github.rodis00.backend.page.GlobalPage;
 import com.github.rodis00.backend.user.UserService;
 import com.github.rodis00.backend.utils.TitleFormatter;
@@ -59,7 +59,7 @@ public class IncomeService {
 
     public IncomeEntity getIncomeBySlug(String slug) {
         return incomeRepository.findBySlug(slug)
-                .orElseThrow(() -> new IncomeNotFoundException("Income not found."));
+                .orElseThrow(() -> new EntityNotFoundException("Income not found."));
     }
 
     public IncomeEntity updateIncome(

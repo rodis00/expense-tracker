@@ -9,5 +9,6 @@ public enum ExpenseCategory {
     CLOTHES,
     TRAVEL,
     GIFTS,
+    SUBSCRIPTION,
     OTHER
 }
