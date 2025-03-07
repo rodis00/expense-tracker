@@ -72,7 +72,7 @@ public class AuthController {
     )
     @PostMapping("/forgot-password")
     public ResponseEntity<PasswordResetResponse> forgotPassword(
-            @RequestBody ForgotPasswordRequest request
+            @RequestBody @Valid ForgotPasswordRequest request
     ) {
         passwordResetService.sendEmailToResetPassword(request.email());
         return ResponseEntity.ok(new PasswordResetResponse("Password reset link sent to email"));
@@ -83,7 +83,7 @@ public class AuthController {
     )
     @PostMapping("/reset-password")
     public ResponseEntity<PasswordResetResponse> resetPassword(
-            @RequestBody ResetPasswordRequest request
+            @RequestBody @Valid ResetPasswordRequest request
     ) {
         passwordResetService.resetPassword(request.resetToken(), request.newPassword());
         return ResponseEntity.ok(new PasswordResetResponse("Password has been reset successfully"));
