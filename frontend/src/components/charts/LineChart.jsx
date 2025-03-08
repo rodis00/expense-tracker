@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Chart as ChartJS } from "chart.js/auto";
 import { Line } from "react-chartjs-2";
 import { ChartDataPoints } from "./ChartDataPoints";
@@ -7,6 +7,7 @@ import { fetchExpenseYears } from "../../http/expenseHttp";
 import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import CustomSelect from "../customSelect/CustomSelect";
+import GridChart from "./GridChart";
 
 const LineChart = ({
   incomesData,
@@ -19,6 +20,10 @@ const LineChart = ({
   let years = [];
   const token = localStorage.getItem("token");
   const userId = useSelector((state) => state.auth.user);
+  const [selectGrid, setSelectGrid] = useState({
+    x: false,
+    y: false,
+  });
 
   const { data: incomeYears } = useQuery({
     queryKey: ["incomes", token, userId],
@@ -76,6 +81,13 @@ const LineChart = ({
     ChartDataPointsExpenses[elemMonth] += elem.price;
   }
 
+  const handleToogleGrid = (grid) => {
+    setSelectGrid((prev) => ({
+      ...prev,
+      [grid]: !prev[grid],
+    }));
+  };
+
   return (
     <div
       className={`h-[60vh] lg:h-[70vh] w-full lg:w-3/4 sm:pb-4 sm:px-4 md:rounded-2xl lg:rounded-3xl pt-12 md:pt-0 relative`}
@@ -124,7 +136,8 @@ const LineChart = ({
                 color: "white",
               },
               grid: {
-                display: false,
+                display: selectGrid.x,
+                color: "rgba(200, 200, 200, 0.1)",
               },
               title: {
                 display: false,
@@ -140,7 +153,8 @@ const LineChart = ({
                 color: "white",
               },
               grid: {
-                display: false,
+                display: selectGrid.y,
+                color: "rgba(200, 200, 200, 0.1)",
               },
               title: {
                 display: false,
@@ -166,6 +180,7 @@ const LineChart = ({
           },
         }}
       />
+      <GridChart handleToogleGrid={handleToogleGrid} lineChart={true} />
     </div>
   );
 };

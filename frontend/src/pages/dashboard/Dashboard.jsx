@@ -120,7 +120,7 @@ const Dashboard = () => {
           </div>
         </section>
 
-        <h2 className="text-3xl font-semibold my-12">
+        <h2 className="text-3xl font-semibold mb-12 mt-40 lg:mt-24">
           Transactions by categories
         </h2>
 

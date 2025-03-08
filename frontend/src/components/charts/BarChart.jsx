@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Chart as ChartJS } from "chart.js/auto";
 import { Bar } from "react-chartjs-2";
 import { ChartDataPoints, ChartDataPointsDaily } from "./ChartDataPoints";
@@ -6,19 +6,23 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchIncomeYears } from "../../http/incomeHttp";
 import { fetchExpenseYears } from "../../http/expenseHttp";
 import { useSelector } from "react-redux";
+import GridChart from "./GridChart";
 
 const BarChart = ({ selectedPoints, name, data }) => {
   let labels;
   let dataValues;
   let legend = "";
   let updatedData;
-  let minYear;
   let YearlyDataPoints = [];
   const ChartDataPointsYearly = [];
   const MonthlyDataPoints = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   const WeeklyDataPoints = [0, 0, 0, 0, 0, 0, 0];
   const token = localStorage.getItem("token");
   const userId = useSelector((state) => state.auth.user);
+  const [selectGrid, setSelectGrid] = useState({
+    x: false,
+    y: false,
+  });
 
   const { data: dataYears } = useQuery({
     queryKey:
@@ -37,7 +41,6 @@ const BarChart = ({ selectedPoints, name, data }) => {
       ChartDataPointsYearly.push(item);
       YearlyDataPoints.push(0);
     });
-    minYear = dataYears[0];
   } else {
     YearlyDataPoints = [];
   }
@@ -87,6 +90,13 @@ const BarChart = ({ selectedPoints, name, data }) => {
       YearlyDataPoints[ChartDataPointsYearly.indexOf(elemYear)] += elem.value;
   }
 
+  const handleToogleGrid = (grid) => {
+    setSelectGrid((prev) => ({
+      ...prev,
+      [grid]: !prev[grid],
+    }));
+  };
+
   return (
     <div
       className={`h-[55vh] w-full md:w-10/12 lg:w-3/4 sm:p-4 mt-8 rounded-3xl`}
@@ -97,7 +107,7 @@ const BarChart = ({ selectedPoints, name, data }) => {
           datasets: [
             {
               label: name === "incomes" ? "incomes" : "epxenses",
-              barThickness: 15,
+              barThickness: 20,
               backgroundColor: name === "incomes" ? "#28bf8a" : "#EF4444",
               borderRadius: "20",
               data: dataValues.map((data) => data),
@@ -112,7 +122,8 @@ const BarChart = ({ selectedPoints, name, data }) => {
                 color: "white",
               },
               grid: {
-                display: false,
+                display: selectGrid.x,
+                color: "rgba(200, 200, 200, 0.1)",
               },
               title: {
                 display: true,
@@ -128,7 +139,8 @@ const BarChart = ({ selectedPoints, name, data }) => {
                 color: "white",
               },
               grid: {
-                display: false,
+                display: selectGrid.y,
+                color: "rgba(200, 200, 200, 0.1)",
               },
               title: {
                 display: false,
@@ -154,6 +166,7 @@ const BarChart = ({ selectedPoints, name, data }) => {
           },
         }}
       />
+      <GridChart handleToogleGrid={handleToogleGrid} />
     </div>
   );
 };

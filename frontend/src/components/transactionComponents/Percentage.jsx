@@ -97,7 +97,7 @@ const Percentage = () => {
 
   return (
     <>
-      <div className="px-4 mt-8 min-h-16 flex items-center justify-center shadow-lg shadow-neutral-800 bg-thirdColor rounded-full w-auto md:w-3/5 lg:w-auto">
+      <div className="px-4 mt-12 sm:mt-8 min-h-16 flex items-center justify-center shadow-lg shadow-neutral-800 bg-thirdColor rounded-full w-auto md:w-3/5 lg:w-auto">
         <span
           className={`${percentColor} px-4 text-xl flex items-center gap-2`}
         >
