@@ -38,7 +38,7 @@ const Input = forwardRef(
             type={type}
             placeholder={placeholder}
             {...props}
-            className={`w-full border-none h-12 bg-neutral-800 sm:bg-main rounded-3xl pl-12 text-lg lg:text-base lg:focus:text-sm transition-all duration-200 focus:ring-1 focus:ring-white focus:text-base ${className} disabled:cursor-not-allowed`}
+            className={`w-full border-none h-12 bg-neutral-800 sm:bg-main rounded-3xl pl-12 text-lg outline-none lg:text-base lg:focus:text-sm transition-all duration-200 focus:outline focus:outline-secondColor focus:text-base ${className} disabled:cursor-not-allowed`}
           />
           {children}
         </div>

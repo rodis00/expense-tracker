@@ -251,7 +251,10 @@ const TransactionElementLayoutForm = ({
                 <p className="p-6">
                   {formData.category !== null &&
                     formData.category.charAt(0).toUpperCase() +
-                      formData.category.slice(1).toLowerCase()}
+                      formData.category
+                        .slice(1)
+                        .toLowerCase()
+                        .replace("_", " ")}
                 </p>
               </div>
               <div className="flex justify-between text-gray-400">
@@ -322,7 +325,7 @@ const TransactionElementLayoutForm = ({
                 isLargeScreen && !displayDescription
                   ? "min-h-[30rem] max-h-[30rem]"
                   : "min-h-[20rem] max-h-[20rem]"
-              } sm:min-h-[20rem] sm:max-h-[20rem]`}
+              } sm:min-h-[20rem] sm:max-h-[20rem] outline-none transition-all duration-150 focus:outline focus:outline-secondColor`}
               placeholder="Enter your description"
             />
           </div>

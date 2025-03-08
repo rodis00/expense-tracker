@@ -80,10 +80,12 @@ const CustomSelect = ({
   }
 
   return (
-    <div className={`${divClass} text-white`} ref={selectRef}>
+    <div className={`${divClass} text-white `} ref={selectRef}>
       <button
         type="button"
-        className={`w-full ${buttonClass} ${bgClass} text-left flex justify-between items-center`}
+        className={`w-full ${buttonClass} ${bgClass} text-left flex justify-between items-center transition-all duration-150 ${
+          isOpen ? "outline outline-2 outline-secondColor" : "outline-none"
+        }`}
         onClick={() => setIsOpen(!isOpen)}
       >
         <span className={`ml-4 ${isCategory ? "flex items-center gap-4" : ""}`}>

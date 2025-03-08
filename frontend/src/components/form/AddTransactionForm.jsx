@@ -118,27 +118,16 @@ const AddTransactionForm = ({ value, upperValue }) => {
         )}
         <div className="flex flex-col xsm:flex-row justify-between mb-4">
           <div className="w-full xsm:w-5/12">
-            <label
-              htmlFor="date"
-              className="text-white text-nowrap font-semibold text-xl lg:text-base mt-8"
-            >
-              Date
-            </label>
-            <div className="w-full relative flex items-center text-white mt-2">
-              <span className="absolute left-4">
-                <FontAwesomeIcon icon={faCalendar} />
-              </span>
-              <input
-                type="date"
-                id="date"
-                name="date"
-                ref={dateInputRef}
-                onFocus={handleShowPicker}
-                className={`w-full border-none h-12 bg-neutral-800 appearance-none sm:bg-main rounded-3xl pl-12 pr-2 text-lg lg:text-base lg:focus:text-sm transition-all duration-200 focus:ring-white focus:text-base`}
-              />
-            </div>
+            <Input
+              inputId="date"
+              type="date"
+              ref={dateInputRef}
+              onFocus={handleShowPicker}
+              icon={faCalendar}
+              labelText="Date"
+            />
             {formErrors && (
-              <p className="h-4 mb-4 text-red-500">{formErrors.date}</p>
+              <p className="h-4 mb-4 text-red-500 -mt-4">{formErrors.date}</p>
             )}
           </div>
           <div className="w-full xsm:w-1/2">
@@ -171,7 +160,7 @@ const AddTransactionForm = ({ value, upperValue }) => {
             id="description"
             name="description"
             placeholder="Enter your description"
-            className="text-white mt-2 bg-main mb-8 min-h-28 max-h-28 px-4 py-2 border-none focus:ring-white"
+            className="text-white mt-2 bg-main mb-8 min-h-28 max-h-28 px-4 py-2 border-none outline-none transition-all duration-150 focus:outline focus:outline-secondColor"
           />
         </div>
         <div className="mb-8 xsm:mb-4 lg:mb-8 flex justify-center gap-8">
