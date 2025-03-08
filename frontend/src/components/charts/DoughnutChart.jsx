@@ -93,27 +93,39 @@ const DoughnutChart = ({ data, isPending }) => {
                 let dataset = context.dataset.data;
                 let total = dataset.reduce((acc, val) => acc + val, 0);
 
-                let smallSegments = dataset
-                  .map((val, index) => ({
-                    index,
-                    percentage: (val / total) * 100,
-                  }))
-                  .filter((item) => item.percentage < 5);
+                let segments = dataset.map((val, index) => ({
+                  index,
+                  percentage: (val / total) * 100,
+                }));
 
-                if (smallSegments.length <= 1) {
-                  return 5;
+                let eligibleSegments = segments
+                  .filter((item) => item.percentage > 3)
+                  .map((item, newIndex) => ({ ...item, newIndex })); 
+
+                if (eligibleSegments.length <= 1) {
+                  return 5; 
                 }
 
-                let smallIndex = smallSegments.findIndex(
+                let segmentData = eligibleSegments.find(
                   (item) => item.index === context.dataIndex
                 );
-                return smallIndex % 2 === 0 ? 25 : 5;
+
+                if (!segmentData) {
+                  return 5; 
+                }
+
+                return segmentData.newIndex % 2 === 0 ? 25 : 5;
               },
               clip: false,
               formatter: (value, ctx) => {
                 let total = ctx.dataset.data.reduce((acc, val) => acc + val, 0);
-                let percentage = ((value / total) * 100).toFixed(2) + "%";
-                return percentage;
+                let percentage = (value / total) * 100;
+
+                if (percentage < 3) {
+                  return "";
+                }
+
+                return percentage.toFixed(2) + "%";
               },
             },
           },
