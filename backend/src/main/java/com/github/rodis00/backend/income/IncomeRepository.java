@@ -25,4 +25,12 @@ public interface IncomeRepository extends JpaRepository<IncomeEntity, Long> {
     );
 
     Optional<IncomeEntity> findBySlug(String slug);
+
+    @Query (value = "select * from expense_tracker.income " +
+            "where user_id = :userId " +
+            "order by created_at desc " +
+            "limit 1",
+            nativeQuery = true
+    )
+    IncomeEntity findLastAdded(Long userId);
 }

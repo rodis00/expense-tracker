@@ -25,4 +25,12 @@ public interface ExpenseRepository extends JpaRepository<ExpenseEntity, Long> {
     );
 
     Optional<ExpenseEntity> findBySlug(String slug);
+
+    @Query(value = "select * from expense_tracker.expense " +
+            "where user_id = :userId " +
+            "order by created_at desc " +
+            "limit 1",
+            nativeQuery = true
+    )
+    ExpenseEntity findLastAdded(Long userId);
 }

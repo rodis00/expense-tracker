@@ -138,4 +138,14 @@ public class IncomeController {
     public ResponseEntity<List<Integer>> getYears(@PathVariable String username) {
         return ResponseEntity.ok(incomeService.getYears(username));
     }
+
+    @Operation(
+            summary = "Retrieve a single user's last added income."
+    )
+    @GetMapping("/users/{username}/last-added")
+    public ResponseEntity<IncomeDto> getLastUserIncome(
+            @PathVariable String username
+    ) {
+        return ResponseEntity.ok(incomeService.getLastUserIncome(username));
+    }
 }

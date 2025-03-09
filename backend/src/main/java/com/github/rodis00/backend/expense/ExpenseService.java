@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -127,5 +128,13 @@ public class ExpenseService {
             years.add(LocalDate.now().getYear());
         }
         return years;
+    }
+
+    public ExpenseDto getLastUserExpense(String username) {
+        UserEntity user = userService.getUserByUsername(username);
+        ExpenseEntity expense = expenseRepository.findLastAdded(user.getId());
+
+        return Optional.ofNullable(expense)
+                .map(ExpenseDto::from).orElse(null);
     }
 }

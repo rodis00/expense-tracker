@@ -140,4 +140,14 @@ public class ExpenseController {
     public ResponseEntity<List<Integer>> getYears(@PathVariable String username) {
         return ResponseEntity.ok(expenseService.getYears(username));
     }
+
+    @Operation(
+            summary = "Retrieve a single user's last added expense."
+    )
+    @GetMapping("/users/{username}/last-added")
+    public ResponseEntity<ExpenseDto> getLastUserExpense(
+            @PathVariable String username
+    ) {
+        return ResponseEntity.ok(expenseService.getLastUserExpense(username));
+    }
 }
