@@ -2,6 +2,7 @@ package com.github.rodis00.backend.user;
 
 import com.github.rodis00.backend.entity.UserEntity;
 import com.github.rodis00.backend.exception.EntityNotFoundException;
+import com.github.rodis00.backend.exception.InvalidEmailException;
 import com.github.rodis00.backend.exception.UserAlreadyExistsException;
 import com.github.rodis00.backend.exception.UsernameIsTakenException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,26 +35,50 @@ public class UserService {
             String username,
             User user
     ) {
-        if (existsByEmail(user.getEmail()))
-            throw new UserAlreadyExistsException("User with this email already exists.");
-
-        if (existsByUsername(user.getUsername()))
-            throw new UsernameIsTakenException("This username is taken.");
+        String newUsername = user.getUsername();
+        String newEmail = user.getEmail();
+        String newPassword = user.getPassword();
 
         UserEntity existingUser = getUserByUsername(username);
 
-        if (Objects.nonNull(user.getEmail()))
-            existingUser.setEmail(user.getEmail());
+        if (validateEmail(newEmail))
+            existingUser.setEmail(newEmail);
 
-        if (Objects.nonNull(user.getUsername()))
-            existingUser.setUsername(user.getUsername());
+        if (validateUsername(newUsername))
+            existingUser.setUsername(newUsername);
 
-        if (Objects.nonNull(user.getPassword()))
-            existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (validatePassword(newPassword))
+            existingUser.setPassword(passwordEncoder.encode(newPassword));
 
         userRepository.save(existingUser);
 
         return UserDto.from(existingUser);
+    }
+
+    private boolean validateUsername(String username) {
+        if (existsByUsername(username)) {
+            throw new UsernameIsTakenException("This username is taken.");
+        }
+        return (username != null && !username.isEmpty());
+    }
+
+    private boolean validateEmail(String email) {
+        if (existsByEmail(email)) {
+            throw new UserAlreadyExistsException("User with this email already exists.");
+        }
+        boolean valid = false;
+        if (email != null) {
+            if (!email.isEmpty()) {
+                valid = true;
+            } else {
+                throw new InvalidEmailException("Invalid email address.");
+            }
+        }
+        return valid;
+    }
+
+    private boolean validatePassword(String email) {
+        return (email != null && !email.isEmpty());
     }
 
     public List<UserEntity> getAllUsers() {
