@@ -135,8 +135,11 @@ public class IncomeController {
             summary = "Retrieve a list of income years"
     )
     @GetMapping("/users/{username}/years")
-    public ResponseEntity<List<Integer>> getYears(@PathVariable String username) {
-        return ResponseEntity.ok(incomeService.getYears(username));
+    public ResponseEntity<List<Integer>> getYears(
+            @PathVariable String username,
+            @RequestParam(required = false) boolean yearLimit
+    ) {
+        return ResponseEntity.ok(incomeService.getYears(username, yearLimit));
     }
 
     @Operation(

@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -112,20 +113,24 @@ public class ExpenseService {
         return expenseRepository.findAllExpensesByUser_UsernameAndYear(username, year, month, pageable);
     }
 
-    public List<Integer> getYears(String username) {
-        List<Integer> years = new ArrayList<>(
-                expenseRepository
-                        .findAll()
-                        .stream()
-                        .filter(expense -> expense.getUser().getUsername().equals(username))
-                        .map(expense -> expense.getDate().getYear())
-                        .sorted()
-                        .distinct()
-                        .toList()
-        );
+    public List<Integer> getYears(
+            String username,
+            boolean yearLimit
+    ) {
+        List<Integer> years;
+        if (yearLimit) {
+            LocalDateTime minDate = LocalDateTime.now().minusYears(5);
+            LocalDateTime maxDate = LocalDateTime.now().plusYears(6);
+            years = expenseRepository.findYearsByUsernameAndDateRange(username, minDate, maxDate);
+        } else {
+            years = expenseRepository.findYearsByUsername(username);
+        }
+
         // return current year if there are no expenses
-        if (years.isEmpty()) {
-            years.add(LocalDate.now().getYear());
+        int currentYear = LocalDate.now().getYear();
+        if (!years.contains(currentYear)) {
+            years.add(currentYear);
+            years.sort(Integer::compareTo);
         }
         return years;
     }

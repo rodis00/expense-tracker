@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -26,11 +28,30 @@ public interface IncomeRepository extends JpaRepository<IncomeEntity, Long> {
 
     Optional<IncomeEntity> findBySlug(String slug);
 
-    @Query (value = "select * from expense_tracker.income " +
+    @Query(value = "select * from expense_tracker.income " +
             "where user_id = :userId " +
             "order by created_at desc " +
             "limit 1",
             nativeQuery = true
     )
     IncomeEntity findLastAdded(Long userId);
+
+    @Query("select distinct year(i.date) " +
+            "from IncomeEntity as i " +
+            "where i.user.username = :username " +
+            "order by year(i.date)"
+    )
+    List<Integer> findYearsByUsername(String username);
+
+    @Query("select distinct year(i.date)" +
+            "from IncomeEntity as i " +
+            "where i.user.username = :username " +
+            "and i.date between :minDate and :maxDate " +
+            "order by year(i.date)"
+    )
+    List<Integer> findYearsByUsernameAndDateRange(
+            String username,
+            LocalDateTime minDate,
+            LocalDateTime maxDate
+    );
 }

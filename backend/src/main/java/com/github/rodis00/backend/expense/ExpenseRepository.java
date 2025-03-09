@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -33,4 +35,23 @@ public interface ExpenseRepository extends JpaRepository<ExpenseEntity, Long> {
             nativeQuery = true
     )
     ExpenseEntity findLastAdded(Long userId);
+
+    @Query("select distinct year(e.date) " +
+            "from ExpenseEntity as e " +
+            "where e.user.username = :username " +
+            "order by year(e.date)"
+    )
+    List<Integer> findYearsByUsername(String username);
+
+    @Query("select distinct year(e.date) " +
+            "from ExpenseEntity as e " +
+            "where e.user.username = :username " +
+            "and e.date between :minDate and :maxDate " +
+            "order by year(e.date)"
+    )
+    List<Integer> findYearsByUsernameAndDateRange(
+            String username,
+            LocalDateTime minDate,
+            LocalDateTime maxDate
+    );
 }
