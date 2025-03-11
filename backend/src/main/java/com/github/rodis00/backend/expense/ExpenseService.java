@@ -6,6 +6,7 @@ import com.github.rodis00.backend.exception.EntityNotFoundException;
 import com.github.rodis00.backend.page.GlobalPage;
 import com.github.rodis00.backend.user.UserService;
 import com.github.rodis00.backend.utils.TitleFormatter;
+import com.github.rodis00.backend.validators.DateValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,21 +25,25 @@ public class ExpenseService {
     private final ExpenseRepository expenseRepository;
     private final UserService userService;
     private final ExpenseSearchDao expenseSearchDao;
+    private final DateValidator dateValidator;
 
     public ExpenseService(
             ExpenseRepository expenseRepository,
             UserService userService,
-            ExpenseSearchDao expenseSearchDao
+            ExpenseSearchDao expenseSearchDao,
+            DateValidator dateValidator
     ) {
         this.expenseRepository = expenseRepository;
         this.userService = userService;
         this.expenseSearchDao = expenseSearchDao;
+        this.dateValidator = dateValidator;
     }
 
     public ExpenseEntity saveExpense(
             Expense expense,
             String username
     ) {
+        dateValidator.validate(expense.getDate());
         UserEntity user = userService.getUserByUsername(username);
 
         return expenseRepository.save(
@@ -69,6 +73,7 @@ public class ExpenseService {
             String slug,
             Expense expense
     ) {
+        dateValidator.validate(expense.getDate());
         ExpenseEntity actualExpense = getExpenseBySlug(slug);
 
         actualExpense.setTitle(TitleFormatter.capitalizeFirstLetter(expense.getTitle()));

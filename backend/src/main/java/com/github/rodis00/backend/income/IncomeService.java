@@ -6,6 +6,7 @@ import com.github.rodis00.backend.exception.EntityNotFoundException;
 import com.github.rodis00.backend.page.GlobalPage;
 import com.github.rodis00.backend.user.UserService;
 import com.github.rodis00.backend.utils.TitleFormatter;
+import com.github.rodis00.backend.validators.DateValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,21 +25,25 @@ public class IncomeService {
     private final IncomeRepository incomeRepository;
     private final UserService userService;
     private final IncomeSearchDao incomeSearchDao;
+    private final DateValidator dateValidator;
 
     public IncomeService(
             IncomeRepository incomeRepository,
             UserService userService,
-            IncomeSearchDao incomeSearchDao
+            IncomeSearchDao incomeSearchDao,
+            DateValidator dateValidator
     ) {
         this.incomeRepository = incomeRepository;
         this.userService = userService;
         this.incomeSearchDao = incomeSearchDao;
+        this.dateValidator = dateValidator;
     }
 
     public IncomeEntity saveIncome(
             Income income,
             String username
     ) {
+        dateValidator.validate(income.getDate());
         UserEntity user = userService.getUserByUsername(username);
 
         return incomeRepository.save(
@@ -67,6 +72,7 @@ public class IncomeService {
             String slug,
             Income income
     ) {
+        dateValidator.validate(income.getDate());
         IncomeEntity actualIncome = getIncomeBySlug(slug);
 
         actualIncome.setTitle(TitleFormatter.capitalizeFirstLetter(income.getTitle()));
