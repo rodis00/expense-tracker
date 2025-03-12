@@ -4,7 +4,7 @@ public enum IncomeCategory {
     SALARY,
     SELL,
     SOCIAL_MEDIA,
-    BUSINESS_INCOME,
+    BUSINESS,
     INVESTMENT,
     GIFTS,
     PENSION,

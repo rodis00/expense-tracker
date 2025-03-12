@@ -6,6 +6,7 @@ import com.github.rodis00.backend.exception.EntityNotFoundException;
 import com.github.rodis00.backend.page.GlobalPage;
 import com.github.rodis00.backend.user.UserService;
 import com.github.rodis00.backend.utils.TitleFormatter;
+import com.github.rodis00.backend.validators.DateValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -13,8 +14,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -23,21 +25,25 @@ public class IncomeService {
     private final IncomeRepository incomeRepository;
     private final UserService userService;
     private final IncomeSearchDao incomeSearchDao;
+    private final DateValidator dateValidator;
 
     public IncomeService(
             IncomeRepository incomeRepository,
             UserService userService,
-            IncomeSearchDao incomeSearchDao
+            IncomeSearchDao incomeSearchDao,
+            DateValidator dateValidator
     ) {
         this.incomeRepository = incomeRepository;
         this.userService = userService;
         this.incomeSearchDao = incomeSearchDao;
+        this.dateValidator = dateValidator;
     }
 
     public IncomeEntity saveIncome(
             Income income,
             String username
     ) {
+        dateValidator.validate(income.getDate());
         UserEntity user = userService.getUserByUsername(username);
 
         return incomeRepository.save(
@@ -66,6 +72,7 @@ public class IncomeService {
             String slug,
             Income income
     ) {
+        dateValidator.validate(income.getDate());
         IncomeEntity actualIncome = getIncomeBySlug(slug);
 
         actualIncome.setTitle(TitleFormatter.capitalizeFirstLetter(income.getTitle()));
@@ -110,21 +117,33 @@ public class IncomeService {
         return incomeRepository.findAllIncomesByUser_UsernameAndYear(username, year, month, pageable);
     }
 
-    public List<Integer> getYears(String username) {
-        List<Integer> years = new ArrayList<>(
-                incomeRepository
-                        .findAll()
-                        .stream()
-                        .filter(income -> income.getUser().getUsername().equals(username))
-                        .map(income -> income.getDate().getYear())
-                        .distinct()
-                        .sorted()
-                        .toList()
-        );
+    public List<Integer> getYears(
+            String username,
+            boolean yearLimit
+    ) {
+        List<Integer> years;
+        if (yearLimit) {
+            LocalDateTime minDate = LocalDateTime.now().minusYears(5);
+            LocalDateTime maxDate = LocalDateTime.now().plusYears(6);
+            years = incomeRepository.findYearsByUsernameAndDateRange(username, minDate, maxDate);
+        } else {
+            years = incomeRepository.findYearsByUsername(username);
+        }
+
         // return current year if there are no incomes
-        if (years.isEmpty()) {
-            years.add(LocalDate.now().getYear());
+        int currentYear = LocalDate.now().getYear();
+        if (!years.contains(currentYear)) {
+            years.add(currentYear);
+            years.sort(Integer::compareTo);
         }
         return years;
+    }
+
+    public IncomeDto getLastUserIncome(String username) {
+        UserEntity user = userService.getUserByUsername(username);
+        IncomeEntity income = incomeRepository.findLastAdded(user.getId());
+
+        return Optional.ofNullable(income)
+                .map(IncomeDto::from).orElse(null);
     }
 }

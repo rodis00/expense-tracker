@@ -137,7 +137,20 @@ public class ExpenseController {
             summary = "Retrieve a list of expense years"
     )
     @GetMapping("/users/{username}/years")
-    public ResponseEntity<List<Integer>> getYears(@PathVariable String username) {
-        return ResponseEntity.ok(expenseService.getYears(username));
+    public ResponseEntity<List<Integer>> getYears(
+            @PathVariable String username,
+            @RequestParam(required = false) boolean yearLimit
+    ) {
+        return ResponseEntity.ok(expenseService.getYears(username, yearLimit));
+    }
+
+    @Operation(
+            summary = "Retrieve a single user's last added expense."
+    )
+    @GetMapping("/users/{username}/last-added")
+    public ResponseEntity<ExpenseDto> getLastUserExpense(
+            @PathVariable String username
+    ) {
+        return ResponseEntity.ok(expenseService.getLastUserExpense(username));
     }
 }
