@@ -34,7 +34,7 @@ const DoughnutChart = ({ data, isPending }) => {
 
   if (data <= 0) {
     return (
-      <div className="flex h-[25rem] sm:h-[20rem] justify-center items-center">
+      <div className="flex h-[25rem] justify-center items-center">
         <span className="text-2xl p-4 text-center">
           You haven't added any data in this period
         </span>
@@ -99,11 +99,13 @@ const DoughnutChart = ({ data, isPending }) => {
                 }));
 
                 let eligibleSegments = segments
-                  .filter((item) => item.percentage > 3)
-                  .map((item, newIndex) => ({ ...item, newIndex })); 
+                  .filter(
+                    (item) => item.percentage > 3 && item.percentage < 5
+                  )
+                  .map((item, newIndex) => ({ ...item, newIndex }));
 
                 if (eligibleSegments.length <= 1) {
-                  return 5; 
+                  return 5;
                 }
 
                 let segmentData = eligibleSegments.find(
@@ -111,7 +113,7 @@ const DoughnutChart = ({ data, isPending }) => {
                 );
 
                 if (!segmentData) {
-                  return 5; 
+                  return 5;
                 }
 
                 return segmentData.newIndex % 2 === 0 ? 25 : 5;
