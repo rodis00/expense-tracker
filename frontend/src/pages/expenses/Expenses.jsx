@@ -14,6 +14,7 @@ import AddInfoModal from "../../components/modal/AddInfoModal";
 import Percentage from "../../components/transactionComponents/Percentage";
 import FullScreenLoader from "../../components/fullScreenLoader/FullScreenLoader";
 import useLoader from "../../hooks/useLoader";
+import LatestAdded from "../../components/transactionComponents/LatestAdded";
 
 const Expenses = () => {
   const [pageNumber, setPageNumber] = useState(0);
@@ -113,7 +114,9 @@ const Expenses = () => {
           </button>
         </div>
 
-        <h2 className="mt-16 text-4xl">Transactions</h2>
+        <LatestAdded name='expenses'/>
+
+        <h2 className="mt-8 text-4xl">Transactions</h2>
         <TransactionList
           name="expenses"
           data={data}
