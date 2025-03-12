@@ -32,11 +32,11 @@ export async function fetchIncomes({
   let url = "";
 
   if (year === "" && month === "") {
-    url = `http://localhost:8080/expense-tracker/api/v1/incomes/pages/users/${userId}?pageSize=${pageSize}&pageNumber=${pageNumber}`;
+    url = `http://localhost:8080/expense-tracker/api/v1/incomes/pages/users/${userId}?pageSize=${pageSize}&sortBy=date&pageNumber=${pageNumber}`;
   } else if (year && month === "") {
-    url = `http://localhost:8080/expense-tracker/api/v1/incomes/pages/users/${userId}?pageSize=${pageSize}&year=${year}&pageNumber=${pageNumber}`;
+    url = `http://localhost:8080/expense-tracker/api/v1/incomes/pages/users/${userId}?pageSize=${pageSize}&sortBy=date&year=${year}&pageNumber=${pageNumber}`;
   } else if (year && month) {
-    url = `http://localhost:8080/expense-tracker/api/v1/incomes/pages/users/${userId}?pageSize=${pageSize}&year=${year}&month=${month}&pageNumber=${pageNumber}`;
+    url = `http://localhost:8080/expense-tracker/api/v1/incomes/pages/users/${userId}?pageSize=${pageSize}&sortBy=date&year=${year}&month=${month}&pageNumber=${pageNumber}`;
   }
 
   const response = await fetch(url, {
