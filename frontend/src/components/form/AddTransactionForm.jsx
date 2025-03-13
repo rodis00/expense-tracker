@@ -17,6 +17,7 @@ import CustomSelect from "../customSelect/CustomSelect";
 const AddTransactionForm = ({ value, upperValue }) => {
   const [formErrors, setFormErrors] = useState({});
   const dateInputRef = useRef();
+  const formRef = useRef();
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
   const userId = useSelector((state) => state.auth.user);
@@ -51,6 +52,7 @@ const AddTransactionForm = ({ value, upperValue }) => {
         : queryClient.invalidateQueries({
             queryKey: ["expenses", token, userId, yearLimit],
           });
+      formRef.current.reset();
       dispatch(modalActions.closeModal());
       setTimeout(() => {
         dispatch(modalActions.showAddInfo());
@@ -85,11 +87,14 @@ const AddTransactionForm = ({ value, upperValue }) => {
     };
     setFormErrors({});
     mutate({ userId, values, token });
-    event.target.reset();
   }
 
   return (
-    <form onSubmit={handleSubmit} className="w-[95%] sm:w-[90%] flex flex-col">
+    <form
+      ref={formRef}
+      onSubmit={handleSubmit}
+      className="w-[95%] sm:w-[90%] flex flex-col"
+    >
       <h2 className="text-center text-white my-8 xsm:my-4 text-2xl font-semibold">
         Add your {value === "amount" ? "income" : "expense"}
       </h2>
