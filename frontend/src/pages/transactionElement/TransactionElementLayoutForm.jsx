@@ -62,6 +62,8 @@ const TransactionElementLayoutForm = ({
   const isLargeScreen = useMediaQuery("(max-width: 1024px)");
   const textRef = useRef();
   const [overflow, setOverflow] = useState("overflow-y-none");
+  const minYear = new Date().getFullYear() - 5;
+  const maxYear = new Date().getFullYear() + 5;
 
   useEffect(() => {
     const element = textRef.current;
@@ -370,6 +372,8 @@ const TransactionElementLayoutForm = ({
                   disabled={!isEditting}
                   icon={faCalendar}
                   type="date"
+                  min={`${minYear}-01-01`}
+                  max={`${maxYear}-12-31`}
                   inputId={"date"}
                   onChange={handleChange}
                   value={formData.date}

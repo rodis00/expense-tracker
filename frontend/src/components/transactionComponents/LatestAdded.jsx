@@ -29,7 +29,7 @@ const LatestAdded = ({ name }) => {
   if (isPending) {
     return (
       <div className="w-[95%] sm:w-3/4 lg:w-1/2 mt-8">
-        <span className="text-white block mx-auto text-center text-4xl my-8">
+        <span className="text-white block mx-auto text-center text-2xl my-8">
           Loading...
         </span>
       </div>

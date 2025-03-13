@@ -28,6 +28,8 @@ const AddTransactionForm = ({ value, upperValue }) => {
     category: "",
     text: "",
   });
+  const minYear = new Date().getFullYear() - 5;
+  const maxYear = new Date().getFullYear() + 5;
 
   const { mutate, isPending } = useMutation({
     mutationFn: value === "amount" ? newIncome : newExpense,
@@ -121,6 +123,8 @@ const AddTransactionForm = ({ value, upperValue }) => {
             <Input
               inputId="date"
               type="date"
+              min={`${minYear}-01-01`}
+              max={`${maxYear}-12-31`}
               ref={dateInputRef}
               onFocus={handleShowPicker}
               icon={faCalendar}
