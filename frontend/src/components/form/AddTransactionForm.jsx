@@ -28,8 +28,11 @@ const AddTransactionForm = ({ value, upperValue }) => {
     category: "",
     text: "",
   });
+  const yearLimit = true;
   const minYear = new Date().getFullYear() - 5;
   const maxYear = new Date().getFullYear() + 5;
+  const currentMonth = String(new Date().getMonth() + 1).padStart(2, "0");
+  const currentDay = String(new Date().getDate()).padStart(2, "0");
 
   const { mutate, isPending } = useMutation({
     mutationFn: value === "amount" ? newIncome : newExpense,
@@ -43,10 +46,10 @@ const AddTransactionForm = ({ value, upperValue }) => {
           });
       value === "amount"
         ? queryClient.invalidateQueries({
-            queryKey: ["incomes", token, userId],
+            queryKey: ["incomes", token, userId, yearLimit],
           })
         : queryClient.invalidateQueries({
-            queryKey: ["expenses", token, userId],
+            queryKey: ["expenses", token, userId, yearLimit],
           });
       dispatch(modalActions.closeModal());
       setTimeout(() => {
@@ -123,8 +126,8 @@ const AddTransactionForm = ({ value, upperValue }) => {
             <Input
               inputId="date"
               type="date"
-              min={`${minYear}-01-01`}
-              max={`${maxYear}-12-31`}
+              min={`${minYear}-${currentMonth}-${currentDay}`}
+              max={`${maxYear}-${currentMonth}-${currentDay}`}
               ref={dateInputRef}
               onFocus={handleShowPicker}
               icon={faCalendar}

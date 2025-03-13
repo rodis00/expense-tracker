@@ -62,8 +62,11 @@ const TransactionElementLayoutForm = ({
   const isLargeScreen = useMediaQuery("(max-width: 1024px)");
   const textRef = useRef();
   const [overflow, setOverflow] = useState("overflow-y-none");
+  const yearLimit = true;
   const minYear = new Date().getFullYear() - 5;
   const maxYear = new Date().getFullYear() + 5;
+  const currentMonth = String(new Date().getMonth() + 1).padStart(2, "0");
+  const currentDay = String(new Date().getDate()).padStart(2, "0");
 
   useEffect(() => {
     const element = textRef.current;
@@ -98,10 +101,10 @@ const TransactionElementLayoutForm = ({
       name === "incomes" ? navigate("/incomes") : navigate("/expenses");
       name === "incomes"
         ? queryClient.invalidateQueries({
-            queryKey: ["incomes", token, userId],
+            queryKey: ["incomes", token, userId, yearLimit],
           })
         : queryClient.invalidateQueries({
-            queryKey: ["expenses", token, userId],
+            queryKey: ["expenses", token, userId, yearLimit],
           });
     },
     onError: () => {
@@ -372,8 +375,8 @@ const TransactionElementLayoutForm = ({
                   disabled={!isEditting}
                   icon={faCalendar}
                   type="date"
-                  min={`${minYear}-01-01`}
-                  max={`${maxYear}-12-31`}
+                  min={`${minYear}-${currentMonth}-${currentDay}`}
+                  max={`${maxYear}-${currentMonth}-${currentDay}`}
                   inputId={"date"}
                   onChange={handleChange}
                   value={formData.date}
@@ -383,7 +386,7 @@ const TransactionElementLayoutForm = ({
 
                 {formErrors && (
                   <p className="h-4 -mt-2 mb-4 text-red-500 text-center">
-                    {formErrors.date}
+                    {formErrors.date || formErrors.error}
                   </p>
                 )}
               </div>
