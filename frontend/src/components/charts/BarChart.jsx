@@ -18,6 +18,7 @@ const BarChart = ({ selectedPoints, name, data }) => {
   const MonthlyDataPoints = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   const WeeklyDataPoints = [0, 0, 0, 0, 0, 0, 0];
   const token = localStorage.getItem("token");
+  const yearLimit = true;
   const userId = useSelector((state) => state.auth.user);
   const [selectGrid, setSelectGrid] = useState({
     x: false,
@@ -27,12 +28,12 @@ const BarChart = ({ selectedPoints, name, data }) => {
   const { data: dataYears } = useQuery({
     queryKey:
       name === "incomes"
-        ? ["incomes", token, userId]
-        : ["expenses", token, userId],
+        ? ["incomes", token, userId, yearLimit]
+        : ["expenses", token, userId, yearLimit],
     queryFn:
       name === "incomes"
-        ? () => fetchIncomeYears({ token, userId })
-        : () => fetchExpenseYears({ token, userId }),
+        ? () => fetchIncomeYears({ token, userId, yearLimit })
+        : () => fetchExpenseYears({ token, userId, yearLimit }),
     enabled: !!userId,
   });
 

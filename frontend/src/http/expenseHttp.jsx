@@ -118,9 +118,11 @@ export async function deleteExpenseById({ id, token }) {
   }
 }
 
-export async function fetchExpenseYears({ token, userId }) {
+export async function fetchExpenseYears({ token, userId, yearLimit }) {
   const response = await fetch(
-    `http://localhost:8080/expense-tracker/api/v1/expenses/users/${userId}/years`,
+    `http://localhost:8080/expense-tracker/api/v1/expenses/users/${userId}/years?yearLimit=${
+      yearLimit ? yearLimit : false
+    }`,
     {
       headers: {
         "Content-Type": "application/json",
