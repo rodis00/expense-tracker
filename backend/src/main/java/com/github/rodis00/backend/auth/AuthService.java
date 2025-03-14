@@ -2,6 +2,7 @@ package com.github.rodis00.backend.auth;
 
 import com.github.rodis00.backend.config.jwt.JwtService;
 import com.github.rodis00.backend.config.jwt.TokenResponse;
+import com.github.rodis00.backend.emailSender.EmailService;
 import com.github.rodis00.backend.entity.UserEntity;
 import com.github.rodis00.backend.exception.*;
 import com.github.rodis00.backend.role.RoleRepository;
@@ -26,6 +27,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final RoleRepository roleRepository;
+    private final EmailService emailService;
 
     public AuthService(
             UserRepository userRepository,
@@ -33,13 +35,16 @@ public class AuthService {
             JwtService jwtService,
             AuthenticationManager authenticationManager,
             UserService userService,
-            RoleRepository roleRepository) {
+            RoleRepository roleRepository,
+            EmailService emailService
+    ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.roleRepository = roleRepository;
+        this.emailService = emailService;
     }
 
     public AuthResponse register(RegisterRequest request) {
@@ -60,6 +65,8 @@ public class AuthService {
         String jwtToken = jwtService.generateToken(savedUser.getUsername());
         String refreshToken = jwtService.generateRefreshToken(savedUser.getUsername());
         Cookie cookie = jwtService.createCookie(refreshToken);
+
+        emailService.sendWelcomeEmail(savedUser.getEmail());
 
         return new AuthResponse(jwtToken, cookie);
     }

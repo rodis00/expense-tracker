@@ -1,6 +1,5 @@
 package com.github.rodis00.backend.passwordReset;
 
-import com.github.rodis00.backend.emailSender.EmailDto;
 import com.github.rodis00.backend.emailSender.EmailService;
 import com.github.rodis00.backend.entity.UserEntity;
 import com.github.rodis00.backend.exception.EntityNotFoundException;
@@ -43,24 +42,10 @@ public class PasswordResetService {
         return resetToken;
     }
 
-    private EmailDto prepareEmail(String recipient) {
-        PasswordResetTokenEntity resetToken = generateResetToken(recipient);
-        String resetLink = BASE_URL + "/reset-password?resetToken=" + resetToken.getToken();
-
-        String subject = "Reset password";
-        String content = "Click here to reset your password: " + resetLink +
-                "\nThis link will be active for " + EXPIRATION_TIME + " minutes.";
-
-        EmailDto emailDto = new EmailDto();
-        emailDto.setTo(recipient);
-        emailDto.setSubject(subject);
-        emailDto.setContent(content);
-
-        return emailDto;
-    }
-
     public void sendEmailToResetPassword(String email) {
-        emailService.sendEmail(prepareEmail(email));
+        PasswordResetTokenEntity resetToken = generateResetToken(email);
+        String resetLink = BASE_URL + "/reset-password?resetToken=" + resetToken.getToken();
+        emailService.sendResetPasswordEmail(resetLink, email);
     }
 
     public void resetPassword(String token, String newPassword) {
