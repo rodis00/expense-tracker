@@ -5,6 +5,8 @@ import com.github.rodis00.backend.exception.EntityNotFoundException;
 import com.github.rodis00.backend.exception.InvalidEmailException;
 import com.github.rodis00.backend.exception.UserAlreadyExistsException;
 import com.github.rodis00.backend.exception.UsernameIsTakenException;
+import com.github.rodis00.backend.image.ImageService;
+import com.github.rodis00.backend.passwordReset.PasswordResetService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,13 +17,18 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final PasswordResetService passwordResetService;
+    private final ImageService imageService;
 
     public UserService(
             UserRepository userRepository,
-            PasswordEncoder passwordEncoder
-    ) {
+            PasswordEncoder passwordEncoder,
+            PasswordResetService passwordResetService,
+            ImageService imageService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.passwordResetService = passwordResetService;
+        this.imageService = imageService;
     }
 
     public UserEntity getUserByUsername(String username) {
@@ -86,6 +93,8 @@ public class UserService {
 
     public void deleteUserByUsername(String username) {
         UserEntity user = getUserByUsername(username);
+        passwordResetService.deleteUserPasswordTokens(user.getId());
+        imageService.deleteUserProfilePicture(user.getUsername());
         userRepository.delete(user);
     }
 

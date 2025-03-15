@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -61,5 +62,11 @@ public class PasswordResetService {
 
         userRepository.save(user);
         tokenRepository.delete(resetToken);
+    }
+
+    public void deleteUserPasswordTokens(Long userId) {
+        List<PasswordResetTokenEntity> userResetTokens = tokenRepository
+                .findAllByUser_Id(userId);
+        tokenRepository.deleteAll(userResetTokens);
     }
 }

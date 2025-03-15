@@ -91,6 +91,9 @@ public class ImageService {
     }
 
     public void deleteUserProfilePicture(String filePath, UserEntity user) {
+        if (filePath == null) {
+            return;
+        }
         try {
             Files.deleteIfExists(Paths.get(filePath));
             user.setProfilePicture(null);
