@@ -5,8 +5,8 @@ import com.github.rodis00.backend.entity.UserEntity;
 import com.github.rodis00.backend.exception.EntityNotFoundException;
 import com.github.rodis00.backend.page.GlobalPage;
 import com.github.rodis00.backend.user.UserService;
+import com.github.rodis00.backend.utils.TitleFormatter;
 import com.github.rodis00.backend.validators.DateValidator;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,10 +15,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -33,72 +34,96 @@ class ExpenseServiceTest {
     private UserService userService;
 
     @Mock
-    private DateValidator validator;
+    private DateValidator dateValidator;
+
+    @Mock
+    private ExpenseSearchDao expenseSearchDao;
 
     @InjectMocks
     private ExpenseService expenseService;
 
-    private UserEntity user;
-
-    private ExpenseEntity expense;
-
-    private final String username = "username";
-
-    private final String slug = UUID.randomUUID().toString();
-
-
-    @BeforeEach
-    void setUp() {
-        user = new UserEntity();
-        user.setId(1L);
-        user.setUsername(username);
-
-        expense = new ExpenseEntity();
-        expense.setId(1L);
-        expense.setTitle("expense");
-        expense.setDate(LocalDateTime.of(2024, 5, 25, 18, 8));
-        expense.setPrice(new BigDecimal("100.00"));
-        expense.setUser(user);
-        expense.setDescription("expense");
-        expense.setSlug(slug);
+    @Test
+    void shouldCapitalizeFirstLetter() {
+        assertEquals("E", TitleFormatter.capitalizeFirstLetter("e"));
+        assertEquals("Expense test", TitleFormatter.capitalizeFirstLetter("expense test"));
+        assertEquals("Expense", TitleFormatter.capitalizeFirstLetter("expense"));
+        assertEquals("123", TitleFormatter.capitalizeFirstLetter("123"));
     }
 
     @Test
     void shouldSaveExpense() {
-        Expense newExpense = new Expense();
-        newExpense.setTitle("expense");
-        newExpense.setDate(LocalDateTime.of(2024, 5, 25, 18, 8));
-        newExpense.setPrice(new BigDecimal("100.00"));
+        String username = "tester";
 
-        when(expenseRepository.save(any(ExpenseEntity.class))).thenReturn(expense);
+        UserEntity user = new UserEntity();
+        user.setId(1L);
+        user.setUsername("tester");
+
+        LocalDateTime date = LocalDateTime.of(2024, 5, 24, 14, 54);
+        Expense newExpense = new Expense();
+        newExpense.setTitle("car");
+        newExpense.setDate(date);
+        newExpense.setPrice(new BigDecimal("6000.00"));
+        newExpense.setCategory(ExpenseCategory.TRANSPORT);
+        newExpense.setDescription("car description");
+
+        ExpenseEntity expectedExpense = new ExpenseEntity();
+        expectedExpense.setId(1L);
+        expectedExpense.setTitle("Car");
+        expectedExpense.setPrice(new BigDecimal("6000.00"));
+        expectedExpense.setDate(date);
+        expectedExpense.setUser(user);
+        expectedExpense.setCreatedAt(date);
+        expectedExpense.setUpdatedAt(date);
+        expectedExpense.setCategory(ExpenseCategory.TRANSPORT);
+        expectedExpense.setDescription("car description");
+        expectedExpense.setSlug("expense-1");
+
         when(userService.getUserByUsername(username)).thenReturn(user);
+        when(expenseRepository.save(any(ExpenseEntity.class))).thenReturn(expectedExpense);
+        doNothing().when(dateValidator).validate(newExpense.getDate());
 
         ExpenseEntity savedExpense = expenseService.saveExpense(newExpense, username);
 
         assertNotNull(savedExpense);
-        assertEquals(expense.getId(), savedExpense.getId());
-        assertEquals(expense.getTitle(), savedExpense.getTitle());
-        assertEquals(expense.getUser(), savedExpense.getUser());
+        assertEquals(expectedExpense.getId(), savedExpense.getId());
+        assertEquals(expectedExpense.getTitle(), savedExpense.getTitle());
+        assertEquals(expectedExpense.getPrice(), savedExpense.getPrice());
+        assertEquals(expectedExpense.getDate(), savedExpense.getDate());
+        assertEquals(expectedExpense.getUser().getId(), savedExpense.getUser().getId());
+        assertEquals(expectedExpense.getCreatedAt(), savedExpense.getCreatedAt());
+        assertEquals(expectedExpense.getUpdatedAt(), savedExpense.getUpdatedAt());
+        assertEquals(expectedExpense.getCategory(), savedExpense.getCategory());
+        assertEquals(expectedExpense.getDescription(), savedExpense.getDescription());
+        assertEquals(expectedExpense.getSlug(), savedExpense.getSlug());
 
         verify(userService, times(1)).getUserByUsername(username);
+        verify(dateValidator, times(1)).validate(newExpense.getDate());
         verify(expenseRepository, times(1)).save(any(ExpenseEntity.class));
     }
 
     @Test
-    void shouldGetExpenseBySlug() {
+    void shouldReturnExpenseBySlug() {
+        String slug = "expense-1";
+
+        ExpenseEntity expense = new ExpenseEntity();
+        expense.setId(1L);
+        expense.setSlug(slug);
+
         when(expenseRepository.findBySlug(slug)).thenReturn(Optional.of(expense));
 
-        ExpenseEntity existedExpense = expenseService.getExpenseBySlug(slug);
+        ExpenseEntity expectedExpense = expenseService.getExpenseBySlug(slug);
 
-        assertNotNull(existedExpense);
-        assertEquals(expense.getId(), existedExpense.getId());
-        assertEquals(expense.getTitle(), existedExpense.getTitle());
+        assertNotNull(expectedExpense);
+        assertEquals(expense.getId(), expectedExpense.getId());
+        assertEquals(expense.getTitle(), expectedExpense.getTitle());
 
         verify(expenseRepository, times(1)).findBySlug(slug);
     }
 
     @Test
     void shouldThrowExceptionIfExpenseNotFound() {
+        String slug = "expense-1";
+
         when(expenseRepository.findBySlug(slug)).thenReturn(Optional.empty());
 
         assertThrows(EntityNotFoundException.class, () -> {
@@ -109,21 +134,34 @@ class ExpenseServiceTest {
     }
 
     @Test
-    void shouldUpdateExpense() {
+    void shouldFullyUpdateExpense() {
+        String slug = "expense-1";
+
         Expense newExpense = new Expense();
-        newExpense.setTitle("newExpense");
-        newExpense.setDate(LocalDateTime.of(2024, 5, 25, 18, 28));
+        newExpense.setTitle("new expense");
         newExpense.setPrice(new BigDecimal("150.00"));
+        newExpense.setDate(LocalDateTime.of(2024, 5, 25, 18, 28));
+        newExpense.setCategory(ExpenseCategory.OTHER);
+        newExpense.setDescription("new expense description");
 
-        when(expenseRepository.findBySlug(slug)).thenReturn(Optional.of(expense));
-        when(expenseRepository.save(any(ExpenseEntity.class))).thenReturn(expense);
+        ExpenseEntity expected = new ExpenseEntity();
+        expected.setTitle("New expense");
+        expected.setPrice(new BigDecimal("150.00"));
+        expected.setDate(LocalDateTime.of(2024, 5, 25, 18, 28));
+        expected.setCategory(ExpenseCategory.OTHER);
+        expected.setDescription("new expense description");
 
-        ExpenseEntity updatedExpense = expenseService.updateExpense(slug, newExpense);
+        when(expenseRepository.findBySlug(slug)).thenReturn(Optional.of(expected));
+        when(expenseRepository.save(any(ExpenseEntity.class))).thenReturn(expected);
 
-        assertNotNull(updatedExpense);
-        assertEquals(newExpense.getTitle(), updatedExpense.getTitle());
-        assertEquals(newExpense.getPrice(), updatedExpense.getPrice());
-        assertEquals(newExpense.getDate(), updatedExpense.getDate());
+        ExpenseEntity result = expenseService.updateExpense(slug, newExpense);
+
+        assertNotNull(result);
+        assertEquals(expected.getTitle(), result.getTitle());
+        assertEquals(expected.getPrice(), result.getPrice());
+        assertEquals(expected.getDate(), result.getDate());
+        assertEquals(expected.getCategory(), result.getCategory());
+        assertEquals(expected.getDescription(), result.getDescription());
 
         verify(expenseRepository, times(1)).findBySlug(slug);
         verify(expenseRepository, times(1)).save(any(ExpenseEntity.class));
@@ -131,21 +169,61 @@ class ExpenseServiceTest {
 
     @Test
     void shouldReturnAllExpenses() {
-        List<ExpenseEntity> expenses = List.of(expense);
+        ExpenseEntity expense = new ExpenseEntity();
+        expense.setId(1L);
+        expense.setSlug("expense-1");
 
-        when(expenseRepository.findAll()).thenReturn(expenses);
+        ExpenseEntity expense2 = new ExpenseEntity();
+        expense2.setId(2L);
+        expense2.setSlug("expense-2");
 
-        List<ExpenseEntity> existedExpenses = expenseService.getAllExpenses();
+        List<ExpenseEntity> expected = List.of(expense, expense2);
 
-        assertEquals(expenses.size(), existedExpenses.size());
-        assertEquals(expenses.get(0).getId(), existedExpenses.get(0).getId());
-        assertEquals(expenses.get(0).getTitle(), existedExpenses.get(0).getTitle());
+        when(expenseRepository.findAll()).thenReturn(expected);
+
+        List<ExpenseEntity> result = expenseService.getAllExpenses();
+
+        assertEquals(expected.size(), result.size());
+        assertEquals(expected.get(0).getId(), result.get(0).getId());
+        assertEquals(expected.get(0).getTitle(), result.get(0).getTitle());
+        assertEquals(expected.get(1).getId(), result.get(1).getId());
+        assertEquals(expected.get(1).getTitle(), result.get(1).getTitle());
 
         verify(expenseRepository, times(1)).findAll();
     }
 
     @Test
+    void shouldReturnAllUserExpenses() {
+        String username = "tester";
+
+        int year = 2024;
+        int month = 5;
+
+        ExpenseEntity expense = new ExpenseEntity();
+        expense.setTitle("gift");
+        expense.setSlug("expense-1");
+        expense.setPrice(new BigDecimal("150.00"));
+        expense.setDate(LocalDateTime.of(year, month, 10, 10, 10));
+
+        doNothing().when(userService).checkIfUserExists(username);
+        when(expenseSearchDao.findAllByUsernameYearAndMonth(username, year, month)).thenReturn(List.of(expense));
+
+        List<ExpenseEntity> result = expenseService.getAllUserExpenses(username, year, month);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+
+        verify(userService, times(1)).checkIfUserExists(username);
+        verify(expenseSearchDao, times(1)).findAllByUsernameYearAndMonth(username, year, month);
+    }
+
+    @Test
     void shouldDeleteExpenseBySlug() {
+        String slug = "expense-1";
+
+        ExpenseEntity expense = new ExpenseEntity();
+        expense.setId(1L);
+
         when(expenseRepository.findBySlug(slug)).thenReturn(Optional.of(expense));
         doNothing().when(expenseRepository).delete(expense);
 
@@ -156,117 +234,128 @@ class ExpenseServiceTest {
     }
 
     @Test
-    void shouldReturnUserExpensesPage() {
-        ExpenseEntity expense1 = new ExpenseEntity();
-        expense1.setId(1L);
-        expense1.setTitle("expense1");
-        expense1.setDate(LocalDateTime.of(2024, 5, 25, 19, 50));
-        expense1.setPrice(new BigDecimal("150.00"));
-        expense1.setUser(user);
-
-        ExpenseEntity expense2 = new ExpenseEntity();
-        expense2.setId(2L);
-        expense2.setTitle("expense2");
-        expense2.setDate(LocalDateTime.of(2022, 12, 13, 2, 30));
-        expense2.setPrice(new BigDecimal("100.00"));
-        expense2.setUser(user);
-
-        GlobalPage page = new GlobalPage();
-        page.setPageNumber(0);
-        page.setPageSize(5);
-        page.setSortDirection(Sort.Direction.DESC);
-        page.setSortBy("date");
-
-        Sort sort = Sort.by(page.getSortDirection(), page.getSortBy());
-        Pageable pageable = PageRequest.of(page.getPageNumber(), page.getPageSize(), sort);
-
-        Page<ExpenseEntity> expectedPage = new PageImpl<>(List.of(expense1, expense2));
-
-        when(userService.getUserByUsername(username)).thenReturn(user);
-        when(expenseRepository.findAllExpensesByUser_UsernameAndYear(user.getUsername(), null, null, pageable))
-                .thenReturn(expectedPage);
-
-        Page<ExpenseEntity> expensePage = expenseService.findAllExpensesByUsername(username, page, null, null);
-
-        assertNotNull(expensePage);
-        assertEquals(expectedPage.getTotalElements(), expensePage.getTotalElements());
-        assertEquals(expectedPage.getTotalPages(), expensePage.getTotalPages());
-        assertEquals(expectedPage.getContent().get(0), expensePage.getContent().get(0));
-        assertEquals(expectedPage.getContent().get(1), expensePage.getContent().get(1));
-
-        verify(userService, times(1)).getUserByUsername(username);
-        verify(expenseRepository, times(1))
-                .findAllExpensesByUser_UsernameAndYear(user.getUsername(), null, null, pageable);
-    }
-
-    @Test
-    void shouldReturnUserExpensesPageInSpecificYear() {
-        ExpenseEntity expense1 = new ExpenseEntity();
-        expense1.setId(1L);
-        expense1.setTitle("expense1");
-        expense1.setDate(LocalDateTime.of(2024, 5, 25, 19, 50));
-        expense1.setPrice(new BigDecimal("150.00"));
-        expense1.setUser(user);
-
-        ExpenseEntity expense2 = new ExpenseEntity();
-        expense2.setId(2L);
-        expense2.setTitle("expense2");
-        expense2.setDate(LocalDateTime.of(2024, 12, 13, 2, 30));
-        expense2.setPrice(new BigDecimal("100.00"));
-        expense2.setUser(user);
-
-        GlobalPage page = new GlobalPage();
-        page.setPageNumber(0);
-        page.setPageSize(5);
-        page.setSortDirection(Sort.Direction.DESC);
-        page.setSortBy("date");
-
-        Sort sort = Sort.by(page.getSortDirection(), page.getSortBy());
-        Pageable pageable = PageRequest.of(page.getPageNumber(), page.getPageSize(), sort);
-
+    void shouldReturnAllExpensesByUserId() {
+        String username = "john";
         int year = 2024;
+        int month = 5;
 
-        Page<ExpenseEntity> expectedPage = new PageImpl<>(List.of(expense1, expense2));
+        ExpenseEntity expense1 = new ExpenseEntity();
+        expense1.setId(1L);
+        expense1.setTitle("expense1");
+        expense1.setCreatedAt(LocalDateTime.of(2024, 5, 25, 19, 50));
+        expense1.setPrice(new BigDecimal("150.00"));
 
-        when(userService.getUserByUsername(username)).thenReturn(user);
-        when(expenseRepository.findAllExpensesByUser_UsernameAndYear(user.getUsername(), year, null, pageable))
-                .thenReturn(expectedPage);
+        ExpenseEntity expense2 = new ExpenseEntity();
+        expense2.setId(2L);
+        expense2.setTitle("expense2");
+        expense2.setCreatedAt(LocalDateTime.of(2024, 5, 13, 2, 30));
+        expense2.setPrice(new BigDecimal("100.00"));
 
-        Page<ExpenseEntity> expensePage = expenseService.findAllExpensesByUsername(username, page, year, null);
+        List<ExpenseEntity> expenses = List.of(expense1, expense2);
 
-        assertNotNull(expensePage);
-        assertEquals(expectedPage.getTotalElements(), expensePage.getTotalElements());
-        assertEquals(expectedPage.getTotalPages(), expensePage.getTotalPages());
-        assertEquals(year, expensePage.getContent().get(0).getDate().getYear());
+        GlobalPage page = new GlobalPage();
+        page.setPageNumber(0);
+        page.setPageSize(5);
+        page.setSortDirection(Sort.Direction.DESC);
+        page.setSortBy("createdAt");
 
-        verify(userService, times(1)).getUserByUsername(username);
+        Sort sort = Sort.by(page.getSortDirection(), page.getSortBy());
+        Pageable pageable = PageRequest.of(page.getPageNumber(), page.getPageSize(), sort);
+
+        Page<ExpenseEntity> expectedPage = new PageImpl<>(expenses, pageable, expenses.size());
+
+        doNothing().when(userService).checkIfUserExists(username);
+        when(expenseRepository.findAllExpensesByUser_UsernameAndYear(username, year, month, pageable)).thenReturn(expectedPage);
+
+        Page<ExpenseEntity> result = expenseService.findAllExpensesByUsername(username, page, year, month);
+
+        assertNotNull(result);
+        assertEquals(expectedPage.getTotalElements(), result.getTotalElements());
+        assertEquals(expectedPage.getContent(), result.getContent());
+
+        verify(userService, times(1)).checkIfUserExists(username);
         verify(expenseRepository, times(1))
-                .findAllExpensesByUser_UsernameAndYear(user.getUsername(), year, null, pageable);
+                .findAllExpensesByUser_UsernameAndYear(username, year, month, pageable);
     }
 
     @Test
-    void shouldReturnAllSortedExpenseYears() {
-        ExpenseEntity expense1 = new ExpenseEntity();
-        expense1.setDate(LocalDateTime.of(2000, 6, 4, 12, 12));
+    void shouldReturnAllUserExpensesWithoutYearLimit() {
+        String username = "janusz123";
 
-        ExpenseEntity expense2 = new ExpenseEntity();
-        expense2.setDate(LocalDateTime.of(2024, 6, 4, 12, 12));
+        List<Integer> expectedYears = new ArrayList<>(
+                List.of(2000, 2010, 2024)
+        );
 
-        ExpenseEntity expense3 = new ExpenseEntity();
-        expense3.setDate(LocalDateTime.of(2010, 6, 4, 12, 12));
+        when(expenseRepository.findYearsByUsername(username)).thenReturn(expectedYears);
 
-        List<ExpenseEntity> expenses = List.of(expense1, expense2, expense3);
+        List<Integer> result = expenseService.getYears(username, false);
 
-        List<Integer> expectedYears = List.of(2000, 2010, 2024);
+        assertNotNull(result);
+        assertEquals(expectedYears.size(), result.size());
+        assertEquals(expectedYears, result);
 
-        when(expenseRepository.findAll()).thenReturn(expenses);
+        verify(expenseRepository, times(1)).findYearsByUsername(username);
+    }
 
-        List<Integer> expenseYears = expenseService.getYears(user.getUsername(), false);
+    @Test
+    void shouldReturnAllUserExpensesWithYearLimit() {
+        String username = "janusz123";
 
-        assertNotNull(expenseYears);
-        assertEquals(expectedYears.size(), expenseYears.size());
-        assertEquals(expectedYears, expenseYears);
+        List<Integer> expectedYears = new ArrayList<>(
+                List.of(2019, 2023, 2024, 2030)
+        );
 
-        verify(expenseRepository, times(1)).findAll();
+        when(expenseRepository.findYearsByUsernameAndDateRange(eq(username), any(), any())).thenReturn(expectedYears);
+
+        List<Integer> result = expenseService.getYears(username, true);
+
+        assertNotNull(result);
+        assertEquals(expectedYears.size(), result.size());
+        assertEquals(expectedYears, result);
+    }
+
+    @Test
+    void shouldReturnCurrentYearIfThereIsNoExpenses() {
+        int currentYear = LocalDate.now().getYear();
+        String username = "janusz123";
+
+        when(expenseRepository.findYearsByUsername(username)).thenReturn(List.of(currentYear));
+
+        List<Integer> result = expenseService.getYears(username, false);
+
+        assertNotNull(result);
+        assertEquals(currentYear, result.get(0));
+
+        verify(expenseRepository, times(1)).findYearsByUsername(username);
+    }
+
+    @Test
+    void shouldReturnLastAddedUserExpense() {
+        String username = "janusz123";
+        UserEntity user = new UserEntity();
+        user.setId(1L);
+
+        ExpenseEntity expectedExpense = new ExpenseEntity();
+        expectedExpense.setUser(user);
+        expectedExpense.setTitle("Sell");
+        expectedExpense.setPrice(new BigDecimal("100"));
+        expectedExpense.setDate(LocalDateTime.of(2025, 3, 17, 15, 15));
+        expectedExpense.setCategory(ExpenseCategory.CLOTHES);
+
+        ExpenseDto expectedDto = ExpenseDto.from(expectedExpense);
+
+        when(userService.getUserByUsername(username)).thenReturn(user);
+        when(expenseRepository.findLastAdded(user.getId())).thenReturn(expectedExpense);
+
+        ExpenseDto lastAdded = expenseService.getLastUserExpense(username);
+
+        assertNotNull(lastAdded);
+        assertEquals(expectedDto.getTitle(), lastAdded.getTitle());
+        assertEquals(expectedDto.getPrice(), lastAdded.getPrice());
+        assertEquals(expectedDto.getDate(), lastAdded.getDate());
+        assertEquals(expectedDto.getCategory(), lastAdded.getCategory());
+
+        verify(userService, times(1)).getUserByUsername(username);
+        verify(expenseRepository, times(1)).findLastAdded(user.getId());
     }
 }
