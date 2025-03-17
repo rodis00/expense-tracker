@@ -2,8 +2,11 @@ package com.github.rodis00.backend.user;
 
 import com.github.rodis00.backend.entity.UserEntity;
 import com.github.rodis00.backend.exception.EntityNotFoundException;
+import com.github.rodis00.backend.exception.InvalidEmailException;
 import com.github.rodis00.backend.exception.UserAlreadyExistsException;
 import com.github.rodis00.backend.exception.UsernameIsTakenException;
+import com.github.rodis00.backend.image.ImageService;
+import com.github.rodis00.backend.passwordReset.PasswordResetService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,6 +29,12 @@ class UserServiceTest {
 
     @Mock
     private PasswordEncoder passwordEncoder;
+
+    @Mock
+    private PasswordResetService passwordResetService;
+
+    @Mock
+    private ImageService imageService;
 
     @InjectMocks
     private UserService userService;
@@ -111,6 +120,29 @@ class UserServiceTest {
     }
 
     @Test
+    void shouldThrowExceptionIfEmailIsInvalid() {
+        String invalidEmail = "";
+        String username = "user";
+
+        UserEntity existingUser = new UserEntity();
+        existingUser.setEmail("correct@example.com");
+        existingUser.setUsername(username);
+
+        User expectedUser = new User();
+        expectedUser.setEmail(invalidEmail);
+
+        when(userRepository.findByUsername(username)).thenReturn(Optional.of(existingUser));
+        when(userRepository.existsByEmail(invalidEmail)).thenReturn(false);
+
+        assertThrows(InvalidEmailException.class, () -> {
+            userService.updateUser(username, expectedUser);
+        });
+
+        verify(userRepository, times(1)).existsByEmail(invalidEmail);
+        verify(userRepository, never()).save(any(UserEntity.class));
+    }
+
+    @Test
     void shouldThrowExceptionIfUserWithUsernameAlreadyExists() {
         String username = "username";
 
@@ -184,13 +216,27 @@ class UserServiceTest {
     @Test
     void shouldDeleteUserByUsername() {
         when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
-        doNothing()
-                .when(userRepository)
-                .delete(user);
+
+        doNothing().when(passwordResetService).deleteUserPasswordTokens(user.getId());
+        doNothing().when(imageService).deleteUserProfilePicture(user.getUsername());
+        doNothing().when(userRepository).delete(user);
 
         userService.deleteUserByUsername(username);
 
         verify(userRepository, times(1)).findByUsername(username);
+        verify(passwordResetService, times(1)).deleteUserPasswordTokens(user.getId());
+        verify(imageService, times(1)).deleteUserProfilePicture(user.getUsername());
         verify(userRepository, times(1)).delete(user);
+    }
+
+    @Test
+    void shouldThrowExceptionIfUserDoesNotExist() {
+        when(userRepository.existsByUsername(username)).thenReturn(false);
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            userService.checkIfUserExists(username);
+        });
+
+        verify(userRepository, times(1)).existsByUsername(username);
     }
 }
