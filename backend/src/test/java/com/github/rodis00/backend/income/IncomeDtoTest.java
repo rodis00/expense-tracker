@@ -19,21 +19,29 @@ class IncomeDtoTest {
 
     @BeforeEach
     void setUp() {
+        LocalDateTime now = LocalDateTime
+                .of(2025, 3, 13,14,9,12);
         income = new IncomeEntity();
         income.setSlug(slug);
         income.setTitle("income");
         income.setAmount(new BigDecimal("100.00"));
-        income.setDate(LocalDateTime.of(2024, 5, 24, 18, 4));
+        income.setDate(now);
+        income.setCategory(IncomeCategory.OTHER);
+        income.setCreatedAt(now);
+        income.setUpdatedAt(now);
         income.setDescription("income");
     }
 
     @Test
-    void shouldReturnEarningDto() {
+    void shouldReturnIncomeDto() {
         IncomeDto expectedDto = new IncomeDto(
                 income.getSlug(),
                 income.getTitle(),
                 income.getAmount(),
                 income.getDate(),
+                income.getCategory(),
+                income.getCreatedAt(),
+                income.getUpdatedAt(),
                 income.getDescription()
         );
 
@@ -44,5 +52,9 @@ class IncomeDtoTest {
         assertEquals(expectedDto.getTitle(), incomeDto.getTitle());
         assertEquals(expectedDto.getAmount(), incomeDto.getAmount());
         assertEquals(expectedDto.getDate(), incomeDto.getDate());
+        assertEquals(expectedDto.getCategory(), incomeDto.getCategory());
+        assertEquals(expectedDto.getCreatedAt(), incomeDto.getCreatedAt());
+        assertEquals(expectedDto.getUpdatedAt(), incomeDto.getUpdatedAt());
+        assertEquals(expectedDto.getDescription(), incomeDto.getDescription());
     }
 }

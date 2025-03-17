@@ -19,11 +19,16 @@ class ExpenseDtoTest {
 
     @BeforeEach
     void setUp() {
+        LocalDateTime now = LocalDateTime
+                .of(2025, 3, 13,14,9,12);
         expense = new ExpenseEntity();
         expense.setSlug(slug);
         expense.setTitle("expense");
         expense.setPrice(new BigDecimal("100.00"));
-        expense.setDate(LocalDateTime.of(2024, 5, 25, 20, 32));
+        expense.setDate(now);
+        expense.setCategory(ExpenseCategory.OTHER);
+        expense.setCreatedAt(now);
+        expense.setUpdatedAt(now);
         expense.setDescription("expense");
     }
 
@@ -34,6 +39,9 @@ class ExpenseDtoTest {
                 expense.getTitle(),
                 expense.getPrice(),
                 expense.getDate(),
+                expense.getCategory(),
+                expense.getCreatedAt(),
+                expense.getUpdatedAt(),
                 expense.getDescription()
         );
 
@@ -44,5 +52,9 @@ class ExpenseDtoTest {
         assertEquals(expectedDto.getTitle(), expenseDto.getTitle());
         assertEquals(expectedDto.getPrice(), expenseDto.getPrice());
         assertEquals(expectedDto.getDate(), expenseDto.getDate());
+        assertEquals(expectedDto.getCategory(), expenseDto.getCategory());
+        assertEquals(expectedDto.getCreatedAt(), expenseDto.getCreatedAt());
+        assertEquals(expectedDto.getUpdatedAt(), expenseDto.getUpdatedAt());
+        assertEquals(expectedDto.getDescription(), expenseDto.getDescription());
     }
 }

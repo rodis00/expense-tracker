@@ -1,6 +1,7 @@
 package com.github.rodis00.backend.user;
 
 import com.github.rodis00.backend.entity.UserEntity;
+import com.github.rodis00.backend.exception.EntityNotFoundException;
 import com.github.rodis00.backend.exception.UserAlreadyExistsException;
 import com.github.rodis00.backend.exception.UsernameIsTakenException;
 import org.junit.jupiter.api.BeforeEach;
@@ -65,7 +66,7 @@ class UserServiceTest {
     void shouldThrowExceptionWhenUserNotFound() {
         when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
 
-        assertThrows(UserNotFoundException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             userService.getUserByUsername(username);
         });
 
@@ -94,9 +95,11 @@ class UserServiceTest {
     @Test
     void shouldThrowExceptionIfUserWithEmailAlreadyExists() {
         String email = "expected@example.com";
+
         User expectedUser = new User();
         expectedUser.setEmail(email);
 
+        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
         when(userRepository.existsByEmail(email)).thenReturn(true);
 
         assertThrows(UserAlreadyExistsException.class, () -> {
@@ -109,14 +112,19 @@ class UserServiceTest {
 
     @Test
     void shouldThrowExceptionIfUserWithUsernameAlreadyExists() {
-        String username = "expected@example.com";
-        User expectedUser = new User();
+        String username = "username";
+
+        User user = new User();
+        user.setUsername(username);
+
+        UserEntity expectedUser = new UserEntity();
         expectedUser.setUsername(username);
 
+        when(userRepository.findByUsername(username)).thenReturn(Optional.of(expectedUser));
         when(userRepository.existsByUsername(username)).thenReturn(true);
 
         assertThrows(UsernameIsTakenException.class, () -> {
-            userService.updateUser(username, expectedUser);
+            userService.updateUser(username, user);
         });
 
         verify(userRepository, times(1)).existsByUsername(username);

@@ -2,6 +2,7 @@ package com.github.rodis00.backend.income;
 
 import com.github.rodis00.backend.entity.IncomeEntity;
 import com.github.rodis00.backend.entity.UserEntity;
+import com.github.rodis00.backend.exception.EntityNotFoundException;
 import com.github.rodis00.backend.page.GlobalPage;
 import com.github.rodis00.backend.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -112,7 +113,7 @@ class IncomeServiceTest {
     void shouldThrowExceptionIfIncomeNotFound() {
         when(incomeRepository.findBySlug(slug)).thenReturn(Optional.empty());
 
-        assertThrows(IncomeNotFoundException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             incomeService.getIncomeBySlug(slug);
         });
 
@@ -178,7 +179,7 @@ class IncomeServiceTest {
 
         when(incomeRepository.findAll()).thenReturn(incomes);
 
-        List<Integer> incomeYears = incomeService.getYears();
+        List<Integer> incomeYears = incomeService.getYears(user.getUsername(), false);
 
         assertNotNull(incomeYears);
         assertEquals(expectedYears.size(), incomeYears.size());

@@ -2,8 +2,10 @@ package com.github.rodis00.backend.expense;
 
 import com.github.rodis00.backend.entity.ExpenseEntity;
 import com.github.rodis00.backend.entity.UserEntity;
+import com.github.rodis00.backend.exception.EntityNotFoundException;
 import com.github.rodis00.backend.page.GlobalPage;
 import com.github.rodis00.backend.user.UserService;
+import com.github.rodis00.backend.validators.DateValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,6 +32,9 @@ class ExpenseServiceTest {
     @Mock
     private UserService userService;
 
+    @Mock
+    private DateValidator validator;
+
     @InjectMocks
     private ExpenseService expenseService;
 
@@ -40,6 +45,7 @@ class ExpenseServiceTest {
     private final String username = "username";
 
     private final String slug = UUID.randomUUID().toString();
+
 
     @BeforeEach
     void setUp() {
@@ -95,7 +101,7 @@ class ExpenseServiceTest {
     void shouldThrowExceptionIfExpenseNotFound() {
         when(expenseRepository.findBySlug(slug)).thenReturn(Optional.empty());
 
-        assertThrows(ExpenseNotFoundException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             expenseService.getExpenseBySlug(slug);
         });
 
@@ -177,10 +183,10 @@ class ExpenseServiceTest {
         Page<ExpenseEntity> expectedPage = new PageImpl<>(List.of(expense1, expense2));
 
         when(userService.getUserByUsername(username)).thenReturn(user);
-        when(expenseRepository.findAllExpensesByUser_UsernameAndYear(user.getUsername(), null, pageable))
+        when(expenseRepository.findAllExpensesByUser_UsernameAndYear(user.getUsername(), null, null, pageable))
                 .thenReturn(expectedPage);
 
-        Page<ExpenseEntity> expensePage = expenseService.findAllExpensesByUsername(username, page, null);
+        Page<ExpenseEntity> expensePage = expenseService.findAllExpensesByUsername(username, page, null, null);
 
         assertNotNull(expensePage);
         assertEquals(expectedPage.getTotalElements(), expensePage.getTotalElements());
@@ -190,7 +196,7 @@ class ExpenseServiceTest {
 
         verify(userService, times(1)).getUserByUsername(username);
         verify(expenseRepository, times(1))
-                .findAllExpensesByUser_UsernameAndYear(user.getUsername(), null, pageable);
+                .findAllExpensesByUser_UsernameAndYear(user.getUsername(), null, null, pageable);
     }
 
     @Test
@@ -223,10 +229,10 @@ class ExpenseServiceTest {
         Page<ExpenseEntity> expectedPage = new PageImpl<>(List.of(expense1, expense2));
 
         when(userService.getUserByUsername(username)).thenReturn(user);
-        when(expenseRepository.findAllExpensesByUser_UsernameAndYear(user.getUsername(), year, pageable))
+        when(expenseRepository.findAllExpensesByUser_UsernameAndYear(user.getUsername(), year, null, pageable))
                 .thenReturn(expectedPage);
 
-        Page<ExpenseEntity> expensePage = expenseService.findAllExpensesByUsername(username, page, year);
+        Page<ExpenseEntity> expensePage = expenseService.findAllExpensesByUsername(username, page, year, null);
 
         assertNotNull(expensePage);
         assertEquals(expectedPage.getTotalElements(), expensePage.getTotalElements());
@@ -235,7 +241,7 @@ class ExpenseServiceTest {
 
         verify(userService, times(1)).getUserByUsername(username);
         verify(expenseRepository, times(1))
-                .findAllExpensesByUser_UsernameAndYear(user.getUsername(), year, pageable);
+                .findAllExpensesByUser_UsernameAndYear(user.getUsername(), year, null, pageable);
     }
 
     @Test
@@ -255,7 +261,7 @@ class ExpenseServiceTest {
 
         when(expenseRepository.findAll()).thenReturn(expenses);
 
-        List<Integer> expenseYears = expenseService.getYears();
+        List<Integer> expenseYears = expenseService.getYears(user.getUsername(), false);
 
         assertNotNull(expenseYears);
         assertEquals(expectedYears.size(), expenseYears.size());
