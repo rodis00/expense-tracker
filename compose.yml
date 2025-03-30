@@ -13,6 +13,31 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  backend:
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    container_name: et_backend
+    depends_on:
+      - db
+    restart: always
+    env_file:
+      - backend/.env-dev
+    ports:
+      - "8080:8080"
+    networks:
+      - et_network
+
+  frontend:
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    container_name: et_frontend
+    ports:
+      - "5173:5173"
+    networks:
+      - et_network
+
 volumes:
   postgres_data:
 
